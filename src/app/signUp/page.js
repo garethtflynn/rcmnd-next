@@ -19,7 +19,7 @@ export default function SignUp() {
         />
         <div className="flex gap-2 justify-center">
           <Link
-            href="#"
+            href="/homeFeed"
             className="text-[#FBF8F4] px-2 py-1 rounded"
           >
             <button className="w-64 bg-[#ECE2D8] hover:bg-[#513C2C] text-[#110A02] font-bold py-2 px-4 rounded-md duration-500">
