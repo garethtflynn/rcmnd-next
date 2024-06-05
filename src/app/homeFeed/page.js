@@ -33,7 +33,7 @@ export default function HomeFeed({ props }) {
   return (
     <div>
       <Header />
-      <div className="h-full w-full grid grid-cols-3 bg-[#110A02] text-[#FBF8F4]">
+      <div className="h-full w-full py-1 px-4 grid grid-cols-3 bg-[#110A02] text-[#FBF8F4]">
         {posts.map((posts, key) => {
           return (
             <div key={key} className="p-3">
@@ -42,9 +42,9 @@ export default function HomeFeed({ props }) {
                 src={posts.image}
                 alt={posts.title}
               />
-              <p class="text-[#FBF8F4] text-base py-2">{posts.title}</p>
+              <p className="text-[#FBF8F4] text-base py-2">{posts.title}</p>
               <Link href={posts.link} target="_blank">
-                <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
+                <span className="rounded-full py-1 text-sm font-semibold text-gray-700">
                   link
                 </span>
               </Link>
