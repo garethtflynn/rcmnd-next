@@ -1,5 +1,4 @@
 "use client";
-
 import { useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { FaRegCircleUp } from "react-icons/fa6";
@@ -7,9 +6,9 @@ import { useRouter } from "next/navigation";
 
 import Image from "next/image";
 
-const Dropzone = (props) => {
+const Dropzone = () => {
   const router = useRouter();
-  // const [rejected, setRejected] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
     title: "",
     link: "",
@@ -26,9 +25,10 @@ const Dropzone = (props) => {
     },
     maxSize: 1024 * 1000,
     onDrop: (acceptedFiles) => {
+      const fileAsString = JSON.stringify(acceptedFiles); // Convert array to JSON string
       setIsImageDropped(false);
-      setFormData({ ...formData, image: acceptedFiles });
-      console.log(acceptedFiles);
+      setFormData({ ...formData, image: fileAsString });
+      // console.log(acceptedFiles);
       setFile(
         acceptedFiles.map((file) =>
           Object.assign(file, {
@@ -36,6 +36,8 @@ const Dropzone = (props) => {
           })
         )
       );
+      // console.log(typeof fileAsString);
+      // console.log(typeof acceptedFiles);
     },
   });
 
@@ -44,10 +46,40 @@ const Dropzone = (props) => {
     return () => files?.forEach((file) => URL.revokeObjectURL(file.preview));
   }, [files]);
 
+  const createPost = async () => {
+    console.log(formData);
+    // if (!formData.title || !formData.link || !formData.image) {
+    //   console.log(formData)
+    //   alert("form input required!");
+    //   return;
+    // }
+    try {
+      const body = formData;
+      const apiUrl = "/api/post";
+      const requestData = {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(body),
+      };
+
+      const response = await fetch(apiUrl, requestData); //
+
+      if (!response.ok) {
+        throw new Error(
+          `Failed to create post: ${response.status} - ${response.statusText}`
+        );
+      }
+      setFormData(""); // Reset the form after successful submission
+    } catch (error) {
+      console.log("something went wrong:", error); //
+    }
+  };
+
   const onSubmit = async (e) => {
     e.preventDefault();
-    console.log(formData);
-
+    createPost();
     router.replace("/homeFeed");
   };
 
@@ -79,6 +111,7 @@ const Dropzone = (props) => {
             {...getRootProps()}
           >
             <input
+              defaultValue={formData.image}
               onChange={(e) =>
                 setFormData({ ...formData, image: e.target.value })
               }
@@ -94,7 +127,7 @@ const Dropzone = (props) => {
         )}
         <div className="flex flex-col mx-auto w-full items-center px-5">
           <input
-            value={formData.title}
+            defaultValue={formData.title}
             type="text"
             name="title"
             onChange={(e) =>
@@ -103,9 +136,8 @@ const Dropzone = (props) => {
             placeholder="title"
             className="border border-[#ECE2D8] bg-transparent text-[#ECE2D8] px-2 py-1 my-2 rounded hover:bg-[#513C2C] focus:within:bg-[#ECE2D8] outline-none placeholder-[#513C2C] w-full"
           />
-
           <input
-            value={formData.link}
+            defaultValue={formData.link}
             type="text"
             name="link"
             onChange={(e) => setFormData({ ...formData, link: e.target.value })}
@@ -113,7 +145,7 @@ const Dropzone = (props) => {
             className="border border-[#ECE2D8] bg-transparent text-[#ECE2D8] px-2 py-1 rounded hover:bg-[#513C2C] focus:within:bg-[#ECE2D8] outline-none placeholder-[#513C2C] w-full"
           />
           <textarea
-            value={formData.description}
+            defaultValue={formData.description}
             type="text"
             name="description"
             onChange={(e) =>

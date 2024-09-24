@@ -1,6 +1,21 @@
+"use client";
+
+import Link from "next/link";
+import { useSearchParams, useRouter } from "next/navigation";
 import { FaPlus, FaAngleDown } from "react-icons/fa6";
+import { signOut } from "next-auth/react";
+import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 
 export default function Header() {
+  const handleLogout = async () => {
+    try {
+      await signOut({ redirect: true, callbackUrl: "/welcome" });
+      console.log("logged out!")
+    } catch (error) {
+      console.error("Logout error:", error);
+    }
+  };
+
   return (
     <nav className="flex items-center flex-wrap bg-[#ECE2D8] hover:bg-[#110A02] duration-1000 p-4">
       <div className="flex items-center flex-shrink-0 text-white mr-6">
@@ -16,36 +31,56 @@ export default function Header() {
       </div>
       <div className="w-full block flex-grow lg:flex lg:flex-end lg:items-center lg:w-auto">
         <div className="w-full text-sm flex items-center justify-end">
-          <a
-            href="/homeFeed"
-            className="block mt-4 lg:inline-block lg:mt-0 text-[#FBF8F4] hover:text-white mr-4"
+          <Menu
+            as="div"
+            className="relative inline-block text-left bg-transparent hover:text-[#ECE2D8] duration-1000"
           >
-            home
-          </a>
-          <a
-            href="/profile"
-            className="block mt-4 lg:inline-block lg:mt-0 text-[#FBF8F4] hover:text-white mr-4"
-          >
-            profile
-          </a>
-          <a
-            href="/notifications"
-            className="block mt-4 lg:inline-block lg:mt-0 text-[#FBF8F4] hover:text-white"
-          >
-            notifications
-          </a>
-          <a href="/createPost">
-            <FaPlus
-              style={{ color: "#FBF8F4", fontSize: "1.5em" }}
-              className="ml-4 mr-3"
-            />
-          </a>
-          <a
-            href="/account"
-            className="lg:inline-block lg:mt-0 text-[#FBF8F4] hover:text-white "
-          >
-            <FaAngleDown style={{ color: "#FBF8F4", fontSize: "1.5em" }} />
-          </a>
+            <div>
+              <MenuButton className="inline-flex w-full justify-center gap-x-1.5 rounded-md px-3 py-2 text-sm font-semibold">
+                Options
+                <FaAngleDown aria-hidden="true" className="-mr-1 h-5 w-5" />
+              </MenuButton>
+            </div>
+            <MenuItems
+              transition
+              className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white transition focus:outline-none data-[closed]:scale-95 data-[closed]:transform data-[closed]:opacity-0 data-[enter]:duration-100 data-[leave]:duration-75 data-[enter]:ease-out data-[leave]:ease-in"
+            >
+              <div className="py-1">
+                <MenuItem>
+                  <a
+                    href="#"
+                    className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100 data-[focus]:text-gray-900"
+                  >
+                    Account settings
+                  </a>
+                </MenuItem>
+                <MenuItem>
+                  <a
+                    href="#"
+                    className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100 data-[focus]:text-gray-900"
+                  >
+                    Support
+                  </a>
+                </MenuItem>
+                <MenuItem>
+                  <a
+                    href="#"
+                    className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100 data-[focus]:text-gray-900"
+                  >
+                    License
+                  </a>
+                </MenuItem>
+                <MenuItem>
+                  <button
+                    onClick={handleLogout}
+                    className="block w-full px-4 py-2 text-left text-sm text-gray-700 data-[focus]:bg-gray-100 data-[focus]:text-gray-900"
+                  >
+                    Sign out
+                  </button>
+                </MenuItem>
+              </div>
+            </MenuItems>
+          </Menu>
         </div>
       </div>
     </nav>
