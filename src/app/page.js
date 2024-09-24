@@ -1,10 +1,13 @@
+import HomeFeed from "./(app)/homeFeed/page";
 import Welcome from "./welcome/page";
-import Header from "../components/Header"
+import TestAuth from "./testAuth/page";
 
 export default function Home() {
   return (
     <div>
       <Welcome />
+      {/* <HomeFeed /> */}
+      {/* <TestAuth /> */}
     </div>
   );
 }
