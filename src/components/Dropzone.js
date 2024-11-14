@@ -1,24 +1,25 @@
 "use client";
+import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { FaRegCircleUp } from "react-icons/fa6";
 import { useRouter } from "next/navigation";
+import { B2 } from "backblaze-b2";
 
 import Image from "next/image";
 
 const Dropzone = () => {
+  const { data: session } = useSession();
   const router = useRouter();
-  const [isLoading, setIsLoading] = useState(false);
+  // const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
     title: "",
     link: "",
     description: "",
     image: "",
   });
-
   const [files, setFile] = useState();
   const [isImageDropped, setIsImageDropped] = useState(true);
-
   const { getRootProps, getInputProps } = useDropzone({
     accept: {
       "image/*": [],
@@ -28,7 +29,6 @@ const Dropzone = () => {
       const fileAsString = JSON.stringify(acceptedFiles); // Convert array to JSON string
       setIsImageDropped(false);
       setFormData({ ...formData, image: fileAsString });
-      // console.log(acceptedFiles);
       setFile(
         acceptedFiles.map((file) =>
           Object.assign(file, {
@@ -36,8 +36,7 @@ const Dropzone = () => {
           })
         )
       );
-      // console.log(typeof fileAsString);
-      // console.log(typeof acceptedFiles);
+
     },
   });
 
@@ -46,15 +45,36 @@ const Dropzone = () => {
     return () => files?.forEach((file) => URL.revokeObjectURL(file.preview));
   }, [files]);
 
+  const uploadImageToB2 = async () => {
+
+  };
+
+  
   const createPost = async () => {
     console.log(formData);
-    // if (!formData.title || !formData.link || !formData.image) {
-    //   console.log(formData)
-    //   alert("form input required!");
-    //   return;
-    // }
+    const userId = session?.user?.id;
+
+    // Check if userId exists
+    if (!userId) {
+      console.error("User ID is required.");
+      alert("You must be logged in to create a post!");
+      return;
+    }
+
+    // Ensure formData has required properties
+    if (!formData.title || !formData.link || !formData.image) {
+      console.log(formData);
+      alert("Form input required!");
+      return;
+    }
+
     try {
-      const body = formData;
+      // Include userId in the body
+      const body = {
+        ...formData, // Spread existing form data
+        userId: userId, // Add userId to the body
+      };
+
       const apiUrl = "/api/post";
       const requestData = {
         method: "POST",
@@ -64,7 +84,8 @@ const Dropzone = () => {
         body: JSON.stringify(body),
       };
 
-      const response = await fetch(apiUrl, requestData); //
+      console.log(requestData);
+      const response = await fetch(apiUrl, requestData);
 
       if (!response.ok) {
         throw new Error(
@@ -73,7 +94,7 @@ const Dropzone = () => {
       }
       setFormData(""); // Reset the form after successful submission
     } catch (error) {
-      console.log("something went wrong:", error); //
+      console.log("Something went wrong:", error);
     }
   };
 

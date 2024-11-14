@@ -9,3 +9,4 @@ export const LoginButton = () => {
 export const LogoutButton = () => {
   return <button onClick={() => signOut()}>Sign Out</button>
 }
+

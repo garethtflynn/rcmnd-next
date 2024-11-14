@@ -15,7 +15,7 @@ export async function GET (req, res) {
 
   export async function POST(req, res) {
     try {
-      const { title } = await req.json(); // Destructure formData from the request body
+      const { title, userId } = await req.json(); // Destructure formData from the request body
       console.log("REQ.BODY", req.body);
       // if (!title) {
       //   return NextResponse.json({ error: "Please fill out form" });
@@ -25,6 +25,7 @@ export async function GET (req, res) {
       const list = await prisma.list.create({
         data: {
           title: title,
+          userId: userId,
         },
       });
 

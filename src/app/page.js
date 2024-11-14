@@ -5,8 +5,8 @@ import TestAuth from "./testAuth/page";
 export default function Home() {
   return (
     <div>
-      <Welcome />
-      {/* <HomeFeed /> */}
+      {/* <Welcome /> */}
+      <HomeFeed />
       {/* <TestAuth /> */}
     </div>
   );
