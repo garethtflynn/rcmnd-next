@@ -1,15 +1,28 @@
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
+// import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import prisma from "@/libs/db";
 import { compare } from "bcrypt";
 
 export const authOptions = {
   pages: {
-    signIn: "/sign-in"
+    signIn: "/sign-in",
   },
   session: {
     strategy: "jwt",
   },
+  cookies: {
+    sessionToken: {
+      name: 'next-auth.session-token',
+      options: {
+        httpOnly: true,
+        sameSite: 'lax', // "Strict" might prevent cross-site cookies
+        path: '/',        // Ensure it applies to the whole domain
+        secure: process.env.NODE_ENV === 'production', // Use secure cookies in production
+      },
+    },
+  },
+  // secret: process.env.NEXTAUTH_SECRET,
   providers: [
     CredentialsProvider({
       name: "Sign-in",
@@ -24,7 +37,7 @@ export const authOptions = {
           type: "password",
         },
       },
-      async authorize(credentials) {
+      async authorize(credentials, req) {
         if (!credentials?.email || !credentials.password) {
           return null;
         }
@@ -33,10 +46,7 @@ export const authOptions = {
             email: credentials.email,
           },
         });
-
-        if (!user) {
-          return null;
-        }
+        console.log("USER LOG IN AUTHORIZE FUNCTION", user);
 
         const isPasswordValid = await compare(
           credentials.password,
@@ -47,38 +57,35 @@ export const authOptions = {
           return null;
         }
 
-        return {
-          id: user.id + " ", // Ensure ID is a string
-          email: user.email,
-          name: user.firstName + " " + user.lastName,
-          randomKey: "Hey cool",
-        };
+        if (user) {
+          console.log("Returning user:", {
+            id: user.id,
+            name: user.firstName + " " + user.lastName,
+            email: user.email,
+          });
+          return {
+            id: user.id,
+            name: user.firstName + " " + user.lastName,
+            email: user.email,
+          }; // Ensure the returned object includes an id
+        } else {
+          return null; // Return null on failure
+        }
       },
     }),
   ],
   callbacks: {
-    session: ({ session, user, token }) => {
-      console.log("Session Callback", { session, token });
-      return {
-        ...session,
-        user: {
-          ...session.user,
-          id: token.id,
-          randomKey: token.randomKey,
-        },
-      };
-    },
-    jwt: ({ token, user }) => {
-      console.log("JWT Callback LINE 69:", { token, user });
+    async jwt({ token, user }) {
       if (user) {
-        // token.user = user
-        return {
-          ...token,
-          id: user.id,
-          randomKey: user.randomKey,
-        };
+        console.log("JWT CALLBACK", { token, user });
+        token.id = user.id; // Store user ID in token
       }
       return token;
+    },
+    async session({ session, token }) {
+      console.log("SESSION CALLBACK", { session, token });
+      session.user.id = token.sub; // Add user ID to session
+      return session;
     },
   },
 };

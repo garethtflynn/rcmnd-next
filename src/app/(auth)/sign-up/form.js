@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 // import Link from "next/link";
 import Alert from "../../../components/Alert";
+import { signIn } from "next-auth/react";
+
 
 function SignUpForm(props) {
   const [firstName, setFirstName] = useState();

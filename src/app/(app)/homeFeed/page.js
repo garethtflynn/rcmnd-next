@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import Header from "@/components/Header";
 import { Post } from "@prisma/client";
+import Footer from "../../../components/Footer"
 import PostItem from "@/components/PostItem";
 
 const posts = [
@@ -27,6 +28,18 @@ const posts = [
   },
   {
     id: 4,
+    title: "restaurant",
+    link: "https://longroaddistillers.com/",
+    image: require("../../../../public/restaurant.jpeg"),
+  },
+  {
+    id: 5,
+    title: "hat",
+    link: "https://www.culturekings.com/products/new-era-new-york-yankees-dark-green-cord-9forty-a-frame-snapback-dark-green",
+    image: require("../../../../public/hat.webp"),
+  },
+  {
+    id: 6,
     title: "restaurant",
     link: "https://longroaddistillers.com/",
     image: require("../../../../public/restaurant.jpeg"),
@@ -57,6 +70,7 @@ export default async function HomeFeed() {
           );
         })}
       </div>
+      <Footer />
     </div>
   );
 }

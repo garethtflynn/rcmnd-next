@@ -2,3 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
+
+.contactIcon:hover {
+    fill: #513C2C;}
