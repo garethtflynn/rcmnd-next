@@ -54,7 +54,7 @@ export async function POST(req, res) {
       },
     });
 
-    console.log(post);
+    console.log('POST in post route handler', post);
     return NextResponse.json(post);
     // res.status(200).json(post); // Respond with the created post
   } catch (error) {

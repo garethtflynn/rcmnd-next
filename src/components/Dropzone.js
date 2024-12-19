@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { FaRegCircleUp } from "react-icons/fa6";
 import { useRouter } from "next/navigation";
-import { B2 } from "backblaze-b2";
 
 import Image from "next/image";
 
@@ -18,7 +17,7 @@ const Dropzone = () => {
     description: "",
     image: "",
   });
-  const [files, setFile] = useState();
+  const [image, setImage] = useState();
   const [isImageDropped, setIsImageDropped] = useState(true);
   const { getRootProps, getInputProps } = useDropzone({
     accept: {
@@ -26,41 +25,101 @@ const Dropzone = () => {
     },
     maxSize: 1024 * 1000,
     onDrop: (acceptedFiles) => {
+      console.log("ON DROP ACCEPTED FILE", acceptedFiles);
+      const file = acceptedFiles[0];
+      console.log(file.name);
       const fileAsString = JSON.stringify(acceptedFiles); // Convert array to JSON string
       setIsImageDropped(false);
-      setFormData({ ...formData, image: fileAsString });
-      setFile(
+      setFormData({ ...formData, image: fileAsString }); // need to change image in formData
+      setImage(
         acceptedFiles.map((file) =>
           Object.assign(file, {
             preview: URL.createObjectURL(file),
           })
         )
       );
-
     },
   });
 
   useEffect(() => {
     // Revoke the data uris to avoid memory leaks
-    return () => files?.forEach((file) => URL.revokeObjectURL(file.preview));
-  }, [files]);
+    return () => image?.forEach((file) => URL.revokeObjectURL(file.preview));
+  }, [image]);
 
   const uploadImageToB2 = async () => {
+    const imageFile = image[0];
+    const key = imageFile.name;
+    // const key = imageName;
+    // Tell B2 to set the content type automatically depending on the file extension
+    const contentType = "b2/x-auto";
+    let msg, detail;
 
+    try {
+      // Ask the backend for a presigned URL
+      let response = await fetch(
+        "/api/upload?" +
+          new URLSearchParams({
+            key: key,
+          }).toString()
+      ); // Just sending the image name as key
+      console.log("RESPONSE VARIABLE:", response);
+      // Report on the outcome
+      if (!response.ok) {
+        msg = `${response.status} when retrieving presigned URL from backend`;
+        console.error(msg);
+        detail = await response.text();
+      } else {
+        const { presignedUrl } = await response.json();
+        console.log(`Presigned URL: ${presignedUrl}`);
+
+        // Get the file's contents as an ArrayBuffer
+        const fileContent = await imageFile.arrayBuffer()
+        console.log(`File content after arrayBuffer: ${fileContent}`);
+
+        // Upload the file content with the filename, hash and auth token
+        response = await fetch(presignedUrl, {
+          method: "PUT",
+          mode: "cors",
+          body: fileContent,
+          headers: {
+            "Content-Type": contentType,
+            Accept:
+              "image/avif,image/webp,image/apng,image/svg+xml,image/jpeg,image/*,*/*;q=0.8",
+              
+          },
+        });
+
+        // Report on the outcome
+        if (response.status >= 200 && response.status < 300) {
+          msg = `${response.status} response from S3 API. Success!`;
+        } else if (response.status >= 400) {
+          msg = `${response.status} error from S3 API.`;
+        } else {
+          msg = `Unknown error.`;
+        }
+
+        detail = "[S3 PutObject does not return any content]";
+      }
+    } catch (error) {
+      console.error("Fetch threw an error:", error);
+      msg = `Fetch threw "${error}" - see the console and/or network tab for more details`;
+      detail = error.stack;
+    }
+
+    console.log(`Upload file result: ${msg}`);
+    console.log(`Response detail: ${detail}`);
   };
 
-  
   const createPost = async () => {
-    console.log(formData);
+    console.log("CREATE POST FUNCTION");
+    const imageFile = image[0];
+    const imageName = imageFile.name;
     const userId = session?.user?.id;
-
-    // Check if userId exists
     if (!userId) {
       console.error("User ID is required.");
       alert("You must be logged in to create a post!");
       return;
     }
-
     // Ensure formData has required properties
     if (!formData.title || !formData.link || !formData.image) {
       console.log(formData);
@@ -69,12 +128,15 @@ const Dropzone = () => {
     }
 
     try {
+      const imageReferenceUrl = process.env.NEXT_PUBLIC_DATABASE_IMAGE_URL
+      // const endpointUrl = process.env.NEXT_PUBLIC_AWS_ENDPOINT_URL;
       // Include userId in the body
       const body = {
         ...formData, // Spread existing form data
+        image: `${imageReferenceUrl}/${imageName}`,
         userId: userId, // Add userId to the body
       };
-
+      console.log(body);
       const apiUrl = "/api/post";
       const requestData = {
         method: "POST",
@@ -84,7 +146,7 @@ const Dropzone = () => {
         body: JSON.stringify(body),
       };
 
-      console.log(requestData);
+      console.log("REQ DATA", requestData);
       const response = await fetch(apiUrl, requestData);
 
       if (!response.ok) {
@@ -100,11 +162,12 @@ const Dropzone = () => {
 
   const onSubmit = async (e) => {
     e.preventDefault();
+    uploadImageToB2();
     createPost();
     router.replace("/homeFeed");
   };
 
-  const preview = files?.map((file) => (
+  const preview = image?.map((file) => (
     <div key={file.name} className="flex justify-center items-center h-screen">
       <Image
         src={file.preview}
@@ -133,11 +196,9 @@ const Dropzone = () => {
           >
             <input
               defaultValue={formData.image}
-              onChange={(e) =>
-                setFormData({ ...formData, image: e.target.value })
-              }
               name="image"
               type="file"
+              accept="image/*"
               {...getInputProps()}
             />
             <FaRegCircleUp className="w-5 h-5 fill-current" />
