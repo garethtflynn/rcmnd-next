@@ -4,7 +4,7 @@ const debug = Debug('b2-browser-upload:getB2UploadInfo');
 async function getB2UploadInfo() {
     const authResponse = await fetch('https://api.backblazeb2.com/b2api/v2/b2_authorize_account', {
         headers: {
-            'Authorization': 'Basic ' + Buffer.from(config.b2ApplicationKeyId + ":" + config.b2ApplicationKey).toString('base64')
+            'Authorization': 'Basic ' + Buffer.from(process.env.B2_APPLICATION_KEY_ID + ":" + process.env.B2_APPLICATION_KEY).toString('base64')
         }
     });
     const auth = await authResponse.json();

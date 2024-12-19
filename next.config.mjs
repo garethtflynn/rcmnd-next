@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  
   experimental: {
     // appDir: true,
     serverComponentsExternalPackages: ["@prisma/client", "bcrypt"],
@@ -8,12 +9,14 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: '**', // Use your Backblaze B2 bucket's hostname // s3.us-east-005.backblazeb2.com
+        hostname: '**',
         port: '',
-        pathname: '/**', // Allow any path within the bucket
+        pathname: '/**', // Allows any path within the bucket
       },
     ],
   },
 };
+
+console.log('Next.js config is loaded')
 
 export default nextConfig;
