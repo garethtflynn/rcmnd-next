@@ -46,6 +46,7 @@ function SignUpForm(props) {
           type="text"
           name="firstName"
           placeholder="firstName"
+          autocomplete="off"
           onChange={(e) => setFirstName(e.target.value)}
           className="border border-[#ECE2D8] bg-transparent text-[#ECE2D8] px-2 py-1 my-1 rounded hover:bg-[#513C2C] focus:within:bg-[#ECE2D8] outline-none placeholder-[#513C2C]"
         />
@@ -54,6 +55,7 @@ function SignUpForm(props) {
           type="text"
           name="lastName"
           placeholder="lastName"
+          autocomplete="off"
           onChange={(e) => setLastName(e.target.value)}
           className="border border-[#ECE2D8] bg-transparent text-[#ECE2D8] px-2 py-1 my-1 rounded hover:bg-[#513C2C] focus:within:bg-[#ECE2D8] outline-none placeholder-[#513C2C]"
         />
@@ -62,6 +64,7 @@ function SignUpForm(props) {
             type="text"
             name="username"
             placeholder="username"
+            autocomplete="off"
             onChange={(e) => setUsername(e.target.value)}
             className="border border-[#ECE2D8] bg-transparent text-[#ECE2D8] px-2 py-1 my-1 rounded hover:bg-[#513C2C] focus:within:bg-[#ECE2D8] outline-none placeholder-[#513C2C]"
           />

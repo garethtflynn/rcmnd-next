@@ -6,6 +6,39 @@ import { getSession } from "next-auth/react";
 // import { getToken } from "next-auth/jwt";
 // import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 
+// create a post
+export async function POST(req, res) {
+  try {
+    const { title, link, description, image, userId, listId } = await req.json(); // Destructure formData from the request body
+    console.log("REQ.BODY", req.body);
+    // if (!title || !link || !image) {
+    //   return NextResponse.json({ error: "Please fill out form" });
+    // }
+    // Create a new post in the database
+    const post = await prisma.post.create({
+      data: {
+        title: title,
+        link: link,
+        description: description,
+        image: image,
+        user: { connect: { id: userId } }, // Using 'connect' to link the user
+        list: { connect: { id: listId } },
+
+      },
+    });
+
+    console.log('POST in post route handler', post);
+    return NextResponse.json(post);
+    // res.status(200).json(post); // Respond with the created post
+  } catch (error) {
+    console.error("POST", error);
+    return new NextResponse(error);
+    // return res.status(500).json({ error: "Internal Server Error" }); // Handle errors
+  }
+}
+
+
+
 // export async function GET(req) {
 //   try {
 //     const session = await getSession({ req });
@@ -36,30 +69,4 @@ import { getSession } from "next-auth/react";
 //   }
 // }
 
-export async function POST(req, res) {
-  try {
-    const { title, link, description, image, userId } = await req.json(); // Destructure formData from the request body
-    console.log("REQ.BODY", req.body);
-    // if (!title || !link || !image) {
-    //   return NextResponse.json({ error: "Please fill out form" });
-    // }
-    // Create a new post in the database
-    const post = await prisma.post.create({
-      data: {
-        title: title,
-        link: link,
-        description: description,
-        image: image,
-        userId: userId,
-      },
-    });
 
-    console.log('POST in post route handler', post);
-    return NextResponse.json(post);
-    // res.status(200).json(post); // Respond with the created post
-  } catch (error) {
-    console.error("POST", error);
-    return new NextResponse(error);
-    // return res.status(500).json({ error: "Internal Server Error" }); // Handle errors
-  }
-}

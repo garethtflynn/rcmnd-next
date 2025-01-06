@@ -4,12 +4,11 @@ import { useSearchParams, useRouter } from "next/navigation";
 import Alert from "@/components/Alert";
 
 function LoginForm(props) {
-  const router = useRouter()
+  const router = useRouter();
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get("callbackUrl") || "/homeFeed";
   // const error = searchParams.get("error") ? "Invalid username or password" : "";
-  const [error, setError ] = useState('')
-
+  const [error, setError] = useState("");
 
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
@@ -23,13 +22,14 @@ function LoginForm(props) {
         password,
         callbackUrl,
       });
-      if(!res?.error) {
+      if (!res?.error) {
         router.push(callbackUrl);
       } else {
-        setError(res?.error || "Invalid email or password"
-        )
+        setError(res?.error || "Invalid email or password");
       }
-    } catch (error) {}
+    } catch (error) {
+      setError(error?.message);
+    }
   };
   return (
     <div>
@@ -38,6 +38,7 @@ function LoginForm(props) {
           type="text"
           name="email"
           placeholder="email"
+          autoComplete="off"
           onChange={(e) => setEmail(e.target.value)}
           className="border border-[#ECE2D8] bg-transparent text-[#ECE2D8] px-2 py-1 my-1 rounded hover:bg-[#513C2C] focus:within:bg-[#ECE2D8] outline-none placeholder-[#513C2C]"
         />
@@ -45,6 +46,7 @@ function LoginForm(props) {
           type="password"
           name="password"
           placeholder="password"
+          autoComplete="off"
           onChange={(e) => setPassword(e.target.value)}
           className="border border-[#ECE2D8] bg-transparent text-[#ECE2D8] px-2 py-1 rounded hover:bg-[#513C2C] focus:within:bg-[#ECE2D8] outline-none placeholder-[#513C2C]"
         />

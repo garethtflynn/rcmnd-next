@@ -24,7 +24,7 @@ export default function Header() {
         </a>
         <input
           type="text"
-          name="email"
+          name="search"
           placeholder="search"
           className="border border-[#ECE2D8] bg-transparent text-[#ECE2D8] px-2 py-1 my-1 ml-4 rounded hover:bg-[#513C2C] focus:within:bg-[#ECE2D8] outline-none placeholder-[#513C2C]"
         />

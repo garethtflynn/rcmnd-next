@@ -57,6 +57,7 @@ function CreateList(props) {
             type="text"
             name="title"
             placeholder="title"
+            autoComplete="off"
             className="w-1/2 border border-[#ECE2D8] bg-transparent text-[#ECE2D8] px-2 py-1 my-2 rounded hover:bg-[#513C2C] focus:within:bg-[#ECE2D8] outline-none placeholder-[#513C2C]"
           />
           <button
