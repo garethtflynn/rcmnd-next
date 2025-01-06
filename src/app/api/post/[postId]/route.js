@@ -1,6 +1,7 @@
 import prisma from "@/libs/db";
 import { NextResponse } from "next/server";
 
+// get a specific post
 export async function GET(req, { params }) {
   const { postId } = params;
   console.log("REQ QUERY:", postId);
@@ -17,6 +18,7 @@ export async function GET(req, { params }) {
   }
 }
 
+// delete a specefic post
 export async function DELETE(req, { params }) {
   const { postId } = params;
   console.log("REQ QUERY:", postId);

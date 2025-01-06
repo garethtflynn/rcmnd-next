@@ -1,6 +1,8 @@
 import prisma from "@/libs/db";
 import { NextResponse } from "next/server";
 
+
+//get all lists
 export async function GET (req, res) {
     try {
       const lists = await prisma.list.findMany();
@@ -13,6 +15,7 @@ export async function GET (req, res) {
     }
   }
 
+  // create a new list
   export async function POST(req, res) {
     try {
       const { title, userId } = await req.json(); // Destructure formData from the request body

@@ -1,7 +1,16 @@
+"use client";
 import React, { useEffect, useState } from "react";
 import PostItem from "./PostItem";
 import { useSession } from "next-auth/react";
 
+const shuffleArray = (array) => {
+  const shuffled = [...array]; // Create a copy of the array to avoid mutating the original
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]; // Swap elements
+  }
+  return shuffled;
+};
 function UserPosts(props) {
   const { data: session } = useSession();
   const userId = session?.user?.id;
@@ -26,6 +35,8 @@ function UserPosts(props) {
           const data = await res.json();
           console.log(data);
           setPosts(data);
+          const shuffledPosts = shuffleArray(data);
+          setPosts(shuffledPosts.slice(0, 4));
         } catch (err) {
           setError(err.message);
         } finally {
@@ -37,8 +48,30 @@ function UserPosts(props) {
     }
   }, [userId]);
 
+
+  const deletePost = async (postId) => {
+    try {
+      // Sending a DELETE request to the API
+      const response = await fetch(`/api/post/${postId}`, {
+        method: "DELETE",
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to delete post");
+      }
+
+      // If the API call is successful, update the UI (remove the post from the state)
+      setPosts(posts.filter((post) => post.id !== postId));
+
+      console.log(`Post with ID ${postId} has been deleted.`);
+    } catch (error) {
+      console.error("Error deleting post:", error);
+      // You might want to show an error message to the user
+    }
+  };
+
   return (
-    <div className="h-full w-full py-1 px-4 grid grid-cols-3 bg-[#110A02] text-[#FBF8F4]">
+    <div className="h-3/4 w-full px-2 grid grid-cols-4 gap-24 justify-center items-center bg-[#110A02] text-[#FBF8F4]">
       {posts?.map((post) => {
         return (
           <PostItem
@@ -47,6 +80,7 @@ function UserPosts(props) {
             href={post.link}
             src={post.image}
             alt={post.title}
+            deletePostCallback={deletePost} // Pass deletePost function as a callback
             {...post}
           />
         );

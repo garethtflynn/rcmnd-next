@@ -1,6 +1,5 @@
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-// import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import prisma from "@/libs/db";
 import { compare } from "bcrypt";
 
@@ -84,7 +83,8 @@ export const authOptions = {
     },
     async session({ session, token }) {
       console.log("SESSION CALLBACK", { session, token });
-      session.user.id = token.sub; // Add user ID to session
+      // session.user.id = token.sub; // Add user ID to session
+      session.user.id = token.id;
       return session;
     },
   },

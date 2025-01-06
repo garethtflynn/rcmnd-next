@@ -3,7 +3,7 @@ const nextConfig = {
   
   experimental: {
     // appDir: true,
-    serverComponentsExternalPackages: ["@prisma/client", "bcrypt"],
+    // serverExternalPackages: ["@prisma/client", "bcrypt"],
   },
   images: {
     remotePatterns: [

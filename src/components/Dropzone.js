@@ -9,6 +9,7 @@ import Image from "next/image";
 
 const Dropzone = () => {
   const { data: session } = useSession();
+  const userId = session?.user?.id;
   const router = useRouter();
   // const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
@@ -16,8 +17,12 @@ const Dropzone = () => {
     link: "",
     description: "",
     image: "",
+    listId: "",
   });
   const [image, setImage] = useState();
+  const [lists, setLists] = useState(null);
+  const [isLoading, setLoading] = useState(true);
+
   const [isImageDropped, setIsImageDropped] = useState(true);
   const { getRootProps, getInputProps } = useDropzone({
     accept: {
@@ -73,7 +78,7 @@ const Dropzone = () => {
         console.log(`Presigned URL: ${presignedUrl}`);
 
         // Get the file's contents as an ArrayBuffer
-        const fileContent = await imageFile.arrayBuffer()
+        const fileContent = await imageFile.arrayBuffer();
         console.log(`File content after arrayBuffer: ${fileContent}`);
 
         // Upload the file content with the filename, hash and auth token
@@ -85,7 +90,6 @@ const Dropzone = () => {
             "Content-Type": contentType,
             Accept:
               "image/avif,image/webp,image/apng,image/svg+xml,image/jpeg,image/*,*/*;q=0.8",
-              
           },
         });
 
@@ -128,7 +132,7 @@ const Dropzone = () => {
     }
 
     try {
-      const imageReferenceUrl = process.env.NEXT_PUBLIC_DATABASE_IMAGE_URL
+      const imageReferenceUrl = process.env.NEXT_PUBLIC_DATABASE_IMAGE_URL;
       // const endpointUrl = process.env.NEXT_PUBLIC_AWS_ENDPOINT_URL;
       // Include userId in the body
       const body = {
@@ -159,6 +163,34 @@ const Dropzone = () => {
       console.log("Something went wrong:", error);
     }
   };
+
+  useEffect(() => {
+    if (userId) {
+      const fetchLists = async () => {
+        try {
+          const res = await fetch(`/api/lists/${userId}`, {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            credentials: "include",
+          });
+          if (!res.ok) {
+            console.log("RES IN userTest", res);
+            throw new Error("Failed to fetch posts");
+          }
+          const data = await res.json();
+          console.log(data);
+          setLists(data);
+        } catch (err) {
+          setError(err.message);
+        } finally {
+          setLoading(false);
+        }
+      };
+      fetchLists();
+    }
+  }, [userId]);
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -237,6 +269,17 @@ const Dropzone = () => {
             placeholder="description"
             className="border border-[#ECE2D8] bg-transparent text-[#ECE2D8] mt-2 px-2 py-1 rounded hover:bg-[#513C2C] focus:within:bg-[#ECE2D8] outline-none placeholder-[#513C2C] w-full"
           />
+          <select
+            className="border border-[#ECE2D8] bg-transparent text-[#ECE2D8] mt-2 px-2 py-1 rounded hover:bg-[#513C2C] focus:within:bg-[#ECE2D8] outline-none placeholder-[#513C2C] w-full"
+            onChange={(e) =>
+              setFormData({ ...formData, listId: e.target.value })
+            }
+          >
+            <option>list</option>
+            {lists?.map((list) => {
+              return <option key={list.id} value={list.id}>{list.title}</option>;
+            })}
+          </select>
           <button
             type="submit"
             className="w-1/2 mt-2 bg-[#ECE2D8] hover:bg-[#513C2C] text-[#110A02] font-bold py-2 px-4 rounded-md duration-500 "
