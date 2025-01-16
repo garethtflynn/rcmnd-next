@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "next/navigation"; // Get dynamic params in App Router
 
-import PostItem from "@/components/PostItem";
+import PostItem from "@/components/PostItemYourProfilePage";
 
 function ListPage() {
   const { listId } = useParams();
@@ -49,7 +49,7 @@ function ListPage() {
         {list && <h1 className="text-2xl font-bold">{list.title}</h1>}
       </div>
       {posts?.length > 0 ? (
-        <div className="w-full py-1 px-4 grid grid-cols-3 text-[#FBF8F4]">
+        <div className="w-full py-1 px-4 gap-4 grid grid-cols-2 md:grid-cols-3 text-[#FBF8F4]">
           {posts.map((post) => (
             <PostItem
               key={post.id}

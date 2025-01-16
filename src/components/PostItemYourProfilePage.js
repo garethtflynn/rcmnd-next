@@ -13,18 +13,18 @@ export default function PostItem({
   image,
   deletePostCallback,
 }) {
-
   const handleDeletePost = () => {
     if (deletePostCallback) {
       deletePostCallback(id); // Pass the post ID to the callback function for deletion
     }
     console.log(`Post with ID ${id} deleted.`);
   };
+
   return (
-    <div id={id} className="px-1 relative">
-      <Link href={link} target="_blank">
+    <div  className="px-1 relative h-72 md:h-96">
+      <Link id={id} href={link} target="_blank">
         <Image
-          className="w-full h-64 object-cover rounded"
+          className="w-full h-full object-cover"
           src={image}
           alt={title}
           width="300"
@@ -34,11 +34,11 @@ export default function PostItem({
       <div>
         <Menu
           as="div"
-          className="absolute top-1 right-1 cursor-text bg-transparent hover:text-[#ECE2D8] duration-1000"
+          className="absolute top-1 right-1 cursor-default bg-transparent hover:text-[#ECE2D8] duration-1000"
         >
-          <MenuButton className=" text-sm font-semibold">
+          <MenuButton className="text-sm font-semibold">
             <FaEllipsisVertical
-              className="absolute top-1 right-1 cursor-text"
+              className="absolute top-1 right-1"
               color="black"
               size={16}
             />
@@ -52,7 +52,10 @@ export default function PostItem({
                 <p>edit post</p>
               </MenuItem>
               <MenuItem>
-                <p onClick={handleDeletePost} className="block px-4 py-2 text-sm text-[#110A02] hover:bg-gray-200">
+                <p
+                  onClick={handleDeletePost}
+                  className="block px-4 py-2 text-sm text-[#110A02] hover:bg-gray-200"
+                >
                   delete post
                 </p>
               </MenuItem>
