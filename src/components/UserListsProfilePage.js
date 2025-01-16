@@ -39,24 +39,26 @@ function UserLists(props) {
   }, [userId]);
 
   const handleListClick = (listId) => {
-    console.log("List ID:", listId);
     router.push(`/list/${listId}`); // Navigate to the list page
   };
   return (
-      <div className="no-scrollbar w-full bg-[#110A02] text-[#FBF8F4] grid grid-cols-3 gap-4 place-items-center">
-        {lists?.map((list) => {
-          return (
+    <div className="w-full h-screen bg-[#110A02] text-[#FBF8F4] grid grid-cols-2 md:grid-cols-3 gap-2 px-2">
+      {lists?.map((list) => {
+        return (
+          <div
+            key={list.id}
+            className='place-content-center'
+          >
             <p
-              key={list.id}
               onClick={() => handleListClick(list.id)}
-              className="text-[#FBF8F4] text-base p-2 cursor-pointer"
+              className="text-[#FBF8F4] text-base p-2 cursor-pointer border w-full hover:bg-[#513C2C] text-center active:italic"
             >
               {list.title}
             </p>
-          );
-        })}
-      </div>
-
+          </div>
+        );
+      })}
+    </div>
   );
 }
 

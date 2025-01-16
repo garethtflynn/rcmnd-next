@@ -1,16 +1,17 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import PostItem from "./PostItem";
+import PostItemProfilePage from "./PostItemYourProfilePage";
 import { useSession } from "next-auth/react";
 
-const shuffleArray = (array) => {
-  const shuffled = [...array]; // Create a copy of the array to avoid mutating the original
-  for (let i = shuffled.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]; // Swap elements
-  }
-  return shuffled;
-};
+// const shuffleArray = (array) => {
+//   const shuffled = [...array]; // Create a copy of the array to avoid mutating the original
+//   for (let i = shuffled.length - 1; i > 0; i--) {
+//     const j = Math.floor(Math.random() * (i + 1));
+//     [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]; // Swap elements
+//   }
+//   return shuffled;
+// };
+
 function UserPosts(props) {
   const { data: session } = useSession();
   const userId = session?.user?.id;
@@ -35,8 +36,8 @@ function UserPosts(props) {
           const data = await res.json();
           console.log(data);
           setPosts(data);
-          const shuffledPosts = shuffleArray(data);
-          setPosts(shuffledPosts.slice(0, 4));
+          // const shuffledPosts = shuffleArray(data);
+          // setPosts(shuffledPosts.slice(0, 4));
         } catch (err) {
           setError(err.message);
         } finally {
@@ -47,7 +48,6 @@ function UserPosts(props) {
       fetchPosts();
     }
   }, [userId]);
-
 
   const deletePost = async (postId) => {
     try {
@@ -71,10 +71,10 @@ function UserPosts(props) {
   };
 
   return (
-    <div className="h-3/4 w-full px-2 grid grid-cols-4 gap-24 justify-center items-center bg-[#110A02] text-[#FBF8F4]">
+    <div className="min-h-screen w-full grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 py-1 justify-center items-center bg-[#110A02] text-[#FBF8F4] overflow-y-auto">
       {posts?.map((post) => {
         return (
-          <PostItem
+          <PostItemProfilePage
             key={post.id}
             title={post.title}
             href={post.link}

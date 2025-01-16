@@ -42,6 +42,7 @@ function UserLists(props) {
     console.log("List ID:", listId); 
     router.push(`/list/${listId}`); // Navigate to the list page
   };
+  
   return (
     <div className="logos">
       <div className="scroll scroll-smooth no-scrollbar bg-[#110A02] text-[#FBF8F4] logos-slide">

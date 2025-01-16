@@ -1,13 +1,13 @@
-import Header from "@/components/Header";
 import UserListsHomePage from "@/components/UserListsHomePage";
-import UserPosts from "@/components/UserPosts";
+import UserPostsHomePage from "@/components/UserPostsHomePage";
+import Footer from "@/components/Footer";
 
 export default function HomeFeed(props) {
   return (
-    <div className="bg-[#110A02] h-screen">
-      <Header />
+    <div className="bg-[#110A02] min-h-screen">
       <UserListsHomePage />
-      <UserPosts />
+      <UserPostsHomePage />
+      <Footer />
     </div>
   );
 }

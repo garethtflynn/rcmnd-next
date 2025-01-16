@@ -2,7 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-
 * {
   margin: 0;
   padding: 0;
@@ -38,12 +37,12 @@
 
 .logos:before {
   left: 0;
-  background: linear-gradient(to left, rgba(255, 255, 255, 0), #110A02);
+  background: linear-gradient(to left, rgba(255, 255, 255, 0), #110a02);
 }
 
 .logos:after {
   right: 0;
-  background: linear-gradient(to right, rgba(255, 255, 255, 0), #110A02);
+  background: linear-gradient(to right, rgba(255, 255, 255, 0), #110a02);
 }
 
 .logos:hover .logos-slide {
@@ -77,4 +76,20 @@
   fill: #513c2c;
 }
 
+.fullscreen {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(1); /* Center and no scaling by default */
+  width: 50vw; /* 60% of the viewport width */
+  height: 50vh; /* 60% of the viewport height */
+  object-fit: cover; /* Maintain aspect ratio */
+  z-index: 1000; /* Ensure it's on top of other elements */
+  opacity: 90%;
+  transition: transform 1.0s ease-in-out; /* Smooth transition for scaling */
+}
 
+/* When hovering, scale up the image */
+.fullscreen.scale-up {
+  transform: translate(-50%, -50%) scale(1.2); /* Enlarge the image */
+}
