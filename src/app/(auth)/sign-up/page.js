@@ -1,4 +1,6 @@
 "use client";
+
+import { Suspense } from "react";
 import Link from "next/link";
 import SignUpForm from "./form";
 
@@ -8,7 +10,9 @@ export default function Page() {
       <h1 className="font-semibold text-2xl text-[#ECE2D8]">
         Create your rcmnd Account
       </h1>
-      <SignUpForm />
+      <Suspense>
+        <SignUpForm />
+      </Suspense>
       <p className="pt-2 text-[#FBF8F4]">
         Already have an account?{" "}
         <Link
