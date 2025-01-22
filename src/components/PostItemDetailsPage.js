@@ -1,10 +1,9 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 
-import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
-import { FaEllipsisVertical } from "react-icons/fa6";
+
+
 
 export default function PostItemDetailsPage({
   id,
@@ -14,20 +13,14 @@ export default function PostItemDetailsPage({
   image,
   deletePostCallback,
 }) {
-  const handleDeletePost = () => {
-    if (deletePostCallback) {
-      deletePostCallback(id);
-    }
-    console.log(`Post with ID ${id} deleted.`);
-    router.push("/homeFeed");
-  };
+
 
   return (
     <div
       id={id}
-      className="h-screen w-full bg-[#110A02] place-content-center px-1 relative text-white md:grid md:grid-cols-2"
+      className="h-screen w-full bg-[#110A02] place-content-center px-1 text-white md:grid md:grid-cols-2"
     >
-      <div className="relative place-items-center">
+      <div className="place-items-center">
         <Image
           className="w-fit h-full object-contain"
           src={image}
@@ -36,17 +29,13 @@ export default function PostItemDetailsPage({
           height="300"
         />
       </div>
-      <div className="place-content-center">
+      <div className="place-content-center w-full sm:px-4 pt-4 md:w-3/4 md:px-0 md:pt-0">
         <h1 className="place-self-center text-2xl">notes</h1>
         <div className="border p-2 mx-1 ">
           <p className="text-lg">{title}</p>
           <br />
-          <Link
-            href={link}
-            target="_blank"
-            className="hover:italic hover:opacity-50"
-          >
-            <p>Link</p>
+          <Link href={link} target="_blank">
+            <p className="hover:opacity-50">Link</p>
           </Link>
           <br />
           <p className="text-sm">{description}</p>

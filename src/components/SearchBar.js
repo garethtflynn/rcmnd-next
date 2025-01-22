@@ -49,10 +49,10 @@ function Search(props) {
       <input
         type="text"
         name="search"
-        placeholder="Search"
+        placeholder="search"
         onChange={handleSearch}
         value={searchQuery}
-        className="w-full px-4 py-2 border border-[#ECE2D8] bg-transparent text-[#ECE2D8] rounded-md hover:bg-[#513C2C] focus:ring-1 focus:ring-[#ECE2D8] outline-none placeholder-[#513C2C]"
+        className="w-36 sm:w-full py-2 border-b-2  border-[#ECE2D8] bg-transparent text-[#ECE2D8] hover:bg-[#513C2C] outline-none placeholder-[#513C2C]"
       />
 
       {/* Search Results */}

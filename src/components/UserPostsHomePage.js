@@ -11,32 +11,60 @@ const shuffleArray = (array) => {
   }
   return shuffled;
 };
-function UserPosts(props) {
+
+function UserPostsHomePage(props) {
   const { data: session } = useSession();
   const userId = session?.user?.id;
   const [posts, setPosts] = useState(null);
   const [isLoading, setLoading] = useState(true);
+  const [error, setError] = useState();
 
   useEffect(() => {
     if (userId) {
       const fetchPosts = async () => {
         try {
-          const res = await fetch(`/api/posts/${userId}`, {
+          const followingRes = await fetch(`/api/user/${userId}/following`, {
             method: "GET",
             headers: {
               "Content-Type": "application/json",
             },
             credentials: "include",
           });
-          if (!res.ok) {
-            console.log("RES IN userTest", res);
-            throw new Error("Failed to fetch posts");
+
+          if (!followingRes.ok) {
+            throw new Error("Failed to fetch following users");
           }
-          const data = await res.json();
-          console.log(data);
-          setPosts(data);
-          const shuffledPosts = shuffleArray(data);
+
+          const followingData = await followingRes.json(); // This should return the list of users the logged-in user is following
+          console.log(followingData)
+
+          const followingIds = followingData.map((user) => user.id);
+
+          const postsRes = await fetch(
+            // `/api/posts?userIds=${followingIds.join(",")}`,
+            `/api/posts?userIds=${followingIds}`,
+            {
+              method: "GET",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              credentials: "include",
+            }
+          );
+
+          console.log(postsRes)
+
+          if (!postsRes.ok) {
+            throw new Error("Failed to fetch posts from followed users");
+          }
+
+          const postsData = await postsRes.json();
+          console.log(postsData);
+
+          // You can now shuffle and slice posts if you need
+          const shuffledPosts = shuffleArray(postsData);
           setPosts(shuffledPosts.slice(0, 4));
+
         } catch (err) {
           setError(err.message);
         } finally {
@@ -48,29 +76,15 @@ function UserPosts(props) {
     }
   }, [userId]);
 
-  const deletePost = async (postId) => {
-    try {
-      // Sending a DELETE request to the API
-      const response = await fetch(`/api/post/${postId}`, {
-        method: "DELETE",
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to delete post");
-      }
-
-      // If the API call is successful, update the UI (remove the post from the state)
-      setPosts(posts.filter((post) => post.id !== postId));
-
-      console.log(`Post with ID ${postId} has been deleted.`);
-    } catch (error) {
-      console.error("Error deleting post:", error);
-      // You might want to show an error message to the user
-    }
-  };
-
+  if (isLoading) {
+    return (
+      <div className="h-screen w-full flex justify-center items-center bg-[#110A02] text-[#FBF8F4]">
+        <h2>Loading...</h2>
+      </div>
+    );
+  }
   return (
-    <div className="h-screen min-w-full justify-center items-center bg-[#110A02] text-[#FBF8F4] grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 px-1">
+    <div className="md:min-h-screen min-w-full bg-[#110A02] text-[#FBF8F4] grid grid-cols-2 md:grid-cols-3 md:content-center lg:grid-cols-4 gap-4 px-2">
       {posts?.map((post) => {
         return (
           <PostItemHomePage
@@ -79,7 +93,6 @@ function UserPosts(props) {
             href={`/post/${post.id}`}
             src={post.image}
             alt={post.title}
-            deletePostCallback={deletePost} // Pass deletePost function as a callback
             {...post}
           />
         );
@@ -88,4 +101,4 @@ function UserPosts(props) {
   );
 }
 
-export default UserPosts;
+export default UserPostsHomePage;

@@ -9,7 +9,7 @@ export async function GET(req) {
     // Get the session from the request
     const session = await getServerSession(authOptions);
 
-    console.log("Session Data in Route Handler:", session); // Log session data for debugging
+    console.log("Data in Route Handler:", session); // Log session data for debugging
 
     if (!session) {
       return new NextResponse(JSON.stringify({ message: "Unauthorized" }), {

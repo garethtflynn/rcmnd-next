@@ -3,8 +3,6 @@ import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 
-import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
-import { FaEllipsisVertical } from "react-icons/fa6";
 
 export default function PostItemHomePage({
   id,
@@ -12,7 +10,6 @@ export default function PostItemHomePage({
   link,
   description,
   image,
-  deletePostCallback,
 }) {
   const [style, setStyle] = useState({});
   const [isHovered, setIsHovered] = useState(false);

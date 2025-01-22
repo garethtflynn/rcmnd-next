@@ -3,14 +3,6 @@ import React, { useEffect, useState } from "react";
 import PostItemProfilePage from "./PostItemYourProfilePage";
 import { useSession } from "next-auth/react";
 
-// const shuffleArray = (array) => {
-//   const shuffled = [...array]; // Create a copy of the array to avoid mutating the original
-//   for (let i = shuffled.length - 1; i > 0; i--) {
-//     const j = Math.floor(Math.random() * (i + 1));
-//     [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]; // Swap elements
-//   }
-//   return shuffled;
-// };
 
 function UserPosts(props) {
   const { data: session } = useSession();
@@ -71,13 +63,13 @@ function UserPosts(props) {
   };
 
   return (
-    <div className="min-h-screen w-full grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 py-1 justify-center items-center bg-[#110A02] text-[#FBF8F4] overflow-y-auto">
+    <div className="min-h-fit w-full grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 justify-center items-center bg-[#110A02] text-[#FBF8F4] overflow-y-auto pb-2">
       {posts?.map((post) => {
         return (
           <PostItemProfilePage
             key={post.id}
             title={post.title}
-            href={post.link}
+            href={`/post/${post.id}`}
             src={post.image}
             alt={post.title}
             deletePostCallback={deletePost} // Pass deletePost function as a callback

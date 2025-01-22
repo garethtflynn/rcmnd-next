@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "next/navigation"; // Get dynamic params in App Router
 
-import PostItem from "@/components/PostItemYourProfilePage";
+import PostItem from "@/components/PostItemUserProfilePage";
 
 function ListPage() {
   const { listId } = useParams();
@@ -24,6 +24,7 @@ function ListPage() {
             setIsLoading(false);
             return;
           }
+          console.log(data)
           setList(data[0].list);
           setPosts(data);
           setIsLoading(false);
@@ -54,7 +55,6 @@ function ListPage() {
             <PostItem
               key={post.id}
               title={post.title}
-              href={post.link}
               src={post.image}
               alt={post.title}
               {...post}
@@ -62,7 +62,7 @@ function ListPage() {
           ))}
         </div>
       ) : (
-        <div className="text-[#FBF8F4]">
+        <div className="text-[#FBF8F4] flex justify-center items-center h-full">
           <p>No posts in this list!</p>
         </div>
       )}
