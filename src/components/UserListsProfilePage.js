@@ -1,20 +1,21 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { useSession } from "next-auth/react";
+import { useParams } from "next/navigation";
 
 function UserLists(props) {
   const router = useRouter();
-  const { data: session } = useSession();
-  const userId = session?.user?.id;
+  const { userId } = useParams();
+
   const [lists, setLists] = useState(null);
   const [isLoading, setLoading] = useState(true);
 
   useEffect(() => {
     if (userId) {
+      console.log(userId)
       const fetchLists = async () => {
         try {
-          const res = await fetch(`/api/lists/${userId}`, {
+          const res = await fetch(`/api/user/${userId}`, {
             method: "GET",
             headers: {
               "Content-Type": "application/json",
@@ -27,7 +28,7 @@ function UserLists(props) {
           }
           const data = await res.json();
           console.log(data);
-          setLists(data);
+          setLists(data.lists);
         } catch (err) {
           setError(err.message);
         } finally {
@@ -39,25 +40,36 @@ function UserLists(props) {
   }, [userId]);
 
   const handleListClick = (listId) => {
+    console.log("List ID:", listId); 
     router.push(`/list/${listId}`); // Navigate to the list page
   };
+  
   return (
-    <div className="w-full h-screen bg-[#110A02] text-[#FBF8F4] grid grid-cols-2 md:grid-cols-3 gap-2 px-2">
-      {lists?.map((list) => {
-        return (
-          <div
-            key={list.id}
-            className='place-content-center'
-          >
+    <div className="logos">
+      <div className="scroll scroll-smooth no-scrollbar bg-[#110A02] text-[#FBF8F4] logos-slide text-xl">
+        {lists?.map((list) => {
+          return (
             <p
+              key={list.id}
               onClick={() => handleListClick(list.id)}
-              className="text-[#FBF8F4] text-base p-2 cursor-pointer border w-full hover:bg-[#513C2C] text-center active:italic"
+              className="text-[#FBF8F4] w-60  inline-block p-2 cursor-pointer text-xl"
             >
               {list.title}
             </p>
-          </div>
-        );
-      })}
+          );
+        })}
+      </div>
+      <div className="scroll scroll-smooth no-scrollbar bg-[#110A02] text-[#FBF8F4] logos-slide ">
+        {lists?.map((list) => (
+          <p
+            key={`duplicate-${list.id}`}
+            onClick={() => handleListClick(list.id)}
+            className="text-[#FBF8F4] w-60 inline-block p-2 cursor-pointer text-xl"
+          >
+            {list.title}
+          </p>
+        ))}
+      </div>
     </div>
   );
 }

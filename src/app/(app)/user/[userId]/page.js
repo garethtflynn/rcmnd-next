@@ -3,33 +3,37 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 
 import PostItemUserProfilePage from "@/components/PostItemUserProfilePage";
-import ListItem from "@/components/ListItem";
+import UserListsProfilePage from "@/components/UserListsProfilePage";
 
 function UserPage(props) {
   const router = useRouter();
+  const { data: session } = useSession();
+  const currentUserId = session?.user?.id;
   const { userId } = useParams();
   const [user, setUser] = useState();
   const [lists, setLists] = useState();
   const [posts, setPosts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [feed, setFeed] = useState(true);
-  const [postsStyle, setPostsStyle] = useState({ backgroundColor: "#513C2C" });
-  const [listsStyle, setListsStyle] = useState({ backgroundColor: "#110A02" });
+  const [isFollowing, setIsFollowing] = useState(false);
 
-  // Function to show Posts and set styles accordingly
-  const showPosts = () => {
-    setFeed(true);
-    setPostsStyle({ backgroundColor: "#513C2C" });
-    setListsStyle({ backgroundColor: "#ECE2D8" });
-  };
-
-  const showLists = () => {
-    setFeed(false);
-    setPostsStyle({ backgroundColor: "#ECE2D8" });
-    setListsStyle({ backgroundColor: "#513C2C" });
-  };
+  useEffect(() => {
+    if (currentUserId && userId) {
+      fetch(`/api/user/${currentUserId}/following`)
+        .then((res) => res.json())
+        .then((data) => {
+          const isUserFollowing = data.some(
+            (followedUser) => followedUser.id === userId
+          );
+          setIsFollowing(isUserFollowing); // Set follow status
+        })
+        .catch((error) =>
+          console.error("Error checking follow status:", error)
+        );
+    }
+  });
 
   useEffect(() => {
     if (userId) {
@@ -57,66 +61,86 @@ function UserPage(props) {
     );
   }
 
-  const handleListClick = async (listId) => {
-    router.push(`/list/${listId}`); // Navigate to the list page
+
+  const handleFollowToggle = async () => {
+    const followerId = currentUserId;
+    const followingId = userId;
+
+    console.log("CURRENT USER", followerId);
+    console.log("USER", followingId);
+
+    try {
+      const method = isFollowing ? "DELETE" : "POST"; // Toggle between DELETE and POST
+      const url = isFollowing ? "/api/unfollow" : "/api/follow"; // Toggle between unfollow and follow endpoints
+
+      const response = await fetch(url, {
+        method: method,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ followerId, followingId }),
+      });
+      const data = await response.json();
+
+      if (response.ok) {
+        if (isFollowing) {
+          console.log("Unfollow action successful:", data.message);
+          setIsFollowing(false); // Mark as not following
+        } else {
+          console.log("Follow action successful:", data.message);
+          setIsFollowing(true); // Mark as following
+        }
+      } else {
+        console.error(
+          `${isFollowing ? "Unfollow" : "Follow"} action failed:`,
+          data.error
+        );
+      }
+    } catch (error) {
+      console.error(
+        `${isFollowing ? "Unfollow" : "Follow"} action failed:`,
+        error
+      );
+    }
   };
 
   return (
     <div className="h-screen bg-[#110A02] text-[#FBF8F4]">
       {user && (
-        <div className="flex justify-center items-center text-white">
-          <h1 className="text-2xl font-bold">
-            {user.firstName + " " + user.lastName}
-          </h1>
+        <div className="flex flex-col items-end text-white pr-1">
+          <p className="text-xl font-bold">{user.firstName}</p>
+          <p className="text-xl font-bold">{user.lastName}</p>
+          <p className="text-md">@{user.username}</p>
         </div>
       )}
-      <div className="w-full">
-        <p className="place-self-center">profile picture</p>
-      </div>
 
-      <div className="flex justify-evenly h-10">
+      <div className="my-2 h-8 flex pl-1">
+        {/* Follow Button */}
         <button
-          className="hover:bg-[#513C2C] w-full duration-1000"
-          onClick={showPosts}
-          style={feed ? { ...postsStyle } : {}} // Apply Post style if feed is true
+          onClick={handleFollowToggle}
+          className={`w-1/3 py-2 flex justify-center items-center text-[#FBF8F4] ${
+            isFollowing
+              ? "bg-[#FBF8F4] border border-[#1E1406]"
+              : "bg-[#1E1406] border border-[#FBF8F4]"
+          }`}
         >
-          Posts
-        </button>
-        <button
-          className="hover:bg-[#513C2C] w-full duration-1000"
-          onClick={showLists}
-          style={!feed ? { ...listsStyle } : {}} // Apply List style if feed is false
-        >
-          Lists
+          <p className={`${isFollowing ? "text-[#1E1406]" : "text-[#FBF8F4]"}`}>
+            {isFollowing ? "following" : "follow"}
+          </p>
         </button>
       </div>
-      <div
-        className={`${
-          feed ? "block" : "hidden"
-        } transition-all duration-500 w-full h-full  py-2 px-4 gap-3 text-[#FBF8F4] grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 `}
-      >
+      <div>
+        <UserListsProfilePage />
+      </div>
+      <div className="w-full grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 justify-center items-center bg-[#110A02] text-[#FBF8F4] overflow-y-auto pb-2">
         {posts?.map((post) => (
           <PostItemUserProfilePage
             key={post.id}
             title={post.title}
-            href={post.link}
+            href={`/post/${post.id}`}
             src={post.image}
             alt={post.title}
             {...post}
-          />
-        ))}
-      </div>
-      <div
-        className={`${
-          !feed ? "block" : "hidden"
-        } transition-all duration-500 bg-[#110A02] text-[#FBF8F4] grid grid-cols-2 md:grid-cols-3 gap-2 px-2 h-full place-content-evenly`}
-      >
-        {lists?.map((list) => (
-          <ListItem
-            key={list.id}
-            title={list.title}
-            navToListCallback={handleListClick}
-            {...list}
           />
         ))}
       </div>

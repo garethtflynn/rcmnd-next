@@ -11,7 +11,6 @@ const Dropzone = () => {
   const { data: session } = useSession();
   const userId = session?.user?.id;
   const router = useRouter();
-  // const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
     title: "",
     link: "",
@@ -218,11 +217,11 @@ const Dropzone = () => {
   return (
     <form
       onSubmit={onSubmit}
-      className="h-screen w-full bg-[#110A02] flex flex-col jusify-center place-content-evenly py-2"
+      className="h-full w-full bg-[#110A02] flex flex-col jusify-center place-content-center"
     >
       {isImageDropped ? (
         <div
-          className="h-1/2 md:h-2/3 w-2/3 mx-auto bg-[#513C2C] border-dashed border-2 border-[#ECE2D8] flex flex-col jusify-center items-center place-content-center"
+          className="h-96 w-3/4 md:h-1/2 md:w-1/2 lg:h-1/2 lg:w-1/2  mx-auto bg-[#513C2C] border-dashed border-2 border-[#ECE2D8] flex flex-col jusify-center items-center place-content-center"
           {...getRootProps()}
         >
           <input
@@ -238,7 +237,7 @@ const Dropzone = () => {
       ) : (
         <div>{preview}</div>
       )}
-      <div className="flex flex-col mx-auto w-full items-center px-5">
+      <div className="flex flex-col mx-auto w-10/12	items-center px-5 pt-5">
         <input
           defaultValue={formData.title}
           type="text"

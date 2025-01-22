@@ -2,10 +2,7 @@
 
 import React, { useState } from "react";
 import { useSession } from "next-auth/react";
-import Link from "next/link";
-// import { redirect } from "next/navigation";
 import { useRouter } from "next/navigation";
-// import Header from "@/components/Header";
 import { FaX } from "react-icons/fa6";
 
 function CreateList(props) {
@@ -33,20 +30,22 @@ function CreateList(props) {
     }
   };
 
+  const handleXclick = async () => {
+    router.back();
+  };
+
   return (
     <div className="w-full h-screen flex flex-col justify-center items-center text-[#FBF8F4] bg-[#110A02]">
       <div className="flex flex-row-reverse items-end w-3/5">
-        <Link href="/homeFeed">
-          <FaX
-            aria-hidden="true"
-            color="#FBF8F4"
-            className="contactIcon h-6 w-6"
-          />
-        </Link>
+        <FaX
+          aria-hidden="true"
+          color="#FBF8F4"
+          className="contactIcon h-5 w-5 cursor-pointer"
+          onClick={handleXclick}
+        />
       </div>
 
       <div className="w-full h-2/6 flex flex-col justify-center items-center">
-        <p>create list</p>
         <form
           onSubmit={onSubmit}
           className="w-full flex flex-col items-center justify-center"

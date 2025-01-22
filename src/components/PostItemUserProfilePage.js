@@ -5,7 +5,7 @@ import Link from "next/link";
 function PostItemUserProfilePage({ id, title, link, description, image }) {
   return (
     <div className="px-1 relative h-72 md:h-96">
-      <Link id={id} href={link} target="_blank">
+      <Link id={id} href={`/post/${id}`}>
         <Image
           className="w-full h-full object-cover"
           src={image}
