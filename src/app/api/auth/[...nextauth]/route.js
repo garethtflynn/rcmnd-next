@@ -12,16 +12,16 @@ export const authOptions = {
   },
   cookies: {
     sessionToken: {
-      name: 'next-auth.session-token',
+      name: "next-auth.session-token",
       options: {
         httpOnly: true,
-        sameSite: 'lax', // "Strict" might prevent cross-site cookies
-        path: '/',        // Ensure it applies to the whole domain
-        secure: process.env.NODE_ENV === 'production', // Use secure cookies in production
+        sameSite: "lax", // "Strict" might prevent cross-site cookies
+        path: "/", // Ensure it applies to the whole domain
+        secure: process.env.NODE_ENV === "production", // Use secure cookies in production
       },
     },
   },
-  // secret: process.env.NEXTAUTH_SECRET,
+  secret: process.env.NEXTAUTH_SECRET,
   providers: [
     CredentialsProvider({
       name: "Sign-in",
@@ -83,7 +83,8 @@ export const authOptions = {
     },
     async session({ session, token }) {
       console.log("SESSION CALLBACK", { session, token });
-      // session.user.id = token.sub; // Add user ID to session
+      // session.user.id = token.sub;
+      // Add user ID to session
       session.user.id = token.id;
       return session;
     },
