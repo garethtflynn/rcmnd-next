@@ -88,10 +88,10 @@ export const authOptions = {
       session.user.id = token.id;
       return session;
     },
-    async redirect({ url, baseUrl }) {
-      // If you want to redirect after a successful sign-in to a custom page
-      return url || baseUrl;
-    },
+    // async redirect({ url, baseUrl }) {
+    //   // If you want to redirect after a successful sign-in to a custom page
+    //   // return url || baseUrl;
+    // },
   },
 };
 
