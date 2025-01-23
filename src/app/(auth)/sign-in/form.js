@@ -6,9 +6,8 @@ import Alert from "@/components/Alert";
 function LoginForm(props) {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const callbackUrl = router.query || '/homeFeed'; // Use query params or default to '/homeFeed'
-  // const callbackUrl = searchParams.get("callbackUrl") || "/homeFeed";
-  // const error = searchParams.get("error") ? "Invalid username or password" : "";
+  // const callbackUrl = router.query.callbackUrl || '/homeFeed'; // Use query params or default to '/homeFeed'
+  const callbackUrl = searchParams.get("callbackUrl") || "/homeFeed";
   const [error, setError] = useState("");
 
   const [email, setEmail] = useState();
