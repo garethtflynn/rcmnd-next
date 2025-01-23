@@ -7,9 +7,9 @@ function LoginForm(props) {
   const router = useRouter();
   const searchParams = useSearchParams();
   // const callbackUrl = router.query.callbackUrl || '/homeFeed'; // Use query params or default to '/homeFeed'
-  const callbackUrl = "/homeFeed" || searchParams.get("callbackUrl");
+  const callbackUrl = "/homeFeed" 
+  // || searchParams.get("callbackUrl");
   const [error, setError] = useState("");
-
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
 
