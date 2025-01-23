@@ -17,18 +17,18 @@ function LoginForm(props) {
     e.preventDefault();
     try {
       const res = await signIn("credentials", {
-        redirect: false,
+        redirect: true,
         email,
         password,
         callbackUrl,
       });
       console.log("CALLBACK URL", callbackUrl);
       console.log(res); // Debugging: Inspect the response
-      if (!res?.error) {
-        router.push(callbackUrl);
-      } else {
-        setError(res?.error || "Invalid email or password");
-      }
+      // if (!res?.error) {
+      //   router.push(callbackUrl);
+      // } else {
+      //   setError(res?.error || "Invalid email or password");
+      // }
     } catch (error) {
       setError(error?.message);
     }
