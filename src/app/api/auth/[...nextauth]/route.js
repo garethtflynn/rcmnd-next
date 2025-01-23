@@ -90,7 +90,7 @@ export const authOptions = {
     },
     async redirect({ url, baseUrl }) {
       // If you want to redirect after a successful sign-in to a custom page
-      return url.startsWith(baseUrl) ? url : baseUrl;
+      return url || baseUrl;
     },
   },
 };

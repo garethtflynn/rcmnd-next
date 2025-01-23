@@ -6,9 +6,7 @@ import Alert from "@/components/Alert";
 function LoginForm(props) {
   const router = useRouter();
   const searchParams = useSearchParams();
-  // const callbackUrl = router.query.callbackUrl || '/homeFeed'; // Use query params or default to '/homeFeed'
-  const callbackUrl = "/homeFeed" 
-  // || searchParams.get("callbackUrl");
+  const callbackUrl = searchParams.get("callbackUrl") || "/homeFeed";
   const [error, setError] = useState("");
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
@@ -17,18 +15,18 @@ function LoginForm(props) {
     e.preventDefault();
     try {
       const res = await signIn("credentials", {
-        redirect: true,
+        redirect: false,
         email,
         password,
         callbackUrl,
       });
       console.log("CALLBACK URL", callbackUrl);
-      console.log(res); // Debugging: Inspect the response
-      // if (!res?.error) {
-      //   router.push(callbackUrl);
-      // } else {
-      //   setError(res?.error || "Invalid email or password");
-      // }
+      console.log(res); 
+      if (!res?.error) {
+        router.push(callbackUrl);
+      } else {
+        setError(res?.error || "Invalid email or password");
+      }
     } catch (error) {
       setError(error?.message);
     }
