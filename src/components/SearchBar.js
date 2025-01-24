@@ -52,12 +52,12 @@ function Search(props) {
         placeholder="search"
         onChange={handleSearch}
         value={searchQuery}
-        className="w-36 sm:w-full py-2 border-b-2  border-[#ECE2D8] bg-transparent text-[#ECE2D8] hover:bg-[#513C2C] outline-none placeholder-[#513C2C]"
+        className="w-36 sm:w-full py-2 border-b-2 border-[#ECE2D8] bg-transparent text-[#ECE2D8] hover:bg-[#513C2C] outline-none placeholder-[#513C2C]"
       />
 
       {/* Search Results */}
       {filteredUsers.length > 0 && (
-        <div className="absolute top-full mt-2 w-52 sm:w-full max-h-60 overflow-y-auto bg-[#FBF8F4] shadow-lg rounded-md border border-[#ECE2D8] z-10 p-1 hover:bg-stone-300">
+        <div className="absolute top-full mt-2 w-52 sm:w-full max-h-60 overflow-y-auto bg-[#FBF8F4] shadow-lg border border-[#ECE2D8] z-10 p-1 hover:bg-stone-300">
           {filteredUsers.map((user) => (
             <Link
               key={user.id}
@@ -65,9 +65,7 @@ function Search(props) {
               href={`/user/${user.id}`}
               onClick={handleUserSelect}
             >
-              <p >
-                {user.firstName + " " + user.lastName}
-              </p>
+              <p>{user.firstName + " " + user.lastName}</p>
               <p className="text-sm text-[#513C2C]">@{user.username}</p>
             </Link>
           ))}
