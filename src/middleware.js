@@ -8,5 +8,5 @@ export default withAuth({
 });
 
 export const config = {
-  matcher: ['/homeFeed', '/createPost', '/profilePage'],
+  matcher: ['/homeFeed', '/createPost', '/profilePage', '/'],
 };
