@@ -107,7 +107,7 @@ function UserPage(props) {
   return (
     <div className="h-screen bg-[#110A02] text-[#FBF8F4]">
       {user && (
-        <div className="flex flex-col items-end text-white pr-1">
+        <div className="flex flex-col items-end text-white pr-1 lowercase">
           <p className="text-xl font-bold">{user.firstName}</p>
           <p className="text-xl font-bold">{user.lastName}</p>
           <p className="text-md">@{user.username}</p>

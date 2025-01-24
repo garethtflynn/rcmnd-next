@@ -199,13 +199,13 @@ const Dropzone = () => {
   };
 
   const preview = image?.map((file) => (
-    <div key={file.name} className="flex justify-center items-center h-fit">
+    <div key={file.name} className="flex justify-center items-center">
       <Image
         src={file.preview}
         alt={file.name}
-        className="object-contain rounded-md"
+        className="object-fit"
         width={350}
-        height={400}
+        height={200}
         // Revoke data uri after image is loaded
         onLoad={() => {
           URL.revokeObjectURL(file.preview);
@@ -217,7 +217,7 @@ const Dropzone = () => {
   return (
     <form
       onSubmit={onSubmit}
-      className="h-full w-full bg-[#110A02] flex flex-col jusify-center place-content-center"
+      className="h-fit w-full bg-[#110A02] flex flex-col jusify-center place-content-center py-2"
     >
       {isImageDropped ? (
         <div
@@ -235,7 +235,7 @@ const Dropzone = () => {
           <p className="px-3 text-center">drag and drop images here</p>
         </div>
       ) : (
-        <div>{preview}</div>
+        <div className='h-full w-1/2 md:h-full md:w-full mx-auto'>{preview}</div>
       )}
       <div className="flex flex-col mx-auto w-10/12	items-center px-5 pt-5">
         <input
