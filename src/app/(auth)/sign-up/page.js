@@ -16,7 +16,7 @@ export default function Page() {
       <p className="pt-2 text-[#FBF8F4]">
         already have an account?{" "}
         <Link
-          className="hover:text-[#513C2C] hover:underline decoration-2 duration-500"
+          className="hover:text-[#4C4138] hover:underline decoration-2 duration-500"
           href="/sign-in"
         >
           Sign In.

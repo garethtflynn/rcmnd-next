@@ -21,7 +21,7 @@ export default function Header() {
 
   return (
     <nav className="w-full flex h-max bg-[#110A02]  duration-1000 p-5">
-      <div className="text-white place-content-center">
+      <div className="text-[#FBF8F4] place-content-center">
         <a href="/homeFeed" className="font-semibold text-2xl md:text-3xl">
           rcmnd
         </a>
@@ -44,23 +44,23 @@ export default function Header() {
             </MenuButton>
             <MenuItems
               transition
-              className="absolute right-0 z-10 mt-2 w-56 origin-top-right bg-[#1E1406] transition focus:outline-none data-[closed]:scale-95 data-[closed]:transform data-[closed]:opacity-0 data-[enter]:duration-100 data-[leave]:duration-75 data-[enter]:ease-out data-[leave]:ease-in"
+              className="absolute right-0 z-10 mt-2 w-56 origin-top-right bg-[#1E1912] transition focus:outline-none data-[closed]:scale-95 data-[closed]:transform data-[closed]:opacity-0 data-[enter]:duration-100 data-[leave]:duration-75 data-[enter]:ease-out data-[leave]:ease-in"
             >
               <MenuItem>
                 <Link
                   href="/createPost"
-                  className="block px-4 py-2 text-sm text-[#FBF8F4] hover:bg-[#513C2C]"
+                  className="block px-4 py-2 text-sm text-[#FBF8F4] hover:bg-[#4C4138]"
                 >
                   create post
                 </Link>
               </MenuItem>
-              <MenuItem className="block px-4 py-2 text-sm text-[#FBF8F4] hover:bg-[#513C2C]">
+              <MenuItem className="block px-4 py-2 text-sm text-[#FBF8F4] hover:bg-[#4C4138]">
                 <Link href="/createList">create list</Link>
               </MenuItem>
               <MenuItem>
                 <Link
                   href="/profilePage"
-                  className="block w-full px-4 py-2 text-left text-sm text-[#FBF8F4] hover:bg-[#513C2C]"
+                  className="block w-full px-4 py-2 text-left text-sm text-[#FBF8F4] hover:bg-[#4C4138]"
                 >
                   profile
                 </Link>
@@ -68,7 +68,7 @@ export default function Header() {
               <MenuItem>
                 <button
                   onClick={handleLogout}
-                  className="block w-full px-4 py-2 text-left text-sm text-[#FBF8F4] hover:bg-[#513C2C]"
+                  className="block w-full px-4 py-2 text-left text-sm text-[#FBF8F4] hover:bg-[#4C4138]"
                 >
                   sign out
                 </button>

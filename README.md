@@ -41,13 +41,11 @@ This project is licensed under the **Creative Commons Attribution-NonCommercial-
 
 ## Contact
 
-#### Get in Touch 🚀
-
 I'd love to hear from you! Whether you have a question, suggestion, or just want to chat about the project, feel free to reach out.
 
-- 📧 **Email**: [Email Address](mailto:gareth.t.flynn@gmail.com) – Shoot me an email anytime!
-- 🔗 **Website**: [My Website](https://garethflynn.dev/) – Check out my portfolio!
-- 💬 **LinkedIn**: [LinkedIn](https://www.linkedin.com/in/garethtflynn/) - Connect with me on LinkedIn!
+- **Email**: [Email Address](mailto:gareth.t.flynn@gmail.com) – Shoot me an email anytime!
+- **Website**: [My Website](https://garethflynn.dev/) – Check out my portfolio!
+- **LinkedIn**: [LinkedIn](https://www.linkedin.com/in/garethtflynn/) - Connect with me on LinkedIn!
 
 
-Expect replies within **24-48 hours**. Don’t hesitate to reach out! Looking forward to chatting! ✨
+Expect replies within **24-48 hours**. Don’t hesitate to reach out! Looking forward to chatting! 

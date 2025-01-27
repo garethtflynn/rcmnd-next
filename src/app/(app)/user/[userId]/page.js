@@ -107,7 +107,7 @@ function UserPage(props) {
   return (
     <div className="h-screen bg-[#110A02] text-[#FBF8F4]">
       {user && (
-        <div className="flex flex-col items-end text-white pr-1 lowercase">
+        <div className="flex flex-col items-end text-[#FBF8F4] pr-1 lowercase">
           <p className="text-xl font-bold">{user.firstName}</p>
           <p className="text-xl font-bold">{user.lastName}</p>
           <p className="text-md">@{user.username}</p>
@@ -120,11 +120,11 @@ function UserPage(props) {
           onClick={handleFollowToggle}
           className={`w-1/3 py-2 flex justify-center items-center text-[#FBF8F4] ${
             isFollowing
-              ? "bg-[#FBF8F4] border border-[#1E1406]"
-              : "bg-[#1E1406] border border-[#FBF8F4]"
+              ? "bg-[#FBF8F4] border border-[#1E1912]"
+              : "bg-[#1E1912] border border-[#FBF8F4]"
           }`}
         >
-          <p className={`${isFollowing ? "text-[#1E1406]" : "text-[#FBF8F4]"}`}>
+          <p className={`${isFollowing ? "text-[#1E1912]" : "text-[#FBF8F4]"}`}>
             {isFollowing ? "following" : "follow"}
           </p>
         </button>

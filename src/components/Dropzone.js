@@ -221,7 +221,7 @@ const Dropzone = () => {
     >
       {isImageDropped ? (
         <div
-          className="h-96 w-3/4 md:h-1/2 md:w-1/2 lg:h-1/2 lg:w-1/2  mx-auto bg-[#513C2C] border-dashed border-2 border-[#ECE2D8] flex flex-col jusify-center items-center place-content-center"
+          className="h-96 w-3/4 md:h-1/2 md:w-1/2 lg:h-1/2 lg:w-1/2  mx-auto bg-[#4C4138] border-dashed border-2 border-[#ECE2D8] flex flex-col jusify-center items-center place-content-center"
           {...getRootProps()}
         >
           <input
@@ -235,7 +235,9 @@ const Dropzone = () => {
           <p className="px-3 text-center">drag and drop images here</p>
         </div>
       ) : (
-        <div className='h-full w-1/2 md:h-full md:w-full mx-auto'>{preview}</div>
+        <div className="h-full w-1/2 md:h-full md:w-full mx-auto">
+          {preview}
+        </div>
       )}
       <div className="flex flex-col mx-auto w-10/12	items-center px-5 pt-5">
         <input
@@ -244,7 +246,7 @@ const Dropzone = () => {
           name="title"
           onChange={(e) => setFormData({ ...formData, title: e.target.value })}
           placeholder="title"
-          className="border border-[#ECE2D8] bg-transparent text-[#ECE2D8] px-2 py-1 my-2 rounded hover:bg-[#513C2C] focus:within:bg-[#ECE2D8] outline-none placeholder-[#513C2C] w-full"
+          className="border border-[#ECE2D8] bg-transparent text-[#ECE2D8] px-2 py-1 my-2 rounded hover:bg-[#4C4138] focus:within:bg-[#ECE2D8] outline-none placeholder-[#4C4138] w-full"
         />
         <input
           defaultValue={formData.link}
@@ -252,7 +254,7 @@ const Dropzone = () => {
           name="link"
           onChange={(e) => setFormData({ ...formData, link: e.target.value })}
           placeholder="link"
-          className="border border-[#ECE2D8] bg-transparent text-[#ECE2D8] px-2 py-1 rounded hover:bg-[#513C2C] focus:within:bg-[#ECE2D8] outline-none placeholder-[#513C2C] w-full"
+          className="border border-[#ECE2D8] bg-transparent text-[#ECE2D8] px-2 py-1 rounded hover:bg-[#4C4138] focus:within:bg-[#ECE2D8] outline-none placeholder-[#4C4138] w-full"
         />
         <textarea
           defaultValue={formData.description}
@@ -263,10 +265,10 @@ const Dropzone = () => {
           }
           rows={4}
           placeholder="description"
-          className="border border-[#ECE2D8] bg-transparent text-[#ECE2D8] mt-2 px-2 py-1 rounded hover:bg-[#513C2C] focus:within:bg-[#ECE2D8] outline-none placeholder-[#513C2C] w-full"
+          className="border border-[#ECE2D8] bg-transparent text-[#ECE2D8] mt-2 px-2 py-1 rounded hover:bg-[#4C4138] focus:within:bg-[#ECE2D8] outline-none placeholder-[#4C4138]  w-full"
         />
         <select
-          className="border border-[#ECE2D8] bg-transparent text-[#ECE2D8] mt-2 px-2 py-1 rounded hover:bg-[#513C2C] focus:within:bg-[#ECE2D8] outline-none placeholder-[#513C2C] w-full"
+          className="border border-[#ECE2D8] bg-transparent text-[#4C4138] mt-2 px-2 py-1 rounded hover:bg-[#4C4138] focus:within:bg-[#ECE2D8] outline-none w-full"
           onChange={(e) => setFormData({ ...formData, listId: e.target.value })}
         >
           <option>list</option>
@@ -280,7 +282,7 @@ const Dropzone = () => {
         </select>
         <button
           type="submit"
-          className="w-1/2 mt-2 bg-[#ECE2D8] hover:bg-[#513C2C] text-[#110A02] font-bold py-2 px-4 rounded-md duration-500 "
+          className="w-1/2 mt-2 bg-[#ECE2D8] hover:opacity-75 text-[#110A02] font-bold py-2 px-4 rounded-md duration-500 "
         >
           create
         </button>

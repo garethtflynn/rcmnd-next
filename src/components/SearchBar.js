@@ -52,7 +52,7 @@ function Search(props) {
         placeholder="search"
         onChange={handleSearch}
         value={searchQuery}
-        className="w-36 sm:w-full py-2 border-b-2 border-[#ECE2D8] bg-transparent text-[#ECE2D8] hover:bg-[#513C2C] outline-none placeholder-[#513C2C]"
+        className="w-36 sm:w-full py-2 border-b-2 border-[#ECE2D8] bg-transparent text-[#ECE2D8] hover:bg-[#4C4138] outline-none placeholder-[#4C4138]"
       />
 
       {/* Search Results */}
@@ -66,7 +66,7 @@ function Search(props) {
               onClick={handleUserSelect}
             >
               <p>{user.firstName + " " + user.lastName}</p>
-              <p className="text-sm text-[#513C2C]">@{user.username}</p>
+              <p className="text-sm text-[#4C4138]">@{user.username}</p>
             </Link>
           ))}
         </div>

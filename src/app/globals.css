@@ -73,7 +73,7 @@
 }
 
 .contactIcon:hover {
-  fill: #513c2c;
+  fill: #4c4138;
 }
 
 .fullscreen {
@@ -86,7 +86,7 @@
   object-fit: cover; /* Maintain aspect ratio */
   z-index: 1000; /* Ensure it's on top of other elements */
   opacity: 90%;
-  transition: transform 1.0s ease-in-out; /* Smooth transition for scaling */
+  transition: transform 1s ease-in-out; /* Smooth transition for scaling */
 }
 
 /* When hovering, scale up the image */
