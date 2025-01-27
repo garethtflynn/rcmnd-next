@@ -36,7 +36,7 @@ function UserPostsHomePage(props) {
           }
 
           const followingData = await followingRes.json(); // This should return the list of users the logged-in user is following
-          console.log(followingData)
+          // console.log(followingData)
 
           const followingIds = followingData.map((user) => user.id);
 
@@ -52,14 +52,14 @@ function UserPostsHomePage(props) {
             }
           );
 
-          console.log(postsRes)
+          // console.log(postsRes)
 
           if (!postsRes.ok) {
             throw new Error("Failed to fetch posts from followed users");
           }
 
           const postsData = await postsRes.json();
-          console.log(postsData);
+          // console.log(postsData);
 
           // You can now shuffle and slice posts if you need
           const shuffledPosts = shuffleArray(postsData);

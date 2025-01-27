@@ -1,4 +1,3 @@
-import UserListsHomePage from "@/components/YourListsProfilePage";
 import UserPostsHomePage from "@/components/UserPostsHomePage";
 import Footer from "@/components/Footer";
 

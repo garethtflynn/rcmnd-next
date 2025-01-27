@@ -18,18 +18,18 @@ async function getS3PresignedUrl(key) {
     return;
   }
 
-  console.log("Key is:", key);
+  // console.log("Key is:", key);
   const putObjectParams = {
     Bucket: process.env.NEXT_PUBLIC_B2_BUCKET_NAME,
     Key: key,
     ACL: "public-read",
   };
-  console.log("putObjectParams:", putObjectParams);
+  // console.log("putObjectParams:", putObjectParams);
   const putObjectCommand = new PutObjectCommand(putObjectParams);
   const presignedUrl = await getSignedUrl(client, putObjectCommand, {
     expiresIn: 3600,
   });
-  console.log("Presigned URL:", presignedUrl);
+  // console.log("Presigned URL:", presignedUrl);
   debug("presignedUrl: %j", presignedUrl);
 
   return presignedUrl;

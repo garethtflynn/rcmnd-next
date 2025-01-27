@@ -22,11 +22,11 @@ function UserLists(props) {
             credentials: "include",
           });
           if (!res.ok) {
-            console.log("RES IN userTest", res);
+            // console.log("RES IN userTest", res);
             throw new Error("Failed to fetch posts");
           }
           const data = await res.json();
-          console.log(data);
+          // console.log(data);
           setLists(data);
         } catch (err) {
           setError(err.message);
@@ -39,7 +39,7 @@ function UserLists(props) {
   }, [userId]);
 
   const handleListClick = (listId) => {
-    console.log("List ID:", listId); 
+    // console.log("List ID:", listId); 
     router.push(`/list/${listId}`); // Navigate to the list page
   };
   

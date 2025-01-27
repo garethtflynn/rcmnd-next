@@ -20,8 +20,8 @@ function LoginForm(props) {
         password,
         callbackUrl,
       });
-      console.log("CALLBACK URL", callbackUrl);
-      console.log(res); 
+      // console.log("CALLBACK URL", callbackUrl);
+      // console.log(res); 
       if (!res?.error) {
         router.push(callbackUrl);
       } else {

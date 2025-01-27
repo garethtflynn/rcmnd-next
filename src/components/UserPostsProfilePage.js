@@ -22,11 +22,11 @@ function UserPosts(props) {
             credentials: "include",
           });
           if (!res.ok) {
-            console.log("RES IN userTest", res);
+            // console.log("RES IN userTest", res);
             throw new Error("Failed to fetch posts");
           }
           const data = await res.json();
-          console.log(data);
+          // console.log(data);
           setPosts(data);
           // const shuffledPosts = shuffleArray(data);
           // setPosts(shuffledPosts.slice(0, 4));
@@ -55,7 +55,7 @@ function UserPosts(props) {
       // If the API call is successful, update the UI (remove the post from the state)
       setPosts(posts.filter((post) => post.id !== postId));
 
-      console.log(`Post with ID ${postId} has been deleted.`);
+      // console.log(`Post with ID ${postId} has been deleted.`);
     } catch (error) {
       console.error("Error deleting post:", error);
       // You might want to show an error message to the user

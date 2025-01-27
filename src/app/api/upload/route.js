@@ -14,7 +14,7 @@ export async function GET(req, res) {
       });
     }
     const presignedUrl = await getS3PresignedUrl(key);
-    console.log("PRESIGNED URL", presignedUrl);
+    // console.log("PRESIGNED URL", presignedUrl);
 
     return NextResponse.json({
       presignedUrl,

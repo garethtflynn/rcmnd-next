@@ -29,9 +29,9 @@ const Dropzone = () => {
     },
     maxSize: 1024 * 1000,
     onDrop: (acceptedFiles) => {
-      console.log("ON DROP ACCEPTED FILE", acceptedFiles);
+      // console.log("ON DROP ACCEPTED FILE", acceptedFiles);
       const file = acceptedFiles[0];
-      console.log(file.name);
+      // console.log(file.name);
       const fileAsString = JSON.stringify(acceptedFiles); // Convert array to JSON string
       setIsImageDropped(false);
       setFormData({ ...formData, image: fileAsString }); // need to change image in formData
@@ -66,19 +66,19 @@ const Dropzone = () => {
             key: key,
           }).toString()
       ); // Just sending the image name as key
-      console.log("RESPONSE VARIABLE:", response);
+      // console.log("RESPONSE VARIABLE:", response);
       // Report on the outcome
       if (!response.ok) {
         msg = `${response.status} when retrieving presigned URL from backend`;
-        console.error(msg);
+        // console.error(msg);
         detail = await response.text();
       } else {
         const { presignedUrl } = await response.json();
-        console.log(`Presigned URL: ${presignedUrl}`);
+        // console.log(`Presigned URL: ${presignedUrl}`);
 
         // Get the file's contents as an ArrayBuffer
         const fileContent = await imageFile.arrayBuffer();
-        console.log(`File content after arrayBuffer: ${fileContent}`);
+        // console.log(`File content after arrayBuffer: ${fileContent}`);
 
         // Upload the file content with the filename, hash and auth token
         response = await fetch(presignedUrl, {
@@ -109,12 +109,12 @@ const Dropzone = () => {
       detail = error.stack;
     }
 
-    console.log(`Upload file result: ${msg}`);
-    console.log(`Response detail: ${detail}`);
+    // console.log(`Upload file result: ${msg}`);
+    // console.log(`Response detail: ${detail}`);
   };
 
   const createPost = async () => {
-    console.log("CREATE POST FUNCTION");
+    // console.log("CREATE POST FUNCTION");
     const imageFile = image[0];
     const imageName = imageFile.name;
     const userId = session?.user?.id;
@@ -125,7 +125,7 @@ const Dropzone = () => {
     }
     // Ensure formData has required properties
     if (!formData.title || !formData.link || !formData.image) {
-      console.log(formData);
+      // console.log(formData);
       alert("Form input required!");
       return;
     }
@@ -139,7 +139,7 @@ const Dropzone = () => {
         image: `${imageReferenceUrl}/${imageName}`,
         userId: userId, // Add userId to the body
       };
-      console.log(body);
+      // console.log(body);
       const apiUrl = "/api/post";
       const requestData = {
         method: "POST",
@@ -149,7 +149,7 @@ const Dropzone = () => {
         body: JSON.stringify(body),
       };
 
-      console.log("REQ DATA", requestData);
+      // console.log("REQ DATA", requestData);
       const response = await fetch(apiUrl, requestData);
 
       if (!response.ok) {
@@ -175,11 +175,11 @@ const Dropzone = () => {
             credentials: "include",
           });
           if (!res.ok) {
-            console.log("RES IN userTest", res);
+            // console.log("RES IN userTest", res);
             throw new Error("Failed to fetch posts");
           }
           const data = await res.json();
-          console.log(data);
+          // console.log(data);
           setLists(data);
         } catch (err) {
           setError(err.message);
@@ -195,7 +195,7 @@ const Dropzone = () => {
     e.preventDefault();
     uploadImageToB2();
     createPost();
-    router.replace("/homeFeed");
+    router.replace("/profilePage");
   };
 
   const preview = image?.map((file) => (
@@ -217,7 +217,7 @@ const Dropzone = () => {
   return (
     <form
       onSubmit={onSubmit}
-      className="h-fit w-full bg-[#110A02] flex flex-col jusify-center place-content-center py-2"
+      className="h-screen w-full bg-[#110A02] flex flex-col jusify-center place-content-center py-2"
     >
       {isImageDropped ? (
         <div
