@@ -15,7 +15,7 @@ export default function ListItem({
   return (
     <div
       key={id}
-      className="place-content-center bg-[#110A02] hover:bg-[#513C2C]"
+      className="place-content-center bg-[#110A02] hover:bg-[#4C4138]"
     >
       <p
         onClick={handleNavToList}

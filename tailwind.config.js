@@ -9,9 +9,9 @@ module.exports = {
     extend: {
       // colors: {
       //   "black": "#110A02",
-      //   "brown": "#1E1406",
+      //   "brown": "#1E1912",
       //   "cream": "#ECE2D8",
-      //   "lightBrown": "#513C2C",
+      //   "lightBrown": "#4C4138",
       //   "white": "#FBF8F4",
       // },
     },
