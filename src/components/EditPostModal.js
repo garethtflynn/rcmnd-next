@@ -65,30 +65,30 @@ const EditPostModal = ({
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("post ID", id);
-    console.log("formData LIST:", formData.listId);
-    console.log("formData", formData);
+    // console.log("post ID", id);
+    // console.log("formData LIST:", formData.listId);
+    // console.log("formData", formData);
 
     setLoading(true);
     try {
       const response = await fetch(`/api/post/${id}`, {
-        method: 'PATCH',
+        method: "PATCH",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(formData), // Send the form data as a JSON string
       });
 
       if (!response.ok) {
-        throw new Error('Failed to update post');
+        throw new Error("Failed to update post");
       }
 
-      router.refresh();
       closeModal();
     } catch (error) {
-      console.error('Error updating post:', error);
+      console.error("Error updating post:", error);
     } finally {
       setLoading(false);
+      router.refresh()
     }
   };
 
@@ -96,13 +96,15 @@ const EditPostModal = ({
 
   return (
     <div className="fixed inset-0 bg-gray-500 bg-opacity-75 z-50 flex items-center justify-center">
-      <div className="bg-[#FBF8F4] p-6 rounded-lg shadow-md w-96">
-        <h2 className="text-xl font-bold mb-4 text-[#110A02] text-center">Edit Post</h2>
+      <div className="bg-[#4C4138] p-6 shadow-md w-96">
+        <h2 className="text-xl font-bold mb-4 text-[#110A02] text-end">
+          edit post
+        </h2>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
             <label
               htmlFor="title"
-              className="block text-sm font-medium text-gray-700"
+              className="block text-sm font-medium text-[#110A02]"
             >
               title
             </label>
@@ -112,15 +114,15 @@ const EditPostModal = ({
               name="title"
               defaultValue={title}
               onChange={handleChange}
-              className="mt-1 p-2 w-full border border-gray-300 text-[#110A02]"
+              className="mt-1 p-2 w-full border border-[#1E1912] text-[#1E1912] bg-[#4C4138]"
             />
           </div>
           <div className="mb-4">
             <label
               htmlFor="link"
-              className="block text-sm font-medium text-gray-700"
+              className="block text-sm font-medium text-[#110A02]"
             >
-              Link
+              link
             </label>
             <input
               type="text"
@@ -128,27 +130,33 @@ const EditPostModal = ({
               name="link"
               defaultValue={link}
               onChange={handleChange}
-              className="mt-1 p-2 w-full border border-gray-300 text-[#110A02]"
+              className="mt-1 p-2 w-full border border-[#1E1912] text-[#1E1912] bg-[#4C4138]"
             />
           </div>
           <div className="mb-4">
             <label
               htmlFor="description"
-              className="block text-sm font-medium text-gray-700"
+              className="block text-sm font-medium text-[#110A02]"
             >
-              Description
+              description
             </label>
             <textarea
               id="description"
               name="description"
               defaultValue={description}
               onChange={handleChange}
-              className="mt-1 p-2 w-full border border-gray-300  text-[#110A02]"
+              className="mt-1 p-2 w-full border border-[#1E1912] text-[#1E1912] bg-[#4C4138]"
             />
           </div>
           <div className="mb-4">
+            <label
+              htmlFor="list"
+              className="block text-sm font-medium text-[#110A02]"
+            >
+              list
+            </label>
             <select
-              className="border border-gray-300 bg-transparent text-[#110A02] mt-2 px-2 py-1 focus:within:bg-[#ECE2D8] outline-none w-full block p-2"
+              className="border border-[#1E1912] bg-transparent text-[#1E1912] mt-2 px-2 py-1 focus:within:bg-[#ECE2D8] outline-none w-full block p-2"
               onChange={(e) =>
                 setFormData({ ...formData, listId: e.target.value })
               }
@@ -167,15 +175,15 @@ const EditPostModal = ({
             <button
               type="button"
               onClick={closeModal}
-              className="mr-4 text-gray-500 hover:text-gray-700"
+              className="mr-4 text-[#110A02] hover:text-[#1E1912]"
             >
-              Cancel
+              cancel
             </button>
             <button
               type="submit"
-              className={`${
-                loading ? "bg-gray-400" : "bg-[#4C4138]"
-              } text-[#FBF8F4] p-2 rounded-md hover:bg-[#1E1912] disabled:opacity-50`}
+              className={`w-1/2 ${
+                loading ? "bg-[#4C4138]" : "bg-[#1E1912]"
+              } text-[#ECE2D8] p-2 hover:bg-[#110A02] disabled:opacity-50`}
               disabled={loading}
             >
               {loading ? "saving..." : "save changes"}
