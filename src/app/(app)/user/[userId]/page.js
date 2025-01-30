@@ -66,8 +66,8 @@ function UserPage(props) {
     const followerId = currentUserId;
     const followingId = userId;
 
-    console.log("CURRENT USER", followerId);
-    console.log("USER", followingId);
+    // console.log("CURRENT USER", followerId);
+    // console.log("USER", followingId);
 
     try {
       const method = isFollowing ? "DELETE" : "POST"; // Toggle between DELETE and POST
@@ -133,8 +133,8 @@ function UserPage(props) {
         <UserListsProfilePage />
       </div>
 
-      {posts?.length > 0 ? (
-        <div className="w-full py-1 px-4 gap-4 grid grid-cols-2 md:grid-cols-3 text-[#FBF8F4]">
+      {/* {posts?.length > 0 ? (
+        <div className="w-full grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 justify-center items-center bg-[#110A02] text-[#FBF8F4] overflow-y-auto pb-2">
           {posts.map((post) => (
             <PostItemUserProfilePage
               key={post.id}
@@ -142,8 +142,6 @@ function UserPage(props) {
               href={`/post/${post.id}`}
               src={post.image}
               alt={post.title}
-              list={post.list?.title}
-              deletePostCallback={deletePost} // Pass deletePost function as a callback
               {...post}
             />
           ))}
@@ -152,9 +150,9 @@ function UserPage(props) {
         <div className="text-[#FBF8F4] flex flex-col justify-center items-center h-full lowercase">
           <p>{user.firstName} has no posts</p>
         </div>
-      )}
+      )} */}
 
-      {/* <div className="w-full grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 justify-center items-center bg-[#110A02] text-[#FBF8F4] overflow-y-auto pb-2">
+      <div className="w-full grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 justify-center items-center bg-[#110A02] text-[#FBF8F4] overflow-y-auto pb-2">
         {posts?.map((post) => (
           <PostItemUserProfilePage
             key={post.id}
@@ -165,7 +163,7 @@ function UserPage(props) {
             {...post}
           />
         ))}
-      </div> */}
+      </div>
     </div>
   );
 }
