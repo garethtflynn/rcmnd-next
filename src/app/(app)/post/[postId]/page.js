@@ -44,7 +44,7 @@ function PostPage(props) {
   if (loading) {
     return (
       <div className="h-screen w-full flex justify-center items-center bg-[#110A02] text-[#FBF8F4]">
-        <h2>Loading...</h2>
+        <h2>loading...</h2>
       </div>
     );
   }

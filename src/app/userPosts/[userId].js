@@ -1,14 +1,14 @@
 // pages/user/[userId].js
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { useSession } from 'next-auth/react';
+import { useSession } from "next-auth/react";
 
 const UserPostsPage = () => {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const router = useRouter();
-  const { data: session, status } = useSession();  
+  const { data: session, status } = useSession();
   const { userId } = session.user.id;
 
   useEffect(() => {
@@ -32,7 +32,7 @@ const UserPostsPage = () => {
     }
   }, [userId]);
 
-  if (loading) return <div>Loading...</div>;
+  if (loading) return <div>loading...</div>;
   if (error) return <div>Error: {error}</div>;
 
   return (

@@ -38,11 +38,11 @@ export const User = () => {
     }
   }, [userId]);
 
-  if (loading) return <div>Loading...</div>;
+  if (loading) return <div>loading...</div>;
   if (error) return <div>Error: {error}</div>;
 
   if (status === "loading") {
-    return <div>Loading...</div>; // Show loading state while session is loading
+    return <div>loading...</div>; // Show loading state while session is loading
   }
 
   if (!session) {
@@ -51,7 +51,7 @@ export const User = () => {
   console.log("session log in userTest.js", session);
 
   if (status === "loading") {
-    return <div>Loading...</div>; // Show loading state while session is loading
+    return <div>loading...</div>; // Show loading state while session is loading
   }
 
   if (!session) {

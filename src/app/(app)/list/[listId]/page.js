@@ -24,7 +24,7 @@ function ListPage() {
             setIsLoading(false);
             return;
           }
-          console.log(data)
+          console.log(data);
           setList(data[0].list);
           setPosts(data);
           setIsLoading(false);
@@ -39,7 +39,7 @@ function ListPage() {
   if (isLoading) {
     return (
       <div className="h-screen w-full flex justify-center items-center bg-[#110A02] text-[#FBF8F4]">
-        <h2>Loading...</h2>
+        <h2>loading...</h2>
       </div>
     );
   }
