@@ -1,9 +1,13 @@
 "use client";
+
+import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 import { FaEllipsisVertical } from "react-icons/fa6";
+
+import EditPostModal from "./EditPostModal";
 
 export default function PostItem({
   id,
@@ -11,13 +15,27 @@ export default function PostItem({
   link,
   description,
   image,
+  list,
+  listId, 
   deletePostCallback,
 }) {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
+
   const handleDeletePost = () => {
     if (deletePostCallback) {
       deletePostCallback(id); // Pass the post ID to the callback function for deletion
     }
     console.log(`Post with ID ${id} deleted.`);
+  };
+
+  const handleEditPost = () => {
+    // console.log('postID:', id)
+    // console.log(`list name: ${list.title}`);
+    // console.log(`listID: ${listId}`);
+    openModal()
   };
 
   return (
@@ -48,20 +66,26 @@ export default function PostItem({
             className="absolute right-0 w-40 origin-top-right bg-[#FBF8F4] transition focus:outline-none data-[closed]:scale-95 data-[closed]:transform data-[closed]:opacity-0 data-[enter]:duration-100 data-[leave]:duration-75 data-[enter]:ease-out data-[leave]:ease-in"
           >
             <div className="py-1">
-              <MenuItem className="block px-4 py-2 text-sm text-[#110A02] hover:bg-gray-200 close">
-                <p>edit post</p>
+              <MenuItem className="block px-4 py-2 text-sm text-[#110A02] hover:bg-gray-200">
+                <p onClick={handleEditPost}>edit post</p>
               </MenuItem>
-              <MenuItem>
-                <p
-                  onClick={handleDeletePost}
-                  className="block px-4 py-2 text-sm text-[#110A02] hover:bg-gray-200"
-                >
-                  delete post
-                </p>
+              <MenuItem className="block px-4 py-2 text-sm text-[#110A02] hover:bg-gray-200">
+                <p onClick={handleDeletePost}>delete post</p>
               </MenuItem>
             </div>
           </MenuItems>
         </Menu>
+        {/* modal */}
+        <EditPostModal
+          isOpen={isModalOpen}
+          closeModal={closeModal}
+          id={id}
+          title={title}
+          link={link}
+          description={description}
+          list={list?.title}
+          listId={listId}
+        />
       </div>
     </div>
   );

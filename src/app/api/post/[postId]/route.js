@@ -34,3 +34,28 @@ export async function DELETE(req, { params }) {
     return new NextResponse(error);
   }
 }
+
+export async function PATCH(req, { params }) {
+  const { postId } = params;
+  const { title, link, description, listId } = await req.json(); // Get updated data from the request body
+
+  try {
+    const updatedPost = await prisma.post.update({
+      where: { id: postId },
+      data: {
+        title: title,
+        link: link,
+        description: description,
+        listId: listId,
+      },
+    });
+
+    return NextResponse.json(updatedPost);
+  } catch (error) {
+    console.log(error);
+    return NextResponse.json(
+      { message: "Error updating post" },
+      { status: 500 }
+    );
+  }
+}

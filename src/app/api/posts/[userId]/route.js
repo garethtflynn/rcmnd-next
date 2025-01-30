@@ -19,6 +19,13 @@ export async function GET(req) {
     const userId = session?.user?.id;
     const posts = await prisma.post.findMany({
       where: { userId },
+      include: {
+        list: {
+          select: {
+            title: true, // Include only the title of the list
+          },
+        },
+      },
     });
 
     return new NextResponse(JSON.stringify(posts), { status: 200 });

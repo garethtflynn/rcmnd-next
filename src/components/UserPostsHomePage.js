@@ -64,7 +64,6 @@ function UserPostsHomePage(props) {
           // You can now shuffle and slice posts if you need
           const shuffledPosts = shuffleArray(postsData);
           setPosts(shuffledPosts.slice(0, 4));
-
         } catch (err) {
           setError(err.message);
         } finally {
@@ -79,7 +78,7 @@ function UserPostsHomePage(props) {
   if (isLoading) {
     return (
       <div className="h-screen w-full flex justify-center items-center bg-[#110A02] text-[#FBF8F4]">
-        <h2>Loading...</h2>
+        <h2>loading...</h2>
       </div>
     );
   }

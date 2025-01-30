@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
@@ -40,7 +41,7 @@ function UserPage(props) {
       fetch(`/api/user/${userId}`)
         .then((res) => res.json())
         .then((data) => {
-          console.log(data);
+          // console.log(data);
           setUser(data);
           setPosts(data.posts);
           setLists(data.lists);
@@ -56,11 +57,10 @@ function UserPage(props) {
   if (isLoading) {
     return (
       <div className="h-screen w-full flex justify-center items-center bg-[#110A02] text-[#FBF8F4]">
-        <h2>Loading...</h2>
+        <h2>loading...</h2>
       </div>
     );
   }
-
 
   const handleFollowToggle = async () => {
     const followerId = currentUserId;
@@ -132,7 +132,29 @@ function UserPage(props) {
       <div>
         <UserListsProfilePage />
       </div>
-      <div className="w-full grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 justify-center items-center bg-[#110A02] text-[#FBF8F4] overflow-y-auto pb-2">
+
+      {posts?.length > 0 ? (
+        <div className="w-full py-1 px-4 gap-4 grid grid-cols-2 md:grid-cols-3 text-[#FBF8F4]">
+          {posts.map((post) => (
+            <PostItemUserProfilePage
+              key={post.id}
+              title={post.title}
+              href={`/post/${post.id}`}
+              src={post.image}
+              alt={post.title}
+              list={post.list?.title}
+              deletePostCallback={deletePost} // Pass deletePost function as a callback
+              {...post}
+            />
+          ))}
+        </div>
+      ) : (
+        <div className="text-[#FBF8F4] flex flex-col justify-center items-center h-full lowercase">
+          <p>{user.firstName} has no posts</p>
+        </div>
+      )}
+
+      {/* <div className="w-full grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 justify-center items-center bg-[#110A02] text-[#FBF8F4] overflow-y-auto pb-2">
         {posts?.map((post) => (
           <PostItemUserProfilePage
             key={post.id}
@@ -143,7 +165,7 @@ function UserPage(props) {
             {...post}
           />
         ))}
-      </div>
+      </div> */}
     </div>
   );
 }

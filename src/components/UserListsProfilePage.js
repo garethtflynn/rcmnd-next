@@ -40,37 +40,52 @@ function UserLists(props) {
   }, [userId]);
 
   const handleListClick = (listId) => {
-    // console.log("List ID:", listId); 
+    // console.log("List ID:", listId);
     router.push(`/list/${listId}`); // Navigate to the list page
   };
-  
+
   return (
-    <div className="logos">
-      <div className="scroll scroll-smooth no-scrollbar bg-[#110A02] text-[#FBF8F4] logos-slide text-xl">
+    <div className="max-w-screen px-3">
+      <ul className="flex flex-row gap-32 md:gap-56 no-scrollbar bg-[#110A02] text-[#FBF8F4] text-xl overflow-x-auto">
         {lists?.map((list) => {
           return (
-            <p
+            <li
               key={list.id}
               onClick={() => handleListClick(list.id)}
-              className="text-[#FBF8F4] w-60  inline-block p-2 cursor-pointer text-xl"
+              className="text-[#FBF8F4] p-2 cursor-pointer text-xl text-nowrap	"
             >
               {list.title}
-            </p>
+            </li>
           );
         })}
-      </div>
-      <div className="scroll scroll-smooth no-scrollbar bg-[#110A02] text-[#FBF8F4] logos-slide ">
-        {lists?.map((list) => (
-          <p
-            key={`duplicate-${list.id}`}
-            onClick={() => handleListClick(list.id)}
-            className="text-[#FBF8F4] w-60 inline-block p-2 cursor-pointer text-xl"
-          >
-            {list.title}
-          </p>
-        ))}
-      </div>
+      </ul>
     </div>
+    // <div className="logos">
+    //   <div className="scroll scroll-smooth no-scrollbar bg-[#110A02] text-[#FBF8F4] logos-slide text-xl">
+    //     {lists?.map((list) => {
+    //       return (
+    //         <p
+    //           key={list.id}
+    //           onClick={() => handleListClick(list.id)}
+    //           className="text-[#FBF8F4] w-60  inline-block p-2 cursor-pointer text-xl"
+    //         >
+    //           {list.title}
+    //         </p>
+    //       );
+    //     })}
+    //   </div>
+    //   <div className="scroll scroll-smooth no-scrollbar bg-[#110A02] text-[#FBF8F4] logos-slide ">
+    //     {lists?.map((list) => (
+    //       <p
+    //         key={`duplicate-${list.id}`}
+    //         onClick={() => handleListClick(list.id)}
+    //         className="text-[#FBF8F4] w-60 inline-block p-2 cursor-pointer text-xl"
+    //       >
+    //         {list.title}
+    //       </p>
+    //     ))}
+    //   </div>
+    // </div>
   );
 }
 
