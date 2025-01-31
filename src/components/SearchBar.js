@@ -52,7 +52,7 @@ function Search(props) {
         placeholder="search"
         onChange={handleSearch}
         value={searchQuery}
-        className="w-36 sm:w-full py-2 border-b-2 border-[#ECE2D8] bg-transparent text-[#ECE2D8] hover:bg-[#4C4138] outline-none placeholder-[#4C4138]"
+        className="w-36 sm:w-full py-2 border-b-2 border-[#ECE2D8] bg-transparent text-[#ECE2D8] hover:bg-[#4C4138] outline-none placeholder-[#1E1912]"
       />
 
       {/* Search Results */}

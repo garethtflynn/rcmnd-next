@@ -41,7 +41,7 @@ function ProfilePage(props) {
         <div className="flex flex-col items-end text-[#FBF8F4] pr-1 lowercase">
           <p className="text-xl font-bold">{user.firstName}</p>
           <p className="text-xl font-bold">{user.lastName}</p>
-          <p className="text-md">@{user.username}</p>
+          <p className="text-sm font-light">@{user.username}</p>
         </div>
       )}
       <div className="pt-4 pb-3">
