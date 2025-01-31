@@ -1,8 +1,6 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
-// import { useParams } from "next/navigation";
 import { useSession } from "next-auth/react";
 
 const EditPostModal = ({
@@ -18,7 +16,6 @@ const EditPostModal = ({
   const { data: session } = useSession();
   const userId = session?.user?.id;
 
-  const router = useRouter();
 
   const [loading, setLoading] = useState(false);
   const [lists, setLists] = useState(null);
@@ -65,9 +62,7 @@ const EditPostModal = ({
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // console.log("post ID", id);
-    // console.log("formData LIST:", formData.listId);
-    // console.log("formData", formData);
+
 
     setLoading(true);
     try {
@@ -88,7 +83,7 @@ const EditPostModal = ({
       console.error("Error updating post:", error);
     } finally {
       setLoading(false);
-      router.refresh()
+      window.location.reload();
     }
   };
 

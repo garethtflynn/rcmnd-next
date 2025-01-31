@@ -62,36 +62,6 @@ function UserPosts(props) {
   };
 
   return (
-    // <div>
-    //   {posts?.length > 0 ? (
-    //     <div className="min-h-fit w-full grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 justify-center items-center bg-[#110A02] text-[#FBF8F4] overflow-y-auto pb-2">
-    //       {posts.map((post) => (
-    //         <PostItemProfilePage
-    //           key={post.id}
-    //           title={post.title}
-    //           href={`/post/${post.id}`}
-    //           src={post.image}
-    //           alt={post.title}
-    //           list={post.list?.title}
-    //           deletePostCallback={deletePost} // Pass deletePost function as a callback
-    //           {...post}
-    //         />
-    //       ))}
-    //     </div>
-    //   ) : (
-    //     <div className="text-[#FBF8F4] flex flex-col justify-center items-center h-full">
-    //       <p>start rcmnding your favorite things</p>
-    //       <Link href="/createPost">
-    //         <button
-    //           type="button"
-    //           className="w-full mt-2 bg-[#ECE2D8] hover:opacity-75 text-[#110A02] py-2 px-4 duration-500 "
-    //         >
-    //           create post
-    //         </button>
-    //       </Link>
-    //     </div>
-    //   )}
-    // </div>
     <div className="min-h-fit w-full grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 justify-center items-center bg-[#110A02] text-[#FBF8F4] overflow-y-auto pb-2">
       {posts?.map((post) => {
         return (
