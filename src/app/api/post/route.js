@@ -36,37 +36,3 @@ export async function POST(req, res) {
     // return res.status(500).json({ error: "Internal Server Error" }); // Handle errors
   }
 }
-
-
-
-// export async function GET(req) {
-//   try {
-//     const session = await getSession({ req });
-//     console.log("Session log in route handler:", session);
-
-//     if (session) {
-//       const userId = session.user.id; // Access user ID from the token
-//       console.log("USERID HERE", userId);
-//       // Fetch posts based on userId
-//       const posts = await prisma.post.findMany({
-//         where: {
-//           userId: userId, // Now using the obtained userId
-//         },
-//       });
-
-//       return new NextResponse(JSON.stringify(posts), { status: 200 });
-//     } else {
-//       return new NextResponse(JSON.stringify({ message: "Unauthorized" }), {
-//         status: 401,
-//       });
-//     }
-//   } catch (error) {
-//     console.error("Error fetching posts:", error); // Log the error for debugging
-//     return new NextResponse(
-//       JSON.stringify({ error: "Internal Server Error" }),
-//       { status: 500 }
-//     );
-//   }
-// }
-
-
