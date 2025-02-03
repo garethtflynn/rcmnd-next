@@ -75,7 +75,7 @@ function PostPage(props) {
       title={post.title}
       src={post.image}
       alt={post.title}
-      deletePostCallback={deletePost} // Pass deletePost function as a callback
+      deletePostCallback={deletePost} 
       {...post}
     />
   );
