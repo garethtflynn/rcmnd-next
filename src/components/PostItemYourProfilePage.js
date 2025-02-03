@@ -57,7 +57,7 @@ export default function PostItem({
           <MenuButton className="text-sm font-semibold">
             <FaEllipsisVertical
               className="absolute top-1 right-1"
-              color="black"
+              color="#110A02"
               size={16}
             />
           </MenuButton>
