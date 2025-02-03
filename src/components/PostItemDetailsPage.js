@@ -15,9 +15,9 @@ export default function PostItemDetailsPage({
       id={id}
       className="h-screen w-full bg-[#110A02] place-content-center px-1 text-[#FBF8F4] md:grid md:grid-cols-2"
     >
-      <div className="place-items-center">
+      <div className="place-items-center 2xl:w-10/12 overflow-hidden">
         <Image
-          className="w-fit h-full object-contain"
+          className="w-3/4 h-full object-contain"
           src={image}
           alt={title}
           width="300"

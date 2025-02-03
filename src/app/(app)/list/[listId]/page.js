@@ -15,13 +15,11 @@ function ListPage() {
   const { listId } = useParams();
   const router = useRouter();
   const { data: session } = useSession();
-  const userId = session?.user?.id;
 
   const [user, setUser] = useState();
   const [list, setList] = useState();
   const [posts, setPosts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  // const [error, setError] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -33,9 +31,9 @@ function ListPage() {
       fetch(`/api/list/${listId}`)
         .then((res) => res.json())
         .then((data) => {
-          console.log(data);
-          console.log(data.userId);
-          console.log(data.userId);
+          // console.log(data);
+          // console.log(data.userId);
+          // console.log(data.userId);
           // console.log(data.posts);
           setList(data);
           setUser(data.userId);
@@ -87,22 +85,19 @@ function ListPage() {
       <div className="text-[#FBF8F4] px-3 py-2 flex justify-center">
         {list && (
           <div className="w-full flex justify-between items-center">
-            {/* Title */}
+
             <h1 className="text-2xl font-bold">{list.title}</h1>
 
-            {/* Only show menu if the user is the owner */}
             {isOwner && (
               <div className="z-50 relative">
-                {" "}
-                {/* Ensure the dropdown is positioned relative to this div */}
                 <Menu
                   as="div"
                   className="cursor-default bg-transparent hover:text-[#ECE2D8] duration-1000"
                 >
                   <MenuButton className="text-sm font-semibold">
                     <FaEllipsisVertical
-                      color="white"
-                      size={16}
+                      color="#ECE2D8"
+                      size={18}
                       onClick={() => setIsMenuOpen(!isMenuOpen)}
                     />
                   </MenuButton>
