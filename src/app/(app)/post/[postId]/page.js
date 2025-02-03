@@ -70,14 +70,16 @@ function PostPage(props) {
   };
 
   return (
-    <PostItemDetailsPage
-      key={post.id}
-      title={post.title}
-      src={post.image}
-      alt={post.title}
-      deletePostCallback={deletePost} 
-      {...post}
-    />
+    <div className='h-screen w-full flex justify-center items-center'>
+      <PostItemDetailsPage
+        key={post.id}
+        title={post.title}
+        src={post.image}
+        alt={post.title}
+        deletePostCallback={deletePost}
+        {...post}
+      />
+    </div>
   );
 }
 
