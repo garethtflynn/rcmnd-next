@@ -30,22 +30,24 @@ model User {
 }
 
 model Post {
-  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
   title       String
   link        String?
   description String?
   image       String
   createdAt   DateTime? @default(now())
-  user        User?    @relation(fields: [userId], references: [id])
-  userId      String?  @db.ObjectId
-  list       List?    @relation(fields: [listId], references: [id])
-  listId     String?  @db.ObjectId
+  user        User?     @relation(fields: [userId], references: [id])
+  userId      String?   @db.ObjectId
+  list        List?     @relation(fields: [listId], references: [id])
+  listId      String?   @db.ObjectId
+  isPrivate   Boolean?  @default(false)
 }
 
 model List {
-  id     String  @id @default(auto()) @map("_id") @db.ObjectId
-  title  String
-  posts  Post[]
-  user   User?   @relation(fields: [userId], references: [id])
-  userId String? @db.ObjectId
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  title     String
+  posts     Post[]
+  user      User?    @relation(fields: [userId], references: [id])
+  userId    String?  @db.ObjectId
+  isPrivate Boolean? @default(false)
 }

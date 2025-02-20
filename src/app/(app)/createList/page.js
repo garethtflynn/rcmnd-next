@@ -4,17 +4,23 @@ import React, { useState } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { FaX } from "react-icons/fa6";
+import { Description, Field, Label, Switch } from "@headlessui/react";
 
 function CreateList(props) {
   const { data: session } = useSession();
   const router = useRouter();
-  const [title, setTitle] = useState();
+  const [enabled, setEnabled] = useState(false);
+
+  const [formData, setFormData] = useState({
+    title: "",
+    isPrivate: false, // Initial state for isPrivate, set to false by default
+  });
 
   const onSubmit = async (e) => {
     e.preventDefault();
     const userId = session?.user?.id;
     try {
-      const body = { title: title, userId: userId };
+      const body = { ...formData, userId: userId };
       const res = await fetch("/api/list", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -34,6 +40,14 @@ function CreateList(props) {
     router.back();
   };
 
+  const handlePrivateToggle = (checked) => {
+    setEnabled(checked);
+
+    setFormData((prevData) => ({
+      ...prevData,
+      isPrivate: checked, // Set isPrivate to the value of the switch
+    }));
+  };
   return (
     <div className="w-full h-screen flex flex-col justify-center items-center text-[#FBF8F4] bg-[#110A02]">
       <div className="flex flex-row-reverse items-end w-3/5">
@@ -51,14 +65,33 @@ function CreateList(props) {
           className="w-full flex flex-col items-center justify-center"
         >
           <input
-            defaultValue={title}
-            onChange={(e) => setTitle(e.target.value)}
+            defaultValue={formData.title}
+            onChange={(e) =>
+              setFormData({ ...formData, title: e.target.value })
+            }
             type="text"
             name="title"
             placeholder="title"
-            autoComplete="off"
             className="w-1/2 border border-[#ECE2D8] bg-transparent text-[#ECE2D8] px-2 py-1 my-2 rounded hover:bg-[#4C4138] focus:within:bg-[#ECE2D8] outline-none placeholder-[#4C4138]"
           />
+          <div className="w-1/2">
+            <Field className="flex my-2 text-[#4C4138] items-center">
+              <Switch
+                label="private"
+                description="private"
+                value="private"
+                checked={enabled}
+                onChange={handlePrivateToggle}
+                className="group relative flex h-7 w-14 cursor-pointer rounded-full bg-white/10 p-1 transition-colors duration-200 ease-in-out focus:outline-none data-[focus]:outline-1 data-[focus]:outline-white data-[checked]:bg-[#ECE2D8]"
+              >
+                <span
+                  aria-hidden="true"
+                  className="pointer-events-none inline-block size-5 translate-x-0 rounded-full bg-white ring-0 shadow-lg transition duration-200 ease-in-out group-data-[checked]:translate-x-7"
+                />
+              </Switch>
+              <Label className="pl-2">private</Label>
+            </Field>
+          </div>
           <button
             type="submit"
             className="w-1/4 mt-2 bg-[#ECE2D8] hover:bg-[#4C4138] text-[#110A02] font-bold py-2 px-4 rounded-md duration-500"

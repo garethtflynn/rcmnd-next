@@ -28,12 +28,9 @@ export async function GET(req) {
       },
     });
 
-    return new NextResponse(JSON.stringify(posts), { status: 200 });
+    return NextResponse.json(posts);
   } catch (error) {
     console.error("Error fetching posts:", error);
-    return new NextResponse(
-      JSON.stringify({ error: "Internal Server Error" }),
-      { status: 500 }
-    );
+    return NextResponse.json(error);
   }
 }
