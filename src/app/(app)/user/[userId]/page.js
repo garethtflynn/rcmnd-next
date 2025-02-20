@@ -66,9 +66,6 @@ function UserPage(props) {
     const followerId = currentUserId;
     const followingId = userId;
 
-    // console.log("CURRENT USER", followerId);
-    // console.log("USER", followingId);
-
     try {
       const method = isFollowing ? "DELETE" : "POST"; // Toggle between DELETE and POST
       const url = isFollowing ? "/api/unfollow" : "/api/follow"; // Toggle between unfollow and follow endpoints
@@ -132,25 +129,6 @@ function UserPage(props) {
       <div>
         <UserListsProfilePage />
       </div>
-
-      {/* {posts?.length > 0 ? (
-        <div className="w-full grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 justify-center items-center bg-[#110A02] text-[#FBF8F4] overflow-y-auto pb-2">
-          {posts.map((post) => (
-            <PostItemUserProfilePage
-              key={post.id}
-              title={post.title}
-              href={`/post/${post.id}`}
-              src={post.image}
-              alt={post.title}
-              {...post}
-            />
-          ))}
-        </div>
-      ) : (
-        <div className="text-[#FBF8F4] flex flex-col justify-center items-center h-full lowercase">
-          <p>{user.firstName} has no posts</p>
-        </div>
-      )} */}
 
       <div className="w-full grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 justify-center items-center bg-[#110A02] text-[#FBF8F4] overflow-y-auto pb-2">
         {posts?.map((post) => (

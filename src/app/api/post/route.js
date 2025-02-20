@@ -9,7 +9,7 @@ import { getSession } from "next-auth/react";
 // create a post
 export async function POST(req, res) {
   try {
-    const { title, link, description, image, userId, listId } = await req.json(); // Destructure formData from the request body
+    const { title, link, description, image, userId, listId, isPrivate } = await req.json(); // Destructure formData from the request body
     console.log("REQ.BODY", req.body);
     // if (!title || !link || !image) {
     //   return NextResponse.json({ error: "Please fill out form" });
@@ -21,18 +21,16 @@ export async function POST(req, res) {
         link: link,
         description: description,
         image: image,
-        user: { connect: { id: userId } }, // Using 'connect' to link the user
+        user: { connect: { id: userId } },
         list: { connect: { id: listId } },
-
+        isPrivate: isPrivate
       },
     });
 
     console.log('POST in post route handler', post);
     return NextResponse.json(post);
-    // res.status(200).json(post); // Respond with the created post
   } catch (error) {
     console.error("POST", error);
     return new NextResponse(error);
-    // return res.status(500).json({ error: "Internal Server Error" }); // Handle errors
   }
 }

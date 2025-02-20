@@ -53,7 +53,6 @@ function UserPostsHomePage(props) {
           );
 
           // console.log(postsRes)
-
           if (!postsRes.ok) {
             throw new Error("Failed to fetch posts from followed users");
           }

@@ -7,6 +7,8 @@ import { useRouter } from "next/navigation";
 
 import Image from "next/image";
 
+import { Description, Field, Label, Switch } from "@headlessui/react";
+
 const Dropzone = () => {
   const { data: session } = useSession();
   const userId = session?.user?.id;
@@ -17,10 +19,12 @@ const Dropzone = () => {
     description: "",
     image: "",
     listId: "",
+    isPrivate: false,
   });
   const [image, setImage] = useState();
   const [lists, setLists] = useState(null);
   const [isLoading, setLoading] = useState(true);
+  const [enabled, setEnabled] = useState(false);
 
   const [isImageDropped, setIsImageDropped] = useState(true);
   const { getRootProps, getInputProps } = useDropzone({
@@ -193,6 +197,7 @@ const Dropzone = () => {
 
   const onSubmit = async (e) => {
     e.preventDefault();
+    // console.log("POST DATA:", formData);
     uploadImageToB2();
     createPost();
     router.replace("/profilePage");
@@ -213,6 +218,15 @@ const Dropzone = () => {
       />
     </div>
   ));
+
+  const handlePrivateToggle = (checked) => {
+    setEnabled(checked);
+    // Update the formData when the switch is toggled
+    setFormData((prevData) => ({
+      ...prevData,
+      isPrivate: checked, // Set isPrivate to the value of the switch
+    }));
+  };
 
   return (
     <form
@@ -235,7 +249,7 @@ const Dropzone = () => {
           <p className="px-3 text-center">drag and drop images here</p>
         </div>
       ) : (
-        <div className='h-fit w-full flex justify-center overflow-hidden'>
+        <div className="h-fit w-full flex justify-center overflow-hidden">
           {preview}
         </div>
       )}
@@ -280,6 +294,24 @@ const Dropzone = () => {
             );
           })}
         </select>
+        <div className="flex my-2 text-[#4C4138] self-start items-center">
+          <Field className="flex my-2 text-[#4C4138] self-start items-center">
+            <Switch
+              label="private"
+              description="private"
+              value="private"
+              checked={enabled}
+              onChange={handlePrivateToggle}
+              className="group relative flex h-7 w-14 cursor-pointer rounded-full bg-white/10 p-1 transition-colors duration-200 ease-in-out focus:outline-none data-[focus]:outline-1 data-[focus]:outline-white data-[checked]:bg-[#ECE2D8]"
+            >
+              <span
+                aria-hidden="true"
+                className="pointer-events-none inline-block size-5 translate-x-0 rounded-full bg-white ring-0 shadow-lg transition duration-200 ease-in-out group-data-[checked]:translate-x-7"
+              />
+            </Switch>
+            <Label className="pl-2">private</Label>
+          </Field>
+        </div>
         <button
           type="submit"
           className="w-1/2 mt-2 bg-[#ECE2D8] hover:opacity-75 text-[#110A02] font-bold py-2 px-4 rounded-md duration-500 "
