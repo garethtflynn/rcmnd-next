@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
+import { Field, Label, Switch } from "@headlessui/react";
 
 const EditPostModal = ({
   isOpen,
@@ -12,19 +13,21 @@ const EditPostModal = ({
   description,
   list,
   listId,
+  isPrivate,
 }) => {
   const { data: session } = useSession();
   const userId = session?.user?.id;
 
-
   const [loading, setLoading] = useState(false);
   const [lists, setLists] = useState(null);
+  const [enabled, setEnabled] = useState(isPrivate);
   const [formData, setFormData] = useState({
     postId: id,
     title: title,
     link: link,
     description: description,
     listId: listId,
+    isPrivate: isPrivate,
   });
 
   useEffect(() => {
@@ -55,6 +58,15 @@ const EditPostModal = ({
     }
   }, [userId]);
 
+  const handlePrivateToggle = (checked) => {
+    setEnabled(checked);
+    // Update the formData when the switch is toggled
+    setFormData((prevData) => ({
+      ...prevData,
+      isPrivate: checked, // Set isPrivate to the value of the switch
+    }));
+  };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -62,7 +74,6 @@ const EditPostModal = ({
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
 
     setLoading(true);
     try {
@@ -165,6 +176,21 @@ const EditPostModal = ({
                 );
               })}
             </select>
+          </div>
+          <div className="flex my-2 self-start items-center">
+            <Field className="flex my-2 text-[#1E1912] self-start items-center">
+              <Switch
+                checked={enabled}
+                onChange={handlePrivateToggle}
+                className="group relative flex h-7 w-14 cursor-pointer rounded-full bg-white/10 p-1 transition-colors duration-200 ease-in-out focus:outline-none data-[focus]:outline-1 data-[focus]:outline-white data-[checked]:bg-[#ECE2D8]"
+              >
+                <span
+                  aria-hidden="true"
+                  className="pointer-events-none inline-block size-5 translate-x-0 rounded-full bg-white ring-0 shadow-lg transition duration-200 ease-in-out group-data-[checked]:translate-x-7"
+                />
+              </Switch>
+              <Label className="pl-2">private</Label>
+            </Field>
           </div>
           <div className="flex justify-end">
             <button

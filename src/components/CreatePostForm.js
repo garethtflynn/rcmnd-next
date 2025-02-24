@@ -9,7 +9,7 @@ import Image from "next/image";
 
 import { Description, Field, Label, Switch } from "@headlessui/react";
 
-const Dropzone = () => {
+const CreatePostForm = () => {
   const { data: session } = useSession();
   const userId = session?.user?.id;
   const router = useRouter();
@@ -195,6 +195,10 @@ const Dropzone = () => {
     }
   }, [userId]);
 
+  const handleCancelClick = async () => {
+    router.back();
+  };
+
   const onSubmit = async (e) => {
     e.preventDefault();
     // console.log("POST DATA:", formData);
@@ -312,15 +316,24 @@ const Dropzone = () => {
             <Label className="pl-2">private</Label>
           </Field>
         </div>
-        <button
-          type="submit"
-          className="w-1/2 mt-2 bg-[#ECE2D8] hover:opacity-75 text-[#110A02] font-bold py-2 px-4 rounded-md duration-500 "
-        >
-          create
-        </button>
+        <div className="w-full flex items-center justify-center">
+          <button
+            onClick={handleCancelClick}
+            type='button'
+            className="w-1/2 mt-2 bg-transparent hover:text-opacity-50 text-[#ECE2D8] font-bold py-2 px-4 rounded-md duration-500 mr-2"
+          >
+            cancel
+          </button>
+          <button
+            type="submit"
+            className="w-1/2 mt-2 bg-[#ECE2D8] hover:opacity-75 text-[#110A02] font-bold py-2 px-4 rounded-md duration-500 "
+          >
+            create
+          </button>
+        </div>
       </div>
     </form>
   );
 };
 
-export default Dropzone;
+export default CreatePostForm;

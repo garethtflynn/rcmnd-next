@@ -6,6 +6,8 @@ import { useParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 
+import { Button } from "@headlessui/react";
+
 import PostItemUserProfilePage from "@/components/PostItemUserProfilePage";
 import UserListsProfilePage from "@/components/UserListsProfilePage";
 
@@ -113,9 +115,9 @@ function UserPage(props) {
 
       <div className="my-2 h-8 flex pl-1">
         {/* Follow Button */}
-        <button
+        <Button
           onClick={handleFollowToggle}
-          className={`w-1/3 py-2 flex justify-center items-center text-[#FBF8F4] ${
+          className={`w-1/3 py-2 flex justify-center items-center hover:bg-opacity-75 rounded- ${
             isFollowing
               ? "bg-[#FBF8F4] border border-[#1E1912]"
               : "bg-[#1E1912] border border-[#FBF8F4]"
@@ -124,7 +126,7 @@ function UserPage(props) {
           <p className={`${isFollowing ? "text-[#1E1912]" : "text-[#FBF8F4]"}`}>
             {isFollowing ? "following" : "follow"}
           </p>
-        </button>
+        </Button>
       </div>
       <div>
         <UserListsProfilePage />

@@ -17,6 +17,7 @@ export default function PostItem({
   image,
   list,
   listId, 
+  isPrivate,
   deletePostCallback,
 }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -85,6 +86,7 @@ export default function PostItem({
           description={description}
           list={list?.title}
           listId={listId}
+          isPrivate={isPrivate}
         />
       </div>
     </div>

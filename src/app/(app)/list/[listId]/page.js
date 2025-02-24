@@ -132,6 +132,7 @@ function ListPage() {
           closeModal={closeModal}
           title={list.title}
           listId={list.id}
+          isPrivate={list.isPrivate}
         />
       </div>
 
