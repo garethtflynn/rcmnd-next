@@ -18,12 +18,14 @@ export async function GET(req, { params }) {
     console.log("LIST IN RH", list);
     return new NextResponse(JSON.stringify(list), { status: 200 });
   } catch (error) {
-    return  new NextResponse(JSON.stringify({ error: "Failed to fetch posts" }), {
-      status: 500,
-    });
+    return new NextResponse(
+      JSON.stringify({ error: "Failed to fetch posts" }),
+      {
+        status: 500,
+      }
+    );
   }
 }
-
 
 export async function DELETE(req, { params }) {
   const { listId } = params;
@@ -43,13 +45,14 @@ export async function DELETE(req, { params }) {
 
 export async function PATCH(req, { params }) {
   const { listId } = params;
-  const { title } = await req.json(); // Get updated data from the request body
+  const { title, isPrivate } = await req.json(); // Get updated data from the request body
 
   try {
     const updatedList = await prisma.list.update({
       where: { id: listId },
       data: {
         title: title,
+        isPrivate: isPrivate,
       },
     });
 

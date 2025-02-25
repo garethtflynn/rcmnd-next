@@ -29,7 +29,7 @@ function EditListModal({ isOpen, closeModal, title, listId, isPrivate }) {
     // console.log("LIST ID", listId);
     // console.log("List Title:", title);
     // console.log("updated list title", listTitle);
-    // console.log(formData)
+    console.log(formData)
 
     setLoading(true);
     try {
