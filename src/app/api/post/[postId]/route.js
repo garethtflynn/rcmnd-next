@@ -37,7 +37,7 @@ export async function DELETE(req, { params }) {
 
 export async function PATCH(req, { params }) {
   const { postId } = params;
-  const { title, link, description, listId } = await req.json(); // Get updated data from the request body
+  const { title, link, description, listId, isPrivate } = await req.json(); // Get updated data from the request body
 
   try {
     const updatedPost = await prisma.post.update({
@@ -47,6 +47,7 @@ export async function PATCH(req, { params }) {
         link: link,
         description: description,
         listId: listId,
+        isPrivate: isPrivate,
       },
     });
 
