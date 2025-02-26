@@ -8,6 +8,8 @@ export default function PostItemDetailsPage({
   link,
   description,
   image,
+  username,
+  userId,
   deletePostCallback,
 }) {
   return (
@@ -24,8 +26,13 @@ export default function PostItemDetailsPage({
           height="300"
         />
       </div>
-      <div className="w-full h-fit place-content-center sm:px-4 py-4 md:w-3/4 md:px-0 md:pt-0 text-[#FBF8F4]">
-        <h1 className="text-xl py-4">NOTES</h1>
+      <div className="w-full h-fit  sm:px-4 py-4 md:w-3/4 md:px-0 md:pt-0 text-[#FBF8F4]">
+        <div className="flex flex-row justify-between items-center">
+          <Link href={`/user/${userId}`} className="hover:opacity-50">
+            <h1 className="text-xl">@{username}</h1>
+          </Link>
+          <h1 className="text-xl py-4">NOTES</h1>
+        </div>
         <div className="border p-2 mx-1 bg-[#4C4138]">
           <p>{title}</p>
           <br />

@@ -29,7 +29,7 @@ function PostPage(props) {
             throw new Error("Failed to fetch post");
           }
           const data = await res.json();
-          console.log(data);
+          // console.log(data);
           setPost(data);
         } catch (err) {
           setError(err.message);
@@ -63,7 +63,7 @@ function PostPage(props) {
       // If the API call is successful, update the UI (remove the post from the state)
       setPost(post.filter((post) => post.id !== postId));
 
-      console.log(`Post with ID ${postId} has been deleted.`);
+      // console.log(`Post with ID ${postId} has been deleted.`);
     } catch (error) {
       console.error("Error deleting post:", error);
     }
@@ -76,6 +76,8 @@ function PostPage(props) {
         title={post.title}
         src={post.image}
         alt={post.title}
+        username={post.user.username}
+        userId={post.userId}
         deletePostCallback={deletePost}
         {...post}
       />

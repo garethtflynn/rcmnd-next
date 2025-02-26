@@ -26,7 +26,6 @@ function CreateList(props) {
         body: JSON.stringify(body),
       });
       if (res.ok) {
-        // ill want this to redirect to profile page
         // console.log("List created!!");
         router.push("/profilePage");
       }
