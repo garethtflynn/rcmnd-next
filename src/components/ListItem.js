@@ -10,7 +10,7 @@ export default function ListItem({
     if (navToListCallback) {
       navToListCallback(id);
     }
-    console.log(`going to list ${id}`);
+    // console.log(`going to list ${id}`);
   };
   return (
     <div

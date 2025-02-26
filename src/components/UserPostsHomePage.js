@@ -16,6 +16,7 @@ function UserPostsHomePage(props) {
   const { data: session } = useSession();
   const userId = session?.user?.id;
   const [posts, setPosts] = useState(null);
+  // const [postUser, setPostUser] = useState();
   const [isLoading, setLoading] = useState(true);
   const [error, setError] = useState();
 
@@ -36,7 +37,8 @@ function UserPostsHomePage(props) {
           }
 
           const followingData = await followingRes.json(); // This should return the list of users the logged-in user is following
-          // console.log(followingData)
+          // console.log(followingData);
+          // setPostUser(followingData.username)
 
           const followingIds = followingData.map((user) => user.id);
 
