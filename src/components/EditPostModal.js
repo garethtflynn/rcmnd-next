@@ -17,7 +17,6 @@ const EditPostModal = ({
 }) => {
   const { data: session } = useSession();
   const userId = session?.user?.id;
-
   const [loading, setLoading] = useState(false);
   const [lists, setLists] = useState(null);
   const [enabled, setEnabled] = useState(isPrivate);
@@ -43,7 +42,7 @@ const EditPostModal = ({
           });
           if (!res.ok) {
             // console.log("RES IN userTest", res);
-            throw new Error("Failed to fetch posts");
+            throw new Error("Failed to fetch lists");
           }
           const data = await res.json();
           //   console.log(data);

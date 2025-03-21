@@ -60,32 +60,6 @@ function UserLists(props) {
         })}
       </ul>
     </div>
-    // <div className="logos">
-    //   <div className="scroll scroll-smooth no-scrollbar bg-[#110A02] text-[#FBF8F4] logos-slide text-xl">
-    //     {lists?.map((list) => {
-    //       return (
-    //         <p
-    //           key={list.id}
-    //           onClick={() => handleListClick(list.id)}
-    //           className="text-[#FBF8F4] w-60  inline-block p-2 cursor-pointer text-xl"
-    //         >
-    //           {list.title}
-    //         </p>
-    //       );
-    //     })}
-    //   </div>
-    //   <div className="scroll scroll-smooth no-scrollbar bg-[#110A02] text-[#FBF8F4] logos-slide ">
-    //     {lists?.map((list) => (
-    //       <p
-    //         key={`duplicate-${list.id}`}
-    //         onClick={() => handleListClick(list.id)}
-    //         className="text-[#FBF8F4] w-60 inline-block p-2 cursor-pointer text-xl"
-    //       >
-    //         {list.title}
-    //       </p>
-    //     ))}
-    //   </div>
-    // </div>
   );
 }
 
