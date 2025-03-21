@@ -8,8 +8,9 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 
 import { Description, Field, Label, Switch } from "@headlessui/react";
+import { list } from "postcss";
 
-const CreatePostForm = () => {
+const AddPostForm = ({ isOpen, closeModal, listId, listTitle }) => {
   const { data: session } = useSession();
   const userId = session?.user?.id;
   const router = useRouter();
@@ -18,19 +19,20 @@ const CreatePostForm = () => {
     link: "",
     description: "",
     image: "",
-    listId: "",
+    listId: listId,
     isPrivate: false,
   });
   const [image, setImage] = useState();
   const [lists, setLists] = useState(null);
-  const [isLoading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
+
   const [enabled, setEnabled] = useState(false);
 
   const [isImageDropped, setIsImageDropped] = useState(true);
   const { getRootProps, getInputProps } = useDropzone({
-    // accept: {
-    //   "image/*": [],
-    // },
+    accept: {
+      "image/*": [],
+    },
     maxSize: 1024 * 1000,
     onDrop: (acceptedFiles) => {
       // console.log("ON DROP ACCEPTED FILE", acceptedFiles);
@@ -194,16 +196,12 @@ const CreatePostForm = () => {
     }
   }, [userId]);
 
-  const handleCancelClick = async () => {
-    router.back();
-  };
-
   const onSubmit = async (e) => {
     e.preventDefault();
     // console.log("POST DATA:", formData);
     uploadImageToB2();
     createPost();
-    router.replace("/profilePage");
+    window.location.reload();
   };
 
   const preview = image?.map((file) => (
@@ -234,11 +232,11 @@ const CreatePostForm = () => {
   return (
     <form
       onSubmit={onSubmit}
-      className="h-screen w-full bg-[#110A02] flex flex-col jusify-center place-content-center"
+      className="flex flex-col jusify-center place-content-center"
     >
       {isImageDropped ? (
         <div
-          className="h-96 w-3/4 md:h-1/2 md:w-1/2 lg:h-1/2 lg:w-1/2  mx-auto bg-[#4C4138] border-dashed border-2 border-[#ECE2D8] flex flex-col jusify-center items-center place-content-center"
+          className="h-64 w-2/4 mx-auto bg-[#4C4138] border-dashed border-2 border-[#ECE2D8] flex flex-col jusify-center items-center place-content-center"
           {...getRootProps()}
         >
           <input
@@ -263,7 +261,7 @@ const CreatePostForm = () => {
           name="title"
           onChange={(e) => setFormData({ ...formData, title: e.target.value })}
           placeholder="title"
-          className="border border-[#ECE2D8] bg-transparent text-[#ECE2D8] px-2 py-1 my-2 rounded hover:bg-[#4C4138] focus:within:bg-[#ECE2D8] outline-none placeholder-[#4C4138] w-full"
+          className="mt-1 p-2 w-full border border-[#1E1912] text-[#1E1912] placeholder-[#110A02] bg-[#4C4138]"
         />
         <input
           defaultValue={formData.link}
@@ -271,7 +269,7 @@ const CreatePostForm = () => {
           name="link"
           onChange={(e) => setFormData({ ...formData, link: e.target.value })}
           placeholder="link"
-          className="border border-[#ECE2D8] bg-transparent text-[#ECE2D8] px-2 py-1 rounded hover:bg-[#4C4138] focus:within:bg-[#ECE2D8] outline-none placeholder-[#4C4138] w-full"
+          className="mt-1 p-2 w-full border border-[#1E1912] text-[#1E1912] placeholder-[#110A02] bg-[#4C4138]"
         />
         <textarea
           defaultValue={formData.description}
@@ -282,27 +280,28 @@ const CreatePostForm = () => {
           }
           rows={4}
           placeholder="description"
-          className="border border-[#ECE2D8] bg-transparent text-[#ECE2D8] mt-2 px-2 py-1 rounded hover:bg-[#4C4138] focus:within:bg-[#ECE2D8] outline-none placeholder-[#4C4138]  w-full"
+          className="mt-1 p-2 w-full border border-[#1E1912] text-[#1E1912] placeholder-[#110A02] bg-[#4C4138]"
         />
-        <select
-          className="border border-[#ECE2D8] bg-transparent text-[#4C4138] mt-2 px-2 py-1 rounded hover:bg-[#4C4138] focus:within:bg-[#ECE2D8] outline-none w-full"
+        <input
+          placeholder={listTitle} // Shows the title in the placeholder
+          //   value={listId} // Set the value to listId to submit it
+          type="text"
+          name="list"
+          readOnly
+          className="mt-1 p-2 w-full border border-[#1E1912] text-[#1E1912] placeholder-[#110A02] bg-[#4C4138]"
+          //   onFocus={() => setFormData({ ...formData, listId: listId })} // Ensure listId is set correctly when focused
+        />
+        {/* <input
+          placeholder={listTitle}
+          value={formData.listId}
+          type="text"
+          name="list"
           onChange={(e) => setFormData({ ...formData, listId: e.target.value })}
-        >
-          <option>list</option>
-          {lists?.map((list) => {
-            return (
-              <option key={list.id} value={list.id}>
-                {list.title}
-              </option>
-            );
-          })}
-        </select>
-        <div className="flex my-2 text-[#4C4138] self-start items-center">
-          <Field className="flex my-2 text-[#4C4138] self-start items-center">
+          className="mt-1 p-2 w-full border border-[#1E1912] text-[#1E1912] placeholder-[#110A02] bg-[#4C4138]"
+        /> */}
+        <div className="flex my-2 self-start items-center">
+          <Field className="flex my-2 text-[#1E1912] self-start items-center">
             <Switch
-              label="private"
-              description="private"
-              value="private"
               checked={enabled}
               onChange={handlePrivateToggle}
               className="group relative flex h-7 w-14 cursor-pointer rounded-full bg-white/10 p-1 transition-colors duration-200 ease-in-out focus:outline-none data-[focus]:outline-1 data-[focus]:outline-white data-[checked]:bg-[#ECE2D8]"
@@ -315,19 +314,22 @@ const CreatePostForm = () => {
             <Label className="pl-2">private</Label>
           </Field>
         </div>
-        <div className="w-full flex items-center justify-center">
+        <div className="w-full flex justify-end">
           <button
-            onClick={handleCancelClick}
-            type='button'
-            className="w-1/2 mt-2 bg-transparent hover:text-opacity-50 text-[#ECE2D8] font-bold py-2 px-4 rounded-md duration-500 mr-2"
+            onClick={closeModal}
+            type="button"
+            className="mr-4 text-[#110A02] hover:text-[#1E1912]"
           >
             cancel
           </button>
           <button
             type="submit"
-            className="w-1/2 mt-2 bg-[#ECE2D8] hover:opacity-75 text-[#110A02] font-bold py-2 px-4 rounded-md duration-500 "
+            className={`w-1/2 ${
+              loading ? "bg-[#4C4138]" : "bg-[#1E1912]"
+            } text-[#ECE2D8] p-2 hover:bg-[#110A02] disabled:opacity-50`}
+            disabled={loading}
           >
-            create
+            {loading ? "saving..." : "add post"}
           </button>
         </div>
       </div>
@@ -335,4 +337,4 @@ const CreatePostForm = () => {
   );
 };
 
-export default CreatePostForm;
+export default AddPostForm;
