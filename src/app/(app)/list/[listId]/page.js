@@ -112,7 +112,7 @@ function ListPage() {
   }
 
   return (
-    <div className="h-screen bg-[#110A02]">
+    <div className="min-h-screen bg-[#110A02]">
       <div className="text-[#FBF8F4] px-3 py-2 flex justify-center">
         {list && (
           <div className="w-full flex justify-between items-center">

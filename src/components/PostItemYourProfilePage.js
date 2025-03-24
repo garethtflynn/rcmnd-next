@@ -16,7 +16,7 @@ export default function PostItem({
   description,
   image,
   list,
-  listId, 
+  listId,
   isPrivate,
   deletePostCallback,
 }) {
@@ -35,7 +35,7 @@ export default function PostItem({
     // console.log('postID:', id)
     // console.log(`list name: ${list.title}`);
     // console.log(`listID: ${listId}`);
-    openModal()
+    openModal();
   };
 
   return (
