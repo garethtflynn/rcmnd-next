@@ -12,6 +12,7 @@ const client = new S3Client({
   },
 });
 
+
 async function getS3PresignedUrl(key) {
   if (!key) {
     console.error("No key provided!");

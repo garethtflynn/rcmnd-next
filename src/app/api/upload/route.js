@@ -1,6 +1,7 @@
 // import getB2UploadInfo from "@/utils/getB2UploadInfo";
 import { NextResponse } from "next/server";
 import getS3PresignedUrl from "@/utils/getS3PresignedUrl";
+import backblazeS3Service from "@/utils/backblazeS3Service";
 
 export async function GET(req, res) {
   // console.log("REQ LOG", req);

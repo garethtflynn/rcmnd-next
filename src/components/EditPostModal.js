@@ -1,13 +1,18 @@
 "use client";
 
+import Image from "next/image";
 import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { Field, Label, Switch } from "@headlessui/react";
+import { FaRegCircleUp, FaXmark } from "react-icons/fa6";
+import { useDropzone } from "react-dropzone";
+import { useRouter } from "next/navigation";
 
 const EditPostModal = ({
   isOpen,
   closeModal,
   id,
+  image,
   title,
   link,
   description,
@@ -17,12 +22,17 @@ const EditPostModal = ({
 }) => {
   const { data: session } = useSession();
   const userId = session?.user?.id;
+  const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [lists, setLists] = useState(null);
   const [enabled, setEnabled] = useState(isPrivate);
+  const [isImageRemoved, setIsImageRemoved] = useState(false);
+  const [currentImage, setCurrentImage] = useState(image);
+  const [newImage, setNewImage] = useState(null);
   const [formData, setFormData] = useState({
     postId: id,
     title: title,
+    image: image,
     link: link,
     description: description,
     listId: listId,
@@ -57,6 +67,68 @@ const EditPostModal = ({
     }
   }, [userId]);
 
+  const { getRootProps, getInputProps, acceptedFiles } = useDropzone({
+    accept: {
+      "image/*": [],
+    },
+    onDrop: (acceptedFiles) => {
+      console.log(acceptedFiles);
+      const fileAsString = JSON.stringify(acceptedFiles);
+
+      // Create object URL for preview
+      const fileWithPreview = acceptedFiles.map((file) =>
+        Object.assign(file, {
+          preview: URL.createObjectURL(file),
+        })
+      )[0]; // Get the first file
+
+      setNewImage(fileWithPreview);
+      setCurrentImage(fileWithPreview.preview);
+      setIsImageRemoved(false);
+      setFormData((prevData) => {
+        const newData = {
+          ...prevData,
+          image: fileAsString,
+        };
+        console.log("Updated formData:", newData);
+        return newData;
+      });
+      console.log("new image:", newImage);
+    },
+  });
+
+  // const { getRootProps, getInputProps, acceptedFiles } = useDropzone({
+  //   accept: {
+  //     "image/*": [],
+  //   },
+  //   onDrop: (acceptedFiles) => {
+  //     // console.log("ON DROP ACCEPTED FILE", acceptedFiles);
+  //     const file = acceptedFiles;
+  //     console.log(file);
+  //     const fileAsString = JSON.stringify(acceptedFiles);
+  //     setIsImageRemoved(false);
+  //     setFormData({ ...formData, image: fileAsString });
+  //     setNewImage(
+  //       acceptedFiles.map((file) =>
+  //         Object.assign(file, {
+  //           preview: URL.createObjectURL(file),
+  //         })
+  //       )
+  //     );
+  //   },
+  // });
+
+  useEffect(() => {
+    // Revoke the data uris to avoid memory leaks
+    return () => {
+      if (newImage && Array.isArray(newImage)) {
+        newImage.forEach((file) => URL.revokeObjectURL(file.preview));
+      } else if (newImage && newImage.preview) {
+        URL.revokeObjectURL(newImage.preview);
+      }
+    };
+  }, [newImage]);
+
   const handlePrivateToggle = (checked) => {
     setEnabled(checked);
     // Update the formData when the switch is toggled
@@ -71,17 +143,81 @@ const EditPostModal = ({
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const uploadImageToB2 = async () => {
+    const imageFile = newImage;
+    console.log(imageFile);
+    const key = imageFile.name;
+    console.log("KEY:", key);
+    // Tell B2 to set the content type automatically depending on the file extension
+    const contentType = "b2/x-auto";
+    let msg, detail;
 
+    try {
+      // Ask the backend for a presigned URL
+      let response = await fetch(
+        "/api/upload?" +
+          new URLSearchParams({
+            key: key,
+          }).toString()
+      ); 
+      if (!response.ok) {
+        msg = `${response.status} when retrieving presigned URL from backend`;
+        detail = await response.text();
+      } else {
+        const { presignedUrl } = await response.json();
+        // console.log(`Presigned URL: ${presignedUrl}`);
+
+        // Get the file's contents as an ArrayBuffer
+        const fileContent = await imageFile.arrayBuffer();
+        // console.log(`File content after arrayBuffer: ${fileContent}`);
+
+        // Upload the file content with the filename, hash and auth token
+        response = await fetch(presignedUrl, {
+          method: "PUT",
+          mode: "cors",
+          body: fileContent,
+          headers: {
+            "Content-Type": contentType,
+            Accept:
+              "image/avif,image/webp,image/apng,image/svg+xml,image/jpeg,image/*,*/*;q=0.8",
+          },
+        });
+
+        // Report on the outcome
+        if (response.status >= 200 && response.status < 300) {
+          msg = `${response.status} response from S3 API. Success!`;
+        } else if (response.status >= 400) {
+          msg = `${response.status} error from S3 API.`;
+        } else {
+          msg = `Unknown error.`;
+        }
+
+        detail = "[S3 PutObject does not return any content]";
+      }
+    } catch (error) {
+      console.error("Fetch threw an error:", error);
+      msg = `Fetch threw "${error}" - see the console and/or network tab for more details`;
+      detail = error.stack;
+    }
+  };
+
+  const editPost = async () => {
+    const imageFile = newImage;
+    const updatedNewImage = imageFile.name;
     setLoading(true);
     try {
+      const imageReferenceUrl = process.env.NEXT_PUBLIC_DATABASE_IMAGE_URL;
+      const body = {
+        ...formData, 
+        image: `${imageReferenceUrl}/${updatedNewImage}`,
+        userId: userId,
+      };
       const response = await fetch(`/api/post/${id}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(formData), // Send the form data as a JSON string
+        body: JSON.stringify(body), // Send the form data as a JSON string
       });
 
       if (!response.ok) {
@@ -93,8 +229,28 @@ const EditPostModal = ({
       console.error("Error updating post:", error);
     } finally {
       setLoading(false);
-      window.location.reload();
     }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    console.log("submitting form:", formData);
+    uploadImageToB2();
+    editPost();
+    router.replace("/profilePage");
+  };
+
+  const removeImage = () => {
+    console.log("X clicked");
+    setIsImageRemoved(true);
+    setFormData((prevFormData) => {
+      const newFormData = {
+        ...prevFormData,
+        image: "", // Clear the image
+      };
+      console.log("Updated formData:", newFormData);
+      return newFormData;
+    });
   };
 
   if (!isOpen) return null;
@@ -106,7 +262,34 @@ const EditPostModal = ({
           edit post
         </h2>
         <form onSubmit={handleSubmit}>
-          <div className="mb-4">
+          {isImageRemoved ? (
+            <div
+              className="h-48 w-2/4 mx-auto bg-[#4C4138] border-dashed border-2 border-[#ECE2D8] flex flex-col jusify-center items-center place-content-center"
+              {...getRootProps()}
+            >
+              <input name="image" type="file" {...getInputProps()} />
+              <FaRegCircleUp className="w-5 h-5 fill-current" />
+              <p className="px-3 text-center">add image</p>
+            </div>
+          ) : (
+            <div className="relative">
+              <button
+                className="absolute top-2 right-2 z-10 bg-black bg-opacity-50 rounded-full p-1 cursor-pointer"
+                type="button"
+                onClick={removeImage}
+              >
+                <FaXmark className="w-5 h-5" color="white" />
+              </button>
+              <Image
+                src={currentImage}
+                alt={description}
+                className="object-cover"
+                width={350}
+                height={200}
+              />
+            </div>
+          )}
+          <div className="my-4">
             <label
               htmlFor="title"
               className="block text-sm font-medium text-[#110A02]"

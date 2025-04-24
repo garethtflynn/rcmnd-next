@@ -2,7 +2,7 @@
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
-import { FaRegCircleUp } from "react-icons/fa6";
+import { FaRegCircleUp, FaXmark } from "react-icons/fa6";
 import { useRouter } from "next/navigation";
 
 import Image from "next/image";
@@ -25,18 +25,16 @@ const AddPostForm = ({ isOpen, closeModal, listId, listTitle }) => {
   const [image, setImage] = useState();
   const [lists, setLists] = useState(null);
   const [loading, setLoading] = useState(true);
-
   const [enabled, setEnabled] = useState(false);
-
   const [isImageDropped, setIsImageDropped] = useState(true);
+ 
   const { getRootProps, getInputProps } = useDropzone({
     accept: {
       "image/*": [],
     },
-    maxSize: 1024 * 1000,
     onDrop: (acceptedFiles) => {
       // console.log("ON DROP ACCEPTED FILE", acceptedFiles);
-      const file = acceptedFiles[0];
+      // const file = acceptedFiles[0];
       // console.log(file.name);
       const fileAsString = JSON.stringify(acceptedFiles); // Convert array to JSON string
       setIsImageDropped(false);
@@ -204,21 +202,40 @@ const AddPostForm = ({ isOpen, closeModal, listId, listTitle }) => {
     window.location.reload();
   };
 
-  const preview = image?.map((file) => (
-    <div key={file.name} className="w-1/2 flex justify-center">
-      <Image
-        src={file.preview}
-        alt={file.name}
-        className="object-cover"
-        width={350}
-        height={200}
-        // Revoke data uri after image is loaded
-        onLoad={() => {
-          URL.revokeObjectURL(file.preview);
-        }}
-      />
+  const removeImage = () => {
+    console.log("X clicked");
+    setIsImageDropped(true);
+    setImage(null); // Use null instead of empty string for clarity
+    setFormData({
+      ...formData,
+      image: "" // Clear the image in formData too
+    });
+  };
+
+  const preview = image && Array.isArray(image) ? image.map((file) => (
+    <div key={file.name} className="w-1/2 flex justify-center relative">
+      <div className="relative">
+        <button
+          className="absolute top-2 right-2 z-10 bg-black bg-opacity-50 rounded-full p-1 cursor-pointer"
+          type="button"
+          onClick={removeImage}
+        >
+          <FaXmark className="w-5 h-5" color="white" />
+        </button>
+        <Image
+          src={file.preview}
+          alt={file.name}
+          className="object-cover"
+          width={350}
+          height={200}
+          // Revoke data uri after image is loaded
+          onLoad={() => {
+            URL.revokeObjectURL(file.preview);
+          }}
+        />
+      </div>
     </div>
-  ));
+  )) : null;
 
   const handlePrivateToggle = (checked) => {
     setEnabled(checked);

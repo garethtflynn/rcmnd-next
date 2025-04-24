@@ -2,9 +2,8 @@
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
-import { FaRegCircleUp } from "react-icons/fa6";
+import { FaRegCircleUp, FaXmark } from "react-icons/fa6";
 import { useRouter } from "next/navigation";
-
 import Image from "next/image";
 
 import { Description, Field, Label, Switch } from "@headlessui/react";
@@ -21,21 +20,21 @@ const CreatePostForm = () => {
     listId: "",
     isPrivate: false,
   });
-  const [image, setImage] = useState();
+  const [image, setImage] = useState(null);
   const [lists, setLists] = useState(null);
   const [isLoading, setLoading] = useState(true);
   const [enabled, setEnabled] = useState(false);
-
   const [isImageDropped, setIsImageDropped] = useState(true);
-  const { getRootProps, getInputProps } = useDropzone({
-    // accept: {
-    //   "image/*": [],
-    // },
-    maxSize: 1024 * 1000,
+  
+  const { getRootProps, getInputProps, acceptedFiles } = useDropzone({
+    accept: {
+      "image/*": [],
+    },
+    // maxSize: 1024 * 1000,
     onDrop: (acceptedFiles) => {
       // console.log("ON DROP ACCEPTED FILE", acceptedFiles);
-      const file = acceptedFiles[0];
-      // console.log(file.name);
+      // const file = acceptedFiles;
+      // console.log(file);
       const fileAsString = JSON.stringify(acceptedFiles); // Convert array to JSON string
       setIsImageDropped(false);
       setFormData({ ...formData, image: fileAsString }); // need to change image in formData
@@ -134,13 +133,12 @@ const CreatePostForm = () => {
     }
 
     try {
-      const imageReferenceUrl = process.env.NEXT_PUBLIC_DATABASE_IMAGE_URL;
       // const endpointUrl = process.env.NEXT_PUBLIC_AWS_ENDPOINT_URL;
-      // Include userId in the body
+      const imageReferenceUrl = process.env.NEXT_PUBLIC_DATABASE_IMAGE_URL;
       const body = {
-        ...formData, // Spread existing form data
+        ...formData,
         image: `${imageReferenceUrl}/${imageName}`,
-        userId: userId, // Add userId to the body
+        userId: userId,
       };
       // console.log(body);
       const apiUrl = "/api/post";
@@ -206,21 +204,40 @@ const CreatePostForm = () => {
     router.replace("/profilePage");
   };
 
-  const preview = image?.map((file) => (
-    <div key={file.name} className="w-1/2 flex justify-center">
-      <Image
-        src={file.preview}
-        alt={file.name}
-        className="object-cover"
-        width={350}
-        height={200}
-        // Revoke data uri after image is loaded
-        onLoad={() => {
-          URL.revokeObjectURL(file.preview);
-        }}
-      />
+  const removeImage = () => {
+    console.log("X clicked");
+    setIsImageDropped(true);
+    setImage(null); // Use null instead of empty string for clarity
+    setFormData({
+      ...formData,
+      image: "" // Clear the image in formData too
+    });
+  };
+
+  const preview = image && Array.isArray(image) ? image.map((file) => (
+    <div key={file.name} className="w-1/2 flex justify-center relative">
+      <div className="relative">
+        <button
+          className="absolute top-2 right-2 z-10 bg-black bg-opacity-50 rounded-full p-1 cursor-pointer"
+          type="button"
+          onClick={removeImage}
+        >
+          <FaXmark className="w-5 h-5" color="white" />
+        </button>
+        <Image
+          src={file.preview}
+          alt={file.name}
+          className="object-cover"
+          width={350}
+          height={200}
+          // Revoke data uri after image is loaded
+          onLoad={() => {
+            URL.revokeObjectURL(file.preview);
+          }}
+        />
+      </div>
     </div>
-  ));
+  )) : null;
 
   const handlePrivateToggle = (checked) => {
     setEnabled(checked);
@@ -245,7 +262,6 @@ const CreatePostForm = () => {
             defaultValue={formData.image}
             name="image"
             type="file"
-            accept="image/*"
             {...getInputProps()}
           />
           <FaRegCircleUp className="w-5 h-5 fill-current" />
@@ -318,7 +334,7 @@ const CreatePostForm = () => {
         <div className="w-full flex items-center justify-center">
           <button
             onClick={handleCancelClick}
-            type='button'
+            type="button"
             className="w-1/2 mt-2 bg-transparent hover:text-opacity-50 text-[#ECE2D8] font-bold py-2 px-4 rounded-md duration-500 mr-2"
           >
             cancel
