@@ -9,7 +9,8 @@
       "b2_upload_file",
       "b2_upload_part",
       "s3_put",
-      "s3_get"
+      "s3_get",
+      "s3_delete"
     ],
     "exposeHeaders": ["x-bz-content-sha1"],
     "maxAgeSeconds": 3600

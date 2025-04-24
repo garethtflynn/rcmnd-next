@@ -81,6 +81,7 @@ export default function PostItem({
           closeModal={closeModal}
           id={id}
           title={title}
+          image={image}
           link={link}
           description={description}
           list={list?.title}
