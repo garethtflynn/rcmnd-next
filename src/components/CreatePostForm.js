@@ -5,7 +5,10 @@ import { useDropzone } from "react-dropzone";
 import { FaRegCircleUp, FaXmark } from "react-icons/fa6";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import heic2any from "heic2any";
+import dynamic from 'next/dynamic';
+
+// Import heic2any dynamically to prevent server-side rendering issues
+const Heic2any = dynamic(() => import('heic2any'), { ssr: false });
 
 import { Description, Field, Label, Switch } from "@headlessui/react";
 
@@ -24,16 +27,24 @@ const CreatePostForm = () => {
   const [image, setImage] = useState(null);
   const [lists, setLists] = useState(null);
   const [isLoading, setLoading] = useState(true);
-  const [isConverting, setIsConverting] = useState(false); // State to track HEIC conversion
+  const [isConverting, setIsConverting] = useState(false);
   const [enabled, setEnabled] = useState(false);
   const [isImageDropped, setIsImageDropped] = useState(true);
+  const [isBrowser, setIsBrowser] = useState(false);
+  
+  // Set isBrowser to true once the component mounts
+  useEffect(() => {
+    setIsBrowser(true);
+  }, []);
   
   const { getRootProps, getInputProps, acceptedFiles } = useDropzone({
     accept: {
       "image/*": [],
     },
-    // maxSize: 1024 * 1000,
     onDrop: async (acceptedFiles) => {
+      // Only run browser-specific code after component is mounted
+      if (!isBrowser) return;
+      
       const file = acceptedFiles[0];
       
       // Check if the file is a HEIC file
@@ -45,8 +56,8 @@ const CreatePostForm = () => {
       if (isHeic) {
         setIsConverting(true);
         try {
-          // Convert HEIC to JPEG
-          const jpegBlob = await heic2any({
+          // Convert HEIC to JPEG using dynamically imported heic2any
+          const jpegBlob = await Heic2any({
             blob: file,
             toType: 'image/jpeg',
             quality: 0.9
@@ -96,13 +107,16 @@ const CreatePostForm = () => {
 
   useEffect(() => {
     // Revoke the data uris to avoid memory leaks
-    return () => image?.forEach((file) => URL.revokeObjectURL(file.preview));
-  }, [image]);
+    if (isBrowser && image) {
+      return () => image.forEach((file) => URL.revokeObjectURL(file.preview));
+    }
+  }, [image, isBrowser]);
 
   const uploadImageToB2 = async () => {
+    if (!isBrowser || !image || !image[0]) return;
+    
     const imageFile = image[0];
     const key = imageFile.name;
-    // const key = imageName;
     // Tell B2 to set the content type automatically depending on the file extension
     const contentType = "b2/x-auto";
     let msg, detail;
@@ -114,20 +128,16 @@ const CreatePostForm = () => {
           new URLSearchParams({
             key: key,
           }).toString()
-      ); // Just sending the image name as key
-      // console.log("RESPONSE VARIABLE:", response);
+      );
       // Report on the outcome
       if (!response.ok) {
         msg = `${response.status} when retrieving presigned URL from backend`;
-        // console.error(msg);
         detail = await response.text();
       } else {
         const { presignedUrl } = await response.json();
-        // console.log(`Presigned URL: ${presignedUrl}`);
 
         // Get the file's contents as an ArrayBuffer
         const fileContent = await imageFile.arrayBuffer();
-        // console.log(`File content after arrayBuffer: ${fileContent}`);
 
         // Upload the file content with the filename, hash and auth token
         response = await fetch(presignedUrl, {
@@ -157,12 +167,11 @@ const CreatePostForm = () => {
       msg = `Fetch threw "${error}" - see the console and/or network tab for more details`;
       detail = error.stack;
     }
-
-    // console.log(`Upload file result: ${msg}`);
-    // console.log(`Response detail: ${detail}`);
   };
 
   const createPost = async () => {
+    if (!isBrowser || !image || !image[0]) return;
+    
     const imageFile = image[0];
     const imageName = imageFile.name;
     const userId = session?.user?.id;
@@ -173,20 +182,17 @@ const CreatePostForm = () => {
     }
     // Ensure formData has required properties
     if (!formData.title || !formData.link || !formData.image) {
-      // console.log(formData);
       alert("Form input required!");
       return;
     }
 
     try {
-      // const endpointUrl = process.env.NEXT_PUBLIC_AWS_ENDPOINT_URL;
       const imageReferenceUrl = process.env.NEXT_PUBLIC_DATABASE_IMAGE_URL;
       const body = {
         ...formData,
         image: `${imageReferenceUrl}/${imageName}`,
         userId: userId,
       };
-      // console.log(body);
       const apiUrl = "/api/post";
       const requestData = {
         method: "POST",
@@ -196,7 +202,6 @@ const CreatePostForm = () => {
         body: JSON.stringify(body),
       };
 
-      // console.log("REQ DATA", requestData);
       const response = await fetch(apiUrl, requestData);
 
       if (!response.ok) {
@@ -222,14 +227,13 @@ const CreatePostForm = () => {
             credentials: "include",
           });
           if (!res.ok) {
-            // console.log("RES IN userTest", res);
             throw new Error("Failed to fetch posts");
           }
           const data = await res.json();
-          // console.log(data);
           setLists(data);
         } catch (err) {
-          setError(err.message);
+          console.error(err.message);
+          // Removed setError since it's not defined
         } finally {
           setLoading(false);
         }
@@ -244,7 +248,6 @@ const CreatePostForm = () => {
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    // console.log("POST DATA:", formData);
     uploadImageToB2();
     createPost();
     router.replace("/profilePage");
@@ -259,7 +262,7 @@ const CreatePostForm = () => {
     });
   };
 
-  const preview = image && Array.isArray(image) ? image.map((file) => (
+  const preview = isBrowser && image && Array.isArray(image) ? image.map((file) => (
     <div key={file.name} className="w-1/2 flex justify-center relative">
       <div className="relative">
         <button
@@ -277,7 +280,9 @@ const CreatePostForm = () => {
           height={200}
           // Revoke data uri after image is loaded
           onLoad={() => {
-            URL.revokeObjectURL(file.preview);
+            if (isBrowser) {
+              URL.revokeObjectURL(file.preview);
+            }
           }}
         />
       </div>
@@ -296,7 +301,7 @@ const CreatePostForm = () => {
   return (
     <form
       onSubmit={onSubmit}
-      className="h-screen w-full bg-[#110A02] flex flex-col jusify-center place-content-center"
+      className="h-screen w-full bg-[#110A02] flex flex-col jusify-center place-content-center py-3"
     >
       {isImageDropped ? (
         <div
@@ -315,9 +320,6 @@ const CreatePostForm = () => {
             <>
               <FaRegCircleUp className="w-5 h-5 fill-current" />
               <p className="px-3 text-center">add image</p>
-              <p className="px-3 text-center text-xs text-gray-400">
-                (HEIC files will be automatically converted)
-              </p>
             </>
           )}
         </div>
@@ -408,7 +410,7 @@ const CreatePostForm = () => {
       </div>
     </form>
   );
-};
+}
 
 export default CreatePostForm;
 

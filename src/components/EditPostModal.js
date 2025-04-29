@@ -2,12 +2,16 @@
 
 import Image from "next/image";
 import { useState, useEffect } from "react";
+import dynamic from "next/dynamic";
 import { useSession } from "next-auth/react";
 import { Field, Label, Switch } from "@headlessui/react";
 import { FaRegCircleUp, FaXmark } from "react-icons/fa6";
 import { useDropzone } from "react-dropzone";
 import { useRouter } from "next/navigation";
-import heic2any from "heic2any";
+
+const Heic2any = dynamic(() => import("heic2any"), { ssr: false });
+
+// import heic2any from "heic2any";
 
 const EditPostModal = ({
   isOpen,
@@ -31,6 +35,8 @@ const EditPostModal = ({
   const [currentImage, setCurrentImage] = useState(image);
   const [newImage, setNewImage] = useState(null);
   const [isConverting, setIsConverting] = useState(false);
+  const [isBrowser, setIsBrowser] = useState(false);
+
   const [formData, setFormData] = useState({
     postId: id,
     title: title,
@@ -40,6 +46,11 @@ const EditPostModal = ({
     listId: listId,
     isPrivate: isPrivate,
   });
+
+  // Set isBrowser to true once the component mounts
+  useEffect(() => {
+    setIsBrowser(true);
+  }, []);
 
   useEffect(() => {
     if (userId) {
@@ -72,6 +83,7 @@ const EditPostModal = ({
       "image/*": [],
     },
     onDrop: async (acceptedFiles) => {
+      if (!isBrowser) return;
       const file = acceptedFiles[0];
 
       // Check if the file is a HEIC file
@@ -85,7 +97,7 @@ const EditPostModal = ({
         setIsConverting(true);
         try {
           // Convert HEIC to JPEG
-          const jpegBlob = await heic2any({
+          const jpegBlob = await Heic2any({
             blob: file,
             toType: "image/jpeg",
             quality: 0.9,
