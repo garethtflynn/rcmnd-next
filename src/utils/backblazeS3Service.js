@@ -1,11 +1,13 @@
 // utils/backblazeS3Service.js
 import Debug from "debug";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
-import { 
-  S3Client, 
+import {
+  S3Client,
   PutObjectCommand,
   DeleteObjectCommand,
-  HeadObjectCommand 
+  HeadObjectCommand,
+  ListObjectVersionsCommand,
+  DeleteObjectsCommand,
 } from "@aws-sdk/client-s3";
 
 const debug = Debug("backblaze-s3-service");
@@ -30,20 +32,20 @@ class BackblazeS3Service {
     }
 
     debug("Creating presigned URL for key:", key);
-    
+
     const putObjectParams = {
       Bucket: this.bucketName,
       Key: key,
       ACL: "public-read",
     };
-    
+
     const putObjectCommand = new PutObjectCommand(putObjectParams);
-    
+
     try {
       const presignedUrl = await getSignedUrl(this.client, putObjectCommand, {
         expiresIn: 3600,
       });
-      
+
       debug("Generated presigned URL:", presignedUrl);
       return presignedUrl;
     } catch (error) {
@@ -52,8 +54,54 @@ class BackblazeS3Service {
     }
   }
 
+  //   async deleteFile(key) {
+  //     console.log(`Attempting to delete image with key: ${key} from backBlazeService deleteFile`);
+  //     if (!key) {
+  //       console.error("No key provided for deletion!");
+  //       return false;
+  //     }
+
+  //     debug("Attempting to delete file with key:", key);
+
+  //     try {
+  //       // First check if the file exists
+  //       try {
+  //         const headParams = {
+  //           Bucket: this.bucketName,
+  //           Key: key
+  //         };
+
+  //         await this.client.send(new HeadObjectCommand(headParams));
+  //       } catch (error) {
+  //         // If the file doesn't exist, consider it already deleted
+  //         if (error.name === 'NotFound') {
+  //           console.warn(`File with key ${key} not found, considering it already deleted`);
+  //           return true;
+  //         }
+  //         throw error;
+  //       }
+
+  //       // If we got here, the file exists, so delete it
+  //       const deleteParams = {
+  //         Bucket: this.bucketName,
+  //         Key: key
+  //       };
+
+  //       await this.client.send(new DeleteObjectCommand(deleteParams));
+  //       debug(`Successfully deleted file with key: ${key}`);
+  //       return true;
+  //     } catch (error) {
+  //       console.error(`Error deleting file with key ${key}:`, error);
+  //       return false;
+  //     }
+  //   }
+
+  // Extract key from full Backblaze URL
+
   async deleteFile(key) {
-    console.log(`Attempting to delete image with key: ${key} from backBlazeService deleteFile`);
+    console.log(
+      `Attempting to delete image with key: ${key} from backBlazeService deleteFile`
+    );
     if (!key) {
       console.error("No key provided for deletion!");
       return false;
@@ -62,59 +110,80 @@ class BackblazeS3Service {
     debug("Attempting to delete file with key:", key);
 
     try {
-      // First check if the file exists
-      try {
-        const headParams = {
-          Bucket: this.bucketName,
-          Key: key
-        };
-        
-        await this.client.send(new HeadObjectCommand(headParams));
-      } catch (error) {
-        // If the file doesn't exist, consider it already deleted
-        if (error.name === 'NotFound') {
-          console.warn(`File with key ${key} not found, considering it already deleted`);
-          return true;
-        }
-        throw error;
+      // Step 1: List all versions of the object
+      const listVersionsParams = {
+        Bucket: this.bucketName,
+        Prefix: key,
+      };
+
+      const listVersionsResponse = await this.client.send(
+        new ListObjectVersionsCommand(listVersionsParams)
+      );
+
+      // Step 2: If no versions found, file doesn't exist
+      if (
+        !listVersionsResponse.Versions ||
+        listVersionsResponse.Versions.length === 0
+      ) {
+        console.warn(
+          `File with key ${key} not found, considering it already deleted`
+        );
+        return true;
       }
-      
-      // If we got here, the file exists, so delete it
+
+      // Step 3: Delete all versions of the file
       const deleteParams = {
         Bucket: this.bucketName,
-        Key: key
+        Delete: {
+          Objects: [
+            ...listVersionsResponse.Versions.map((version) => ({
+              Key: key,
+              VersionId: version.VersionId,
+            })),
+            // Also include any delete markers
+            ...(listVersionsResponse.DeleteMarkers || []).map((marker) => ({
+              Key: key,
+              VersionId: marker.VersionId,
+            })),
+          ],
+          Quiet: false,
+        },
       };
-      
-      await this.client.send(new DeleteObjectCommand(deleteParams));
-      debug(`Successfully deleted file with key: ${key}`);
+
+      await this.client.send(new DeleteObjectsCommand(deleteParams));
+      debug(`Successfully deleted all versions of file with key: ${key}`);
       return true;
     } catch (error) {
-      console.error(`Error deleting file with key ${key}:`, error);
+      console.error(
+        `Error deleting all versions of file with key ${key}:`,
+        error
+      );
       return false;
     }
   }
 
-  // Extract key from full Backblaze URL
   extractKeyFromUrl(backblazeUrl) {
     if (!backblazeUrl) return null;
-    
+
     console.log("Trying to extract key from URL:", backblazeUrl);
-    
+
     try {
       const url = new URL(backblazeUrl);
-      
+
       // For URLs like: https://rcmndBucket.s3.us-east-005.backblazeb2.com/path/to/file.jpg
-      if (url.hostname.includes('.backblazeb2.com')) {
+      if (url.hostname.includes(".backblazeb2.com")) {
         // Just take everything after the hostname as the key
-        const key = url.pathname.startsWith('/') ? url.pathname.substring(1) : url.pathname;
+        const key = url.pathname.startsWith("/")
+          ? url.pathname.substring(1)
+          : url.pathname;
         console.log("Extracted key:", key);
         return key;
       }
-      
+
       // Additional parsing for other URL formats if needed
       return null;
     } catch (error) {
-      console.error('Error extracting key from URL:', error);
+      console.error("Error extracting key from URL:", error);
       return null;
     }
   }

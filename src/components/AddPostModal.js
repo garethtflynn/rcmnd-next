@@ -67,8 +67,8 @@ function AddPostModal({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-gray-500 bg-opacity-75 z-50 flex items-center justify-center">
-      <div className="bg-[#4C4138] p-6 shadow-md w-96">
+    <div className="fixed inset-0 bg-gray-500 bg-opacity-75 z-50 flex items-center justify-center p-4">
+      <div className="bg-[#4C4138] p-6 shadow-md w-full max-w-md sm:max-w-lg md:max-w-xl rounded-lg max-h-[90vh] overflow-y-auto">
         <h2 className="text-xl font-bold mb-4 text-[#110A02] text-end">
           add post to list
         </h2>
