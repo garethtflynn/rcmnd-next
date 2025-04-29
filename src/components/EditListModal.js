@@ -46,7 +46,7 @@ function EditListModal({ isOpen, closeModal, title, listId, isPrivate }) {
       console.error("error updating list", error);
     } finally {
       setLoading(false);
-      window.location.reload();
+      router.refresh();
     }
   };
 

@@ -295,7 +295,7 @@ const EditPostModal = ({
       await uploadImageToB2();
     }
     await editPost();
-    window.location.reload();
+    router.refresh();
   };
 
   const removeImage = () => {
