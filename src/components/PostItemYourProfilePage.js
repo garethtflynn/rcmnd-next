@@ -1,13 +1,19 @@
 "use client";
 
 import React, { useState } from "react";
+import dynamic from 'next/dynamic';
 import Image from "next/image";
 import Link from "next/link";
 
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 import { FaEllipsisVertical } from "react-icons/fa6";
 
-import EditPostModal from "./EditPostModal";
+const EditPostModal = dynamic(
+  () => import('@/components/EditPostModal'), // Adjust path to where your modal component is located
+  { ssr: false }
+);
+
+// import EditPostModal from "./EditPostModal";
 
 export default function PostItem({
   id,
