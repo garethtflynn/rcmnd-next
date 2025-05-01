@@ -29,16 +29,16 @@ function ProfilePage(props) {
 
   if (isLoading) {
     return (
-      <div className="h-screen w-full flex justify-center items-center bg-[#110A02] text-[#FBF8F4]">
+      <div className="h-screen w-full flex justify-center items-center bg-[#000000] text-[#D7CDBF]">
         <h2>loading...</h2>
       </div>
     );
   }
 
   return (
-    <div className="bg-[#110A02] text-[#FBF8F4] h-screen">
+    <div className="bg-[#000000] text-[#D7CDBF] h-screen">
       {user && (
-        <div className="flex flex-col items-end text-[#FBF8F4] pr-1 lowercase">
+        <div className="flex flex-col items-end text-[#D7CDBF] pr-1 lowercase">
           <p className="text-xl font-bold">{user.firstName}</p>
           <p className="text-xl font-bold">{user.lastName}</p>
           <p className="text-sm font-light">@{user.username}</p>

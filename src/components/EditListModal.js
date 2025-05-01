@@ -55,14 +55,14 @@ function EditListModal({ isOpen, closeModal, title, listId, isPrivate }) {
   return (
     <div className="fixed inset-0 bg-gray-500 bg-opacity-75 z-50 flex items-center justify-center">
       <div className="bg-[#4C4138] p-6 shadow-md w-96">
-        <h2 className="text-xl font-bold mb-4 text-[#110A02] text-end">
+        <h2 className="text-xl font-bold mb-4 text-[#000000] text-end">
           edit list
         </h2>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
             <label
               htmlFor="title"
-              className="block text-sm font-medium text-[#110A02]"
+              className="block text-sm font-medium text-[#000000]"
             >
               title
             </label>
@@ -72,15 +72,15 @@ function EditListModal({ isOpen, closeModal, title, listId, isPrivate }) {
               name="title"
               defaultValue={title}
               onChange={handleChange}
-              className="mt-1 p-2 w-full border border-[#1E1912] text-[#1E1912] bg-[#4C4138]"
+              className="mt-1 p-2 w-full border border-[#14100E] text-[#14100E] bg-[#4C4138]"
             />
           </div>
           <div className="flex my-2 self-start items-center">
-            <Field className="flex my-2 text-[#1E1912] self-start items-center">
+            <Field className="flex my-2 text-[#14100E] self-start items-center">
               <Switch
                 checked={enabled}
                 onChange={handlePrivateToggle}
-                className="group relative flex h-7 w-14 cursor-pointer rounded-full bg-white/10 p-1 transition-colors duration-200 ease-in-out focus:outline-none data-[focus]:outline-1 data-[focus]:outline-white data-[checked]:bg-[#ECE2D8]"
+                className="group relative flex h-7 w-14 cursor-pointer rounded-full bg-white/10 p-1 transition-colors duration-200 ease-in-out focus:outline-none data-[focus]:outline-1 data-[focus]:outline-white data-[checked]:bg-[#D7CDBF]"
               >
                 <span
                   aria-hidden="true"
@@ -94,15 +94,15 @@ function EditListModal({ isOpen, closeModal, title, listId, isPrivate }) {
             <button
               type="button"
               onClick={closeModal}
-              className="mr-4 text-[#110A02] hover:text-[#1E1912]"
+              className="mr-4 text-[#000000] hover:text-[#14100E]"
             >
               cancel
             </button>
             <button
               type="submit"
               className={`w-1/2 ${
-                loading ? "bg-[#4C4138]" : "bg-[#1E1912]"
-              } text-[#ECE2D8] p-2 hover:bg-[#110A02] disabled:opacity-50`}
+                loading ? "bg-[#4C4138]" : "bg-[#14100E]"
+              } text-[#D7CDBF] p-2 hover:bg-[#000000] disabled:opacity-50`}
               disabled={loading}
             >
               {loading ? "saving..." : "save changes"}

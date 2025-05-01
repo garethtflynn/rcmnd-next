@@ -78,13 +78,13 @@ function UserPostsHomePage(props) {
 
   if (isLoading) {
     return (
-      <div className="h-screen w-full flex justify-center items-center bg-[#110A02] text-[#FBF8F4]">
+      <div className="h-screen w-full flex justify-center items-center bg-[#000000] text-[#D7CDBF]">
         <h2>loading...</h2>
       </div>
     );
   }
   return (
-    <div className="md:min-h-screen min-w-full bg-[#110A02] text-[#FBF8F4] grid grid-cols-2 md:grid-cols-3 md:content-center lg:grid-cols-4 gap-4 px-2">
+    <div className="md:min-h-screen min-w-full bg-[#000000] text-[#D7CDBF] grid grid-cols-2 md:grid-cols-3 md:content-center lg:grid-cols-4 gap-4 px-2">
       {posts?.map((post) => {
         return (
           <PostItemHomePage

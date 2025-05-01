@@ -3,7 +3,6 @@ import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 
-
 export default function PostItemHomePage({
   id,
   title,
@@ -49,7 +48,7 @@ export default function PostItemHomePage({
         {/* Title Overlay */}
         {isHovered && (
           <div className="absolute top-0 left-0 w-full h-full flex justify-center items-center bg-opacity-100">
-            <p className="text-[#FBF8F4] text-lg font-semibold">{title}</p>
+            <p className="text-[#D7CDBF] text-lg font-semibold">{title}</p>
           </div>
         )}
       </div>

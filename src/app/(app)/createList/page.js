@@ -47,7 +47,7 @@ function CreateList(props) {
     }));
   };
   return (
-    <div className="w-full h-screen flex flex-col justify-center items-center text-[#FBF8F4] bg-[#110A02]">
+    <div className="w-full h-screen flex flex-col justify-center items-center text-[#D7CDBF] bg-[#000000]">
       <div className="w-full h-2/6 flex flex-col justify-center items-center">
         <form
           onSubmit={onSubmit}
@@ -61,7 +61,7 @@ function CreateList(props) {
             type="text"
             name="title"
             placeholder="title"
-            className="w-1/2 border border-[#ECE2D8] bg-transparent text-[#ECE2D8] px-2 py-1 my-2 rounded hover:bg-[#4C4138] focus:within:bg-[#ECE2D8] outline-none placeholder-[#4C4138]"
+            className="w-1/2 border border-[#D7CDBF] bg-transparent text-[#D7CDBF] px-2 py-1 my-2 rounded hover:bg-[#4C4138] focus:within:bg-[#D7CDBF] outline-none placeholder-[#4C4138]"
           />
           <div className="w-1/2">
             <Field className="flex my-2 text-[#4C4138] items-center">
@@ -71,7 +71,7 @@ function CreateList(props) {
                 value="private"
                 checked={enabled}
                 onChange={handlePrivateToggle}
-                className="group relative flex h-7 w-14 cursor-pointer rounded-full bg-white/10 p-1 transition-colors duration-200 ease-in-out focus:outline-none data-[focus]:outline-1 data-[focus]:outline-white data-[checked]:bg-[#ECE2D8]"
+                className="group relative flex h-7 w-14 cursor-pointer rounded-full bg-white/10 p-1 transition-colors duration-200 ease-in-out focus:outline-none data-[focus]:outline-1 data-[focus]:outline-white data-[checked]:bg-[#D7CDBF]"
               >
                 <span
                   aria-hidden="true"
@@ -85,13 +85,13 @@ function CreateList(props) {
             <button
               onClick={handleCancelClick}
               type="button"
-              className="w-1/4 mt-2 bg-transparent hover:text-opacity-50 text-[#ECE2D8] font-bold py-2 px-4 rounded-md duration-500 mr-2"
+              className="w-1/4 mt-2 bg-transparent hover:text-opacity-50 text-[#D7CDBF] font-bold py-2 px-4 rounded-md duration-500 mr-2"
             >
               cancel
             </button>
             <button
               type="submit"
-              className="w-1/4 mt-2 bg-[#ECE2D8] hover:bg-opacity-50 text-[#110A02] font-bold py-2 px-4 rounded-md duration-500"
+              className="w-1/4 mt-2 bg-[#D7CDBF] hover:bg-opacity-50 text-[#000000] font-bold py-2 px-4 rounded-md duration-500"
             >
               create
             </button>

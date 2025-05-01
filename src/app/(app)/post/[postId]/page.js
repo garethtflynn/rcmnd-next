@@ -43,7 +43,7 @@ function PostPage(props) {
 
   if (loading) {
     return (
-      <div className="h-screen w-full flex justify-center items-center bg-[#110A02] text-[#FBF8F4]">
+      <div className="h-screen w-full flex justify-center items-center bg-[#000000] text-[#D7CDBF]">
         <h2>loading...</h2>
       </div>
     );
@@ -70,7 +70,7 @@ function PostPage(props) {
   };
 
   return (
-    <div className='h-screen w-full flex justify-center items-center'>
+    <div className="h-screen w-full flex justify-center items-center">
       <PostItemDetailsPage
         key={post.id}
         title={post.title}

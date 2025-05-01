@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import dynamic from 'next/dynamic';
+import dynamic from "next/dynamic";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -9,7 +9,7 @@ import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 import { FaEllipsisVertical } from "react-icons/fa6";
 
 const EditPostModal = dynamic(
-  () => import('@/components/EditPostModal'), // Adjust path to where your modal component is located
+  () => import("@/components/EditPostModal"), // Adjust path to where your modal component is located
   { ssr: false }
 );
 
@@ -58,24 +58,24 @@ export default function PostItem({
       <div>
         <Menu
           as="div"
-          className="absolute top-1 right-1 cursor-default bg-transparent hover:text-[#ECE2D8] duration-1000"
+          className="absolute top-1 right-1 cursor-default bg-transparent hover:text-[#D7CDBF] duration-1000"
         >
           <MenuButton className="text-sm font-semibold">
             <FaEllipsisVertical
               className="absolute top-1 right-1"
-              color="#110A02"
+              color="#000000"
               size={16}
             />
           </MenuButton>
           <MenuItems
             transition
-            className="absolute right-0 w-40 origin-top-right bg-[#FBF8F4] transition focus:outline-none data-[closed]:scale-95 data-[closed]:transform data-[closed]:opacity-0 data-[enter]:duration-100 data-[leave]:duration-75 data-[enter]:ease-out data-[leave]:ease-in"
+            className="absolute right-0 w-40 origin-top-right bg-[#D7CDBF] transition focus:outline-none data-[closed]:scale-95 data-[closed]:transform data-[closed]:opacity-0 data-[enter]:duration-100 data-[leave]:duration-75 data-[enter]:ease-out data-[leave]:ease-in"
           >
             <div className="py-1">
-              <MenuItem className="block px-4 py-2 text-sm text-[#110A02] hover:bg-gray-200">
+              <MenuItem className="block px-4 py-2 text-sm text-[#000000] hover:opacity-25">
                 <p onClick={handleEditPost}>edit post</p>
               </MenuItem>
-              <MenuItem className="block px-4 py-2 text-sm text-[#110A02] hover:bg-gray-200">
+              <MenuItem className="block px-4 py-2 text-sm text-[#000000] hover:opacity-25">
                 <p onClick={handleDeletePost}>delete post</p>
               </MenuItem>
             </div>

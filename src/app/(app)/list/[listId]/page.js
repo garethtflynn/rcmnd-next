@@ -105,15 +105,15 @@ function ListPage() {
 
   if (isLoading) {
     return (
-      <div className="h-screen w-full flex justify-center items-center bg-[#110A02] text-[#FBF8F4]">
+      <div className="h-screen w-full flex justify-center items-center bg-[#000000] text-[#D7CDBF]">
         <h2>loading...</h2>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-[#110A02]">
-      <div className="text-[#FBF8F4] px-3 py-2 flex justify-center">
+    <div className="min-h-screen bg-[#000000]">
+      <div className="text-[#D7CDBF] px-3 py-2 flex justify-center">
         {list && (
           <div className="w-full flex justify-between items-center">
             <h1 className="text-2xl font-bold">{list.title}</h1>
@@ -122,18 +122,18 @@ function ListPage() {
               <div className="z-50 relative">
                 <Menu
                   as="div"
-                  className="cursor-default bg-transparent hover:text-[#ECE2D8] duration-1000"
+                  className="cursor-default bg-transparent hover:text-[#D7CDBF] duration-1000"
                 >
                   <MenuButton className="text-sm font-semibold">
                     <FaEllipsis
-                      color="#ECE2D8"
+                      color="#D7CDBF"
                       size={17}
                       onClick={() => setIsMenuOpen(!isMenuOpen)}
                     />
                   </MenuButton>
                   <MenuItems
                     transition
-                    className="z-50 absolute w-40 bg-[#FBF8F4] transition focus:outline-none data-[closed]:scale-95 data-[closed]:transform data-[closed]:opacity-0 data-[enter]:duration-100 data-[leave]:duration-75 data-[enter]:ease-out data-[leave]:ease-in"
+                    className="z-50 absolute w-40 bg-[#D7CDBF] transition focus:outline-none data-[closed]:scale-95 data-[closed]:transform data-[closed]:opacity-0 data-[enter]:duration-100 data-[leave]:duration-75 data-[enter]:ease-out data-[leave]:ease-in"
                     style={{
                       top: "100%",
                       right: "1rem",
@@ -142,13 +142,13 @@ function ListPage() {
                     }}
                   >
                     <div className="py-1">
-                      <MenuItem className="block px-4 py-2 text-sm text-[#110A02] hover:bg-gray-200">
+                      <MenuItem className="block px-4 py-2 text-sm text-[#000000] hover:opacity-25">
                         <p onClick={handleEditList}>edit list</p>
                       </MenuItem>
-                      <MenuItem className="block px-4 py-2 text-sm text-[#110A02] hover:bg-gray-200">
+                      <MenuItem className="block px-4 py-2 text-sm text-[#000000] hover:opacity-25">
                         <p onClick={handleAddPost}>add post</p>
                       </MenuItem>
-                      <MenuItem className="block px-4 py-2 text-sm text-[#110A02] hover:bg-gray-200">
+                      <MenuItem className="block px-4 py-2 text-sm text-[#000000] hover:opacity-25">
                         <p onClick={handleDeleteList}>delete list</p>
                       </MenuItem>
                     </div>
@@ -177,7 +177,7 @@ function ListPage() {
 
       {/* Posts Section */}
       {posts?.length > 0 ? (
-        <div className="w-full py-1 px-4 gap-4 grid grid-cols-2 md:grid-cols-3 text-[#FBF8F4]">
+        <div className="w-full py-1 px-4 gap-4 grid grid-cols-2 md:grid-cols-3 text-[#D7CDBF]">
           {posts.map((post) =>
             isOwner ? ( // Check if the current user is the owner of the post
               <PostItemProfilePage
@@ -204,7 +204,7 @@ function ListPage() {
           )}
         </div>
       ) : (
-        <div className="text-[#FBF8F4] flex justify-center items-center h-full">
+        <div className="text-[#D7CDBF] flex justify-center items-center h-full">
           <p>No posts in this list!</p>
         </div>
       )}
