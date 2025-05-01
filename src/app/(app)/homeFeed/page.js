@@ -4,7 +4,7 @@ import Footer from "@/components/Footer";
 export default function HomeFeed(props) {
   return (
     <>
-      <div className="bg-[#110A02] min-h-screen">
+      <div className="bg-[#000000] min-h-screen">
         <UserPostsHomePage />
       </div>
       <Footer />

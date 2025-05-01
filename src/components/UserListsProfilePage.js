@@ -46,13 +46,13 @@ function UserLists(props) {
 
   return (
     <div className="max-w-screen px-3">
-      <ul className="flex flex-row gap-32 md:gap-56 no-scrollbar bg-[#110A02] text-[#FBF8F4] text-xl overflow-x-auto">
+      <ul className="flex flex-row gap-32 md:gap-56 no-scrollbar bg-[#000000] text-[#D7CDBF] text-xl overflow-x-auto">
         {lists?.map((list) => {
           return (
             <li
               key={list.id}
               onClick={() => handleListClick(list.id)}
-              className="text-[#FBF8F4] p-2 cursor-pointer text-xl text-nowrap	"
+              className="text-[#D7CDBF] p-2 cursor-pointer text-xl text-nowrap	"
             >
               {list.title}
             </li>

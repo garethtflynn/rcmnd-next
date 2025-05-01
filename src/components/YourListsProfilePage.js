@@ -39,13 +39,13 @@ function UserLists(props) {
   }, [userId]);
 
   const handleListClick = (listId) => {
-    // console.log("List ID:", listId); 
+    // console.log("List ID:", listId);
     router.push(`/list/${listId}`); // Navigate to the list page
   };
-  
+
   return (
     <div className="max-w-screen px-3">
-      <ul className="flex flex-row gap-32 md:gap-56 no-scrollbar bg-[#110A02] text-xl overflow-x-auto">
+      <ul className="flex flex-row gap-32 md:gap-56 no-scrollbar bg-[#000000] text-xl overflow-x-auto">
         {lists?.map((list) => {
           return (
             <li

@@ -1,6 +1,5 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  
   experimental: {
     // appDir: true,
     // serverExternalPackages: ["@prisma/client", "bcrypt"],
@@ -8,15 +7,21 @@ const nextConfig = {
   images: {
     remotePatterns: [
       {
-        protocol: 'https',
-        hostname: '**',
-        port: '',
-        pathname: '/**', // Allows any path within the bucket
+        protocol: "https",
+        hostname: "**",
+        port: "",
+        pathname: "/**", // Allows any path within the bucket
       },
     ],
   },
+  // api: {
+  //   bodyParser: {
+  //     sizeLimit: "10mb",
+  //   },
+  //   responseLimit: "10mb",
+  // },
 };
 
-console.log('Next.js config is loaded')
+console.log("Next.js config is loaded");
 
 export default nextConfig;

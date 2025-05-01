@@ -14,6 +14,11 @@ module.exports = {
       //   "lightBrown": "#4C4138",
       //   "white": "#FBF8F4",
       // },
+      //newColors: {
+        // black: #000000
+        // darkGrey: #14100E
+        // offWhite: #D7CDBF
+      // }
     },
   },
   plugins: [],

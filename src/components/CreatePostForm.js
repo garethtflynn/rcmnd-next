@@ -5,12 +5,8 @@ import { useDropzone } from "react-dropzone";
 import { FaRegCircleUp, FaXmark } from "react-icons/fa6";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import dynamic from 'next/dynamic';
-
-// Import heic2any dynamically to prevent server-side rendering issues
-const Heic2any = dynamic(() => import('heic2any'), { ssr: false });
-
-import { Description, Field, Label, Switch } from "@headlessui/react";
+import dynamic from "next/dynamic";
+import { Field, Label, Switch } from "@headlessui/react";
 
 const CreatePostForm = () => {
   const { data: session } = useSession();
@@ -28,171 +24,181 @@ const CreatePostForm = () => {
   const [lists, setLists] = useState(null);
   const [isLoading, setLoading] = useState(true);
   const [isConverting, setIsConverting] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
   const [enabled, setEnabled] = useState(false);
   const [isImageDropped, setIsImageDropped] = useState(true);
   const [isBrowser, setIsBrowser] = useState(false);
-  
+  const [conversionError, setConversionError] = useState(null);
+
   // Set isBrowser to true once the component mounts
   useEffect(() => {
     setIsBrowser(true);
   }, []);
-  
+
+  const processFile = async (file) => {
+    // Check if the file is a HEIC/HEIF file
+    const isHeic =
+      file.type === "image/heic" ||
+      file.type === "image/heif" ||
+      file.name.toLowerCase().endsWith(".heic") ||
+      file.name.toLowerCase().endsWith(".heif");
+
+    if (isHeic) {
+      setIsConverting(true);
+      setConversionError(null);
+
+      try {
+        // Import heic2any dynamically only when needed
+        const heic2any = await import("heic2any").then(
+          (module) => module.default
+        );
+
+        // Convert HEIC to JPEG
+        const jpegBlobResult = await heic2any({
+          blob: file,
+          toType: "image/jpeg",
+          quality: 0.9,
+        });
+
+        // heic2any can return array or single blob
+        const jpegBlob = Array.isArray(jpegBlobResult)
+          ? jpegBlobResult[0]
+          : jpegBlobResult;
+
+        // Create a new File object for the converted image
+        const convertedFile = new File(
+          [jpegBlob],
+          file.name.replace(/\.(heic|heif)$/i, ".jpg"),
+          { type: "image/jpeg" }
+        );
+
+        return convertedFile;
+      } catch (error) {
+        console.error("Error converting HEIC file:", error);
+        setConversionError(
+          "Failed to convert HEIC image. Please try another file format."
+        );
+        return null;
+      } finally {
+        setIsConverting(false);
+      }
+    } else {
+      // Return the original file if it's not HEIC
+      return file;
+    }
+  };
+
   const { getRootProps, getInputProps, acceptedFiles } = useDropzone({
     accept: {
       "image/*": [],
     },
+    maxSize: 10485760, // 10MB limit
     onDrop: async (acceptedFiles) => {
       // Only run browser-specific code after component is mounted
-      if (!isBrowser) return;
-      
-      const file = acceptedFiles[0];
-      
-      // Check if the file is a HEIC file
-      const isHeic = file.type === 'image/heic' || 
-                     file.type === 'image/heif' || 
-                     file.name.toLowerCase().endsWith('.heic') || 
-                     file.name.toLowerCase().endsWith('.heif');
-      
-      if (isHeic) {
-        setIsConverting(true);
-        try {
-          // Convert HEIC to JPEG using dynamically imported heic2any
-          const jpegBlob = await Heic2any({
-            blob: file,
-            toType: 'image/jpeg',
-            quality: 0.9
-          });
-          
-          // Create a new File object for the converted image
-          const convertedFile = new File(
-            [jpegBlob], 
-            file.name.replace(/\.(heic|heif)$/i, '.jpg'),
-            { type: 'image/jpeg' }
-          );
-          
-          // Update with converted file
-          const convertedFileArray = [convertedFile];
-          const fileAsString = JSON.stringify(convertedFileArray);
-          
-          setIsImageDropped(false);
-          setFormData({ ...formData, image: fileAsString });
-          setImage(
-            convertedFileArray.map((file) =>
-              Object.assign(file, {
-                preview: URL.createObjectURL(file),
-              })
-            )
-          );
-        } catch (error) {
-          console.error("Error converting HEIC file:", error);
-          alert("There was a problem converting your HEIC image. Please try another file format.");
-        } finally {
-          setIsConverting(false);
+      if (!isBrowser || acceptedFiles.length === 0) return;
+
+      setIsConverting(true);
+
+      try {
+        const file = acceptedFiles[0];
+        const processedFile = await processFile(file);
+
+        if (!processedFile) {
+          // If processing failed, stop here
+          return;
         }
-      } else {
-        // Handle normal image files as before
-        const fileAsString = JSON.stringify(acceptedFiles);
+
+        // Create a preview URL
+        const preview = URL.createObjectURL(processedFile);
+
+        // Update component state with the processed file
+        const processedFileWithPreview = Object.assign(processedFile, {
+          preview: preview,
+        });
+
         setIsImageDropped(false);
-        setFormData({ ...formData, image: fileAsString });
-        setImage(
-          acceptedFiles.map((file) =>
-            Object.assign(file, {
-              preview: URL.createObjectURL(file),
-            })
-          )
-        );
+        setFormData({ ...formData, image: processedFile });
+        setImage([processedFileWithPreview]);
+      } catch (error) {
+        console.error("Error processing file:", error);
+        setConversionError("Error processing image. Please try again.");
+      } finally {
+        setIsConverting(false);
       }
+    },
+    onError: (err) => {
+      console.error("Dropzone error:", err);
+      setConversionError("Error with file upload. Please try again.");
     },
   });
 
   useEffect(() => {
     // Revoke the data uris to avoid memory leaks
     if (isBrowser && image) {
-      return () => image.forEach((file) => URL.revokeObjectURL(file.preview));
+      return () =>
+        image.forEach((file) => {
+          if (file.preview) URL.revokeObjectURL(file.preview);
+        });
     }
   }, [image, isBrowser]);
 
-  const uploadImageToB2 = async () => {
-    if (!isBrowser || !image || !image[0]) return;
-    
-    const imageFile = image[0];
-    const key = imageFile.name;
-    // Tell B2 to set the content type automatically depending on the file extension
-    const contentType = "b2/x-auto";
-    let msg, detail;
+  // Process image with Sharp and upload to B2 in one step
+  const processAndUploadImage = async () => {
+    if (!isBrowser || !image || !image[0]) return null;
+
+    setIsUploading(true);
+    setConversionError(null);
 
     try {
-      // Ask the backend for a presigned URL
-      let response = await fetch(
-        "/api/upload?" +
-          new URLSearchParams({
-            key: key,
-          }).toString()
-      );
-      // Report on the outcome
+      const imageFile = image[0];
+      
+      // Create a FormData object to send the image to our API
+      const formData = new FormData();
+      formData.append('image', imageFile);
+      
+      // Send to our single API endpoint that handles processing and uploading
+      const response = await fetch('/api/upload-with-processing', {
+        method: 'POST',
+        body: formData,
+      });
+
       if (!response.ok) {
-        msg = `${response.status} when retrieving presigned URL from backend`;
-        detail = await response.text();
-      } else {
-        const { presignedUrl } = await response.json();
-
-        // Get the file's contents as an ArrayBuffer
-        const fileContent = await imageFile.arrayBuffer();
-
-        // Upload the file content with the filename, hash and auth token
-        response = await fetch(presignedUrl, {
-          method: "PUT",
-          mode: "cors",
-          body: fileContent,
-          headers: {
-            "Content-Type": contentType,
-            Accept:
-              "image/avif,image/webp,image/apng,image/svg+xml,image/jpeg,image/*,*/*;q=0.8",
-          },
-        });
-
-        // Report on the outcome
-        if (response.status >= 200 && response.status < 300) {
-          msg = `${response.status} response from S3 API. Success!`;
-        } else if (response.status >= 400) {
-          msg = `${response.status} error from S3 API.`;
-        } else {
-          msg = `Unknown error.`;
-        }
-
-        detail = "[S3 PutObject does not return any content]";
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to process and upload image');
       }
+
+      // Get the processed image URL
+      const result = await response.json();
+      return result.url; // Return the URL of the uploaded image
     } catch (error) {
-      console.error("Fetch threw an error:", error);
-      msg = `Fetch threw "${error}" - see the console and/or network tab for more details`;
-      detail = error.stack;
+      console.error('Process and upload error:', error);
+      setConversionError(`Failed to process and upload image: ${error.message}`);
+      return null;
+    } finally {
+      setIsUploading(false);
     }
   };
 
-  const createPost = async () => {
-    if (!isBrowser || !image || !image[0]) return;
-    
-    const imageFile = image[0];
-    const imageName = imageFile.name;
-    const userId = session?.user?.id;
+  const createPost = async (imageUrl) => {
     if (!userId) {
       console.error("User ID is required.");
-      alert("You must be logged in to create a post!");
-      return;
+      setConversionError("You must be logged in to create a post!");
+      return false;
     }
+    
     // Ensure formData has required properties
-    if (!formData.title || !formData.link || !formData.image) {
-      alert("Form input required!");
-      return;
+    if (!formData.title || !formData.link || !imageUrl) {
+      setConversionError("Title, link and image are required!");
+      return false;
     }
 
     try {
-      const imageReferenceUrl = process.env.NEXT_PUBLIC_DATABASE_IMAGE_URL;
       const body = {
         ...formData,
-        image: `${imageReferenceUrl}/${imageName}`,
+        image: imageUrl,
         userId: userId,
       };
+      
       const apiUrl = "/api/post";
       const requestData = {
         method: "POST",
@@ -209,9 +215,11 @@ const CreatePostForm = () => {
           `Failed to create post: ${response.status} - ${response.statusText}`
         );
       }
-      setFormData(""); // Reset the form after successful submission
+      return true;
     } catch (error) {
-      console.log("Something went wrong:", error);
+      console.error("Post creation error:", error);
+      setConversionError(`Failed to create post: ${error.message}`);
+      return false;
     }
   };
 
@@ -233,7 +241,6 @@ const CreatePostForm = () => {
           setLists(data);
         } catch (err) {
           console.error(err.message);
-          // Removed setError since it's not defined
         } finally {
           setLoading(false);
         }
@@ -248,46 +255,65 @@ const CreatePostForm = () => {
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    uploadImageToB2();
-    createPost();
+    setConversionError(null);
+
+    // Process and upload the image to B2 using our Sharp backend
+    const imageUrl = await processAndUploadImage();
+    if (!imageUrl) {
+      return; // Stop if upload failed
+    }
+
+    // Then create the post in your database with the processed image URL
+    const postSuccess = await createPost(imageUrl);
+    if (!postSuccess) {
+      return; // Stop if post creation failed
+    }
+
+    // If everything succeeded, redirect
     router.replace("/profilePage");
   };
 
   const removeImage = () => {
     setIsImageDropped(true);
-    setImage(null); // Use null instead of empty string for clarity
+    if (image) {
+      // Clean up any previews
+      image.forEach((file) => {
+        if (file.preview) URL.revokeObjectURL(file.preview);
+      });
+    }
+    setImage(null);
     setFormData({
       ...formData,
-      image: "" // Clear the image in formData too
+      image: "",
     });
+    setConversionError(null);
   };
 
-  const preview = isBrowser && image && Array.isArray(image) ? image.map((file) => (
-    <div key={file.name} className="w-1/2 flex justify-center relative">
-      <div className="relative">
-        <button
-          className="absolute top-2 right-2 z-10 bg-black bg-opacity-50 rounded-full p-1 cursor-pointer"
-          type="button"
-          onClick={removeImage}
-        >
-          <FaXmark className="w-5 h-5" color="white" />
-        </button>
-        <Image
-          src={file.preview}
-          alt={file.name}
-          className="object-cover"
-          width={350}
-          height={200}
-          // Revoke data uri after image is loaded
-          onLoad={() => {
-            if (isBrowser) {
-              URL.revokeObjectURL(file.preview);
-            }
-          }}
-        />
-      </div>
-    </div>
-  )) : null;
+  const preview =
+    isBrowser && image && Array.isArray(image)
+      ? image.map((file) => (
+          <div key={file.name} className="w-1/2 flex justify-center relative">
+            <div className="relative">
+              <button
+                className="absolute top-2 right-2 z-10 bg-black bg-opacity-50 rounded-full p-1 cursor-pointer"
+                type="button"
+                onClick={removeImage}
+              >
+                <FaXmark className="w-5 h-5" color="white" />
+              </button>
+              <Image
+                src={file.preview}
+                alt={file.name}
+                className="object-cover"
+                width={350}
+                height={200}
+                // Don't revoke immediately as it would make the image disappear
+                // We handle cleanup in useEffect
+              />
+            </div>
+          </div>
+        ))
+      : null;
 
   const handlePrivateToggle = (checked) => {
     setEnabled(checked);
@@ -301,56 +327,62 @@ const CreatePostForm = () => {
   return (
     <form
       onSubmit={onSubmit}
-      className="h-screen w-full bg-[#110A02] flex flex-col jusify-center place-content-center py-3"
+      className="h-screen w-full bg-[#000000] flex flex-col jusify-center place-content-center py-3"
     >
       {isImageDropped ? (
         <div
-          className="h-96 w-3/4 md:h-1/2 md:w-1/2 lg:h-1/2 lg:w-1/2  mx-auto bg-[#4C4138] border-dashed border-2 border-[#ECE2D8] flex flex-col jusify-center items-center place-content-center"
+          className="h-96 w-3/4 md:h-1/2 md:w-1/2 lg:h-1/2 lg:w-1/2  mx-auto bg-[#14100E] border-dashed border-2 border-[#ECE2D8] flex flex-col jusify-center items-center place-content-center"
           {...getRootProps()}
         >
-          <input
-            defaultValue={formData.image}
-            name="image"
-            type="file"
-            {...getInputProps()}
-          />
+          <input name="image" type="file" {...getInputProps()} />
           {isConverting ? (
-            <p className="px-3 text-center">Converting image...</p>
+            <p className="px-3 text-center text-[#ECE2D8]">
+              loading...
+            </p>
           ) : (
             <>
-              <FaRegCircleUp className="w-5 h-5 fill-current" />
-              <p className="px-3 text-center">add image</p>
+              <FaRegCircleUp className="w-5 h-5 fill-current text-[#ECE2D8]" />
+              <p className="px-3 text-center text-[#ECE2D8]">add image</p>
             </>
           )}
         </div>
       ) : (
         <div className="h-fit w-full flex justify-center overflow-hidden">
           {isConverting ? (
-            <p className="px-3 text-center">Converting image...</p>
+            <p className="px-3 text-center text-[#ECE2D8]">
+              loading...
+            </p>
           ) : (
             preview
           )}
         </div>
       )}
+
+      {conversionError && (
+        <div className="mx-auto w-10/12 mt-2 bg-red-800 bg-opacity-50 text-[#ECE2D8] p-2 rounded">
+          {conversionError}
+        </div>
+      )}
+
       <div className="flex flex-col mx-auto w-10/12	items-center px-5 pt-2">
         <input
-          defaultValue={formData.title}
+          value={formData.title}
           type="text"
           name="title"
           onChange={(e) => setFormData({ ...formData, title: e.target.value })}
           placeholder="title"
-          className="border border-[#ECE2D8] bg-transparent text-[#ECE2D8] px-2 py-1 my-2 rounded hover:bg-[#4C4138] focus:within:bg-[#ECE2D8] outline-none placeholder-[#4C4138] w-full"
+          className="border border-[#ECE2D8] bg-transparent text-[#ECE2D8] px-2 py-1 my-2 rounded hover:bg-[#4C4138] focus:within:bg-[#ECE2D8] focus:within:text-[#110A02] outline-none placeholder-[#4C4138] w-full"
         />
         <input
-          defaultValue={formData.link}
+          value={formData.link}
           type="text"
           name="link"
           onChange={(e) => setFormData({ ...formData, link: e.target.value })}
           placeholder="link"
-          className="border border-[#ECE2D8] bg-transparent text-[#ECE2D8] px-2 py-1 rounded hover:bg-[#4C4138] focus:within:bg-[#ECE2D8] outline-none placeholder-[#4C4138] w-full"
+          className="border border-[#ECE2D8] bg-transparent text-[#ECE2D8] px-2 py-1 rounded hover:bg-[#4C4138] focus:within:bg-[#ECE2D8] focus:within:text-[#110A02] outline-none placeholder-[#4C4138] w-full"
         />
         <textarea
-          defaultValue={formData.description}
+          value={formData.description}
           type="text"
           name="description"
           onChange={(e) =>
@@ -358,27 +390,23 @@ const CreatePostForm = () => {
           }
           rows={4}
           placeholder="description"
-          className="border border-[#ECE2D8] bg-transparent text-[#ECE2D8] mt-2 px-2 py-1 rounded hover:bg-[#4C4138] focus:within:bg-[#ECE2D8] outline-none placeholder-[#4C4138]  w-full"
+          className="border border-[#ECE2D8] bg-transparent text-[#ECE2D8] mt-2 px-2 py-1 rounded hover:bg-[#4C4138] focus:within:bg-[#ECE2D8] focus:within:text-[#110A02] outline-none placeholder-[#4C4138]  w-full"
         />
         <select
-          className="border border-[#ECE2D8] bg-transparent text-[#4C4138] mt-2 px-2 py-1 rounded hover:bg-[#4C4138] focus:within:bg-[#ECE2D8] outline-none w-full"
+          className="border border-[#ECE2D8] bg-transparent text-[#ECE2D8] mt-2 px-2 py-1 rounded hover:bg-[#4C4138] focus:within:bg-[#ECE2D8] outline-none w-full"
+          value={formData.listId}
           onChange={(e) => setFormData({ ...formData, listId: e.target.value })}
         >
-          <option>list</option>
-          {lists?.map((list) => {
-            return (
-              <option key={list.id} value={list.id}>
-                {list.title}
-              </option>
-            );
-          })}
+          <option value="">list</option>
+          {lists?.map((list) => (
+            <option key={list.id} value={list.id}>
+              {list.title}
+            </option>
+          ))}
         </select>
-        <div className="flex my-2 text-[#4C4138] self-start items-center">
-          <Field className="flex my-2 text-[#4C4138] self-start items-center">
+        <div className="flex my-2 text-[#ECE2D8] self-start items-center">
+          <Field className="flex my-2 text-[#ECE2D8] self-start items-center">
             <Switch
-              label="private"
-              description="private"
-              value="private"
               checked={enabled}
               onChange={handlePrivateToggle}
               className="group relative flex h-7 w-14 cursor-pointer rounded-full bg-white/10 p-1 transition-colors duration-200 ease-in-out focus:outline-none data-[focus]:outline-1 data-[focus]:outline-white data-[checked]:bg-[#ECE2D8]"
@@ -401,16 +429,16 @@ const CreatePostForm = () => {
           </button>
           <button
             type="submit"
-            className="w-1/2 mt-2 bg-[#ECE2D8] hover:opacity-75 text-[#110A02] font-bold py-2 px-4 rounded-md duration-500 "
-            disabled={isConverting}
+            className="w-1/2 mt-2 bg-[#D7CDBF] hover:opacity-75 text-[#110A02] font-bold py-2 px-4 rounded-md duration-500"
+            disabled={isConverting || isUploading}
           >
-            create
+            {isUploading ? 'loading...' : 'create'}
           </button>
         </div>
       </div>
     </form>
   );
-}
+};
 
 export default CreatePostForm;
 
@@ -441,7 +469,7 @@ export default CreatePostForm;
 //   const [isLoading, setLoading] = useState(true);
 //   const [enabled, setEnabled] = useState(false);
 //   const [isImageDropped, setIsImageDropped] = useState(true);
-  
+
 //   const { getRootProps, getInputProps, acceptedFiles } = useDropzone({
 //     accept: {
 //       "image/*": [],

@@ -41,7 +41,7 @@ function LoginForm(props) {
           placeholder="email"
           autoComplete="off"
           onChange={(e) => setEmail(e.target.value)}
-          className="border border-[#ECE2D8] bg-transparent text-[#ECE2D8] px-2 py-1 my-1 rounded hover:bg-[#4C4138] focus:within:bg-[#ECE2D8] outline-none placeholder-[#4C4138]"
+          className="border border-[#D7CDBF] bg-transparent text-[#D7CDBF] px-2 py-1 my-1 rounded hover:bg-[#4C4138] focus:within:bg-[#D7CDBF] outline-none placeholder-[#4C4138]"
         />
         <input
           type="password"
@@ -49,13 +49,13 @@ function LoginForm(props) {
           placeholder="password"
           autoComplete="off"
           onChange={(e) => setPassword(e.target.value)}
-          className="border border-[#ECE2D8] bg-transparent text-[#ECE2D8] px-2 py-1 rounded hover:bg-[#4C4138] focus:within:bg-[#ECE2D8] outline-none placeholder-[#4C4138]"
+          className="border border-[#D7CDBF] bg-transparent text-[#D7CDBF] px-2 py-1 rounded hover:bg-[#4C4138] focus:within:bg-[#D7CDBF] outline-none placeholder-[#4C4138]"
         />
         {error && <Alert>{error}</Alert>}
         <div className="flex gap-2 justify-center">
           <button
             type="submit"
-            className="w-64 bg-[#ECE2D8] hover:bg-[#4C4138] text-[#110A02] font-bold py-2 px-4 rounded-md duration-500"
+            className="w-64 bg-[#D7CDBF] hover:bg-[#4C4138] text-[#000000] font-bold py-2 px-4 rounded-md duration-500"
           >
             sign in
           </button>

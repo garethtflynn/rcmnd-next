@@ -2,16 +2,11 @@
 
 import Image from "next/image";
 import { useState, useEffect } from "react";
-import dynamic from "next/dynamic";
 import { useSession } from "next-auth/react";
 import { Field, Label, Switch } from "@headlessui/react";
 import { FaRegCircleUp, FaXmark } from "react-icons/fa6";
 import { useDropzone } from "react-dropzone";
 import { useRouter } from "next/navigation";
-
-const Heic2any = dynamic(() => import("heic2any"), { ssr: false });
-
-// import heic2any from "heic2any";
 
 const EditPostModal = ({
   isOpen,
@@ -31,11 +26,13 @@ const EditPostModal = ({
   const [loading, setLoading] = useState(false);
   const [lists, setLists] = useState(null);
   const [enabled, setEnabled] = useState(isPrivate);
-  const [isImageRemoved, setIsImageRemoved] = useState(false);
+  const [isImageDropped, setIsImageDropped] = useState(false);
   const [currentImage, setCurrentImage] = useState(image);
   const [newImage, setNewImage] = useState(null);
   const [isConverting, setIsConverting] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
   const [isBrowser, setIsBrowser] = useState(false);
+  const [conversionError, setConversionError] = useState(null);
 
   const [formData, setFormData] = useState({
     postId: id,
@@ -69,7 +66,7 @@ const EditPostModal = ({
           const data = await res.json();
           setLists(data);
         } catch (err) {
-          setError(err.message);
+          setConversionError(err.message);
         } finally {
           setLoading(false);
         }
@@ -78,95 +75,147 @@ const EditPostModal = ({
     }
   }, [userId]);
 
+  const processFile = async (file) => {
+    // Check if the file is a HEIC/HEIF file
+    const isHeic =
+      file.type === "image/heic" ||
+      file.type === "image/heif" ||
+      file.name.toLowerCase().endsWith(".heic") ||
+      file.name.toLowerCase().endsWith(".heif");
+
+    if (isHeic) {
+      setIsConverting(true);
+      setConversionError(null);
+
+      try {
+        // Import heic2any dynamically only when needed
+        const heic2any = await import("heic2any").then(
+          (module) => module.default
+        );
+
+        // Convert HEIC to JPEG
+        const jpegBlobResult = await heic2any({
+          blob: file,
+          toType: "image/jpeg",
+          quality: 0.9,
+        });
+
+        // heic2any can return array or single blob
+        const jpegBlob = Array.isArray(jpegBlobResult)
+          ? jpegBlobResult[0]
+          : jpegBlobResult;
+
+        // Create a new File object for the converted image
+        const convertedFile = new File(
+          [jpegBlob],
+          file.name.replace(/\.(heic|heif)$/i, ".jpg"),
+          { type: "image/jpeg" }
+        );
+
+        return convertedFile;
+      } catch (error) {
+        console.error("Error converting HEIC file:", error);
+        setConversionError(
+          "Failed to convert HEIC image. Please try another file format."
+        );
+        return null;
+      } finally {
+        setIsConverting(false);
+      }
+    } else {
+      // Return the original file if it's not HEIC
+      return file;
+    }
+  };
+
   const { getRootProps, getInputProps, acceptedFiles } = useDropzone({
     accept: {
       "image/*": [],
     },
+    maxSize: 10485760, // 10MB limit
     onDrop: async (acceptedFiles) => {
-      if (!isBrowser) return;
-      const file = acceptedFiles[0];
+      // Only run browser-specific code after component is mounted
+      if (!isBrowser || acceptedFiles.length === 0) return;
 
-      // Check if the file is a HEIC file
-      const isHeic =
-        file.type === "image/heic" ||
-        file.type === "image/heif" ||
-        file.name.toLowerCase().endsWith(".heic") ||
-        file.name.toLowerCase().endsWith(".heif");
+      setIsConverting(true);
 
-      if (isHeic) {
-        setIsConverting(true);
-        try {
-          // Convert HEIC to JPEG
-          const jpegBlob = await Heic2any({
-            blob: file,
-            toType: "image/jpeg",
-            quality: 0.9,
-          });
+      try {
+        const file = acceptedFiles[0];
+        const processedFile = await processFile(file);
 
-          // Create a new File object for the converted image
-          const convertedFile = new File(
-            [jpegBlob],
-            file.name.replace(/\.(heic|heif)$/i, ".jpg"),
-            { type: "image/jpeg" }
-          );
-
-          // Update with converted file
-          const convertedFileArray = [convertedFile];
-          const fileAsString = JSON.stringify(convertedFileArray);
-
-          // Create object URL for preview
-          const fileWithPreview = Object.assign(convertedFile, {
-            preview: URL.createObjectURL(convertedFile),
-          });
-
-          setNewImage(fileWithPreview);
-          setCurrentImage(fileWithPreview.preview);
-          setIsImageRemoved(false);
-          setFormData((prevData) => ({
-            ...prevData,
-            image: fileAsString,
-          }));
-
-          console.log("Converted HEIC to JPEG:", convertedFile);
-        } catch (error) {
-          console.error("Error converting HEIC file:", error);
-          alert(
-            "There was a problem converting your HEIC image. Please try another file format."
-          );
-        } finally {
-          setIsConverting(false);
+        if (!processedFile) {
+          // If processing failed, stop here
+          return;
         }
-      } else {
-        // Handle normal image files
-        console.log("Processing regular image file:", file);
-        const fileAsString = JSON.stringify(acceptedFiles);
 
-        // Create object URL for preview
-        const fileWithPreview = Object.assign(file, {
-          preview: URL.createObjectURL(file),
+        // Create a preview URL
+        const preview = URL.createObjectURL(processedFile);
+
+        // Update component state with the processed file
+        const processedFileWithPreview = Object.assign(processedFile, {
+          preview: preview,
         });
 
-        setNewImage(fileWithPreview);
-        setCurrentImage(fileWithPreview.preview);
-        setIsImageRemoved(false);
-        setFormData((prevData) => ({
-          ...prevData,
-          image: fileAsString,
-        }));
+        setIsImageDropped(true);
+        setNewImage(processedFileWithPreview);
+        setCurrentImage(preview);
+        setFormData({ ...formData, image: processedFile });
+      } catch (error) {
+        console.error("Error processing file:", error);
+        setConversionError("Error processing image. Please try again.");
+      } finally {
+        setIsConverting(false);
       }
+    },
+    onError: (err) => {
+      console.error("Dropzone error:", err);
+      setConversionError("Error with file upload. Please try again.");
     },
   });
 
   useEffect(() => {
     // Revoke the data uris to avoid memory leaks
-    return () => {
-      if (newImage && Array.isArray(newImage)) {
-        newImage.forEach((file) => URL.revokeObjectURL(file.preview));
-      } else if (newImage && newImage.preview) {
-        URL.revokeObjectURL(newImage.preview);
+    if (isBrowser && newImage && newImage.preview) {
+      return () => URL.revokeObjectURL(newImage.preview);
+    }
+  }, [newImage, isBrowser]);
+
+  // Process image with Sharp and upload to B2 in one step
+  const processAndUploadImage = async () => {
+    if (!isBrowser || !newImage) return null;
+
+    setIsUploading(true);
+    setConversionError(null);
+
+    try {
+      const imageFile = newImage;
+      
+      // Create a FormData object to send the image to our API
+      const formData = new FormData();
+      formData.append('image', imageFile);
+      
+      // Send to our single API endpoint that handles processing and uploading
+      const response = await fetch('/api/upload-with-processing', {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to process and upload image');
       }
-    };
-  }, [newImage]);
+
+      // Get the processed image URL
+      const result = await response.json();
+      return result.url; // Return the URL of the uploaded image
+    } catch (error) {
+      console.error('Process and upload error:', error);
+      setConversionError(`Failed to process and upload image: ${error.message}`);
+      return null;
+    } finally {
+      setIsUploading(false);
+    }
+  };
 
   const handlePrivateToggle = (checked) => {
     setEnabled(checked);
@@ -182,104 +231,20 @@ const EditPostModal = ({
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const uploadImageToB2 = async () => {
-    if (!newImage) return;
-
-    const imageFile = newImage;
-    console.log(imageFile);
-    const key = imageFile.name;
-    console.log("KEY:", key);
-    // Tell B2 to set the content type automatically depending on the file extension
-    const contentType = "b2/x-auto";
-    let msg, detail;
-
-    try {
-      // Ask the backend for a presigned URL
-      let response = await fetch(
-        "/api/upload?" +
-          new URLSearchParams({
-            key: key,
-          }).toString()
-      );
-      if (!response.ok) {
-        msg = `${response.status} when retrieving presigned URL from backend`;
-        detail = await response.text();
-      } else {
-        const { presignedUrl } = await response.json();
-
-        // Get the file's contents as an ArrayBuffer
-        const fileContent = await imageFile.arrayBuffer();
-
-        // Upload the file content with the filename, hash and auth token
-        response = await fetch(presignedUrl, {
-          method: "PUT",
-          mode: "cors",
-          body: fileContent,
-          headers: {
-            "Content-Type": contentType,
-            Accept:
-              "image/avif,image/webp,image/apng,image/svg+xml,image/jpeg,image/*,*/*;q=0.8",
-          },
-        });
-
-        // Report on the outcome
-        if (response.status >= 200 && response.status < 300) {
-          msg = `${response.status} response from S3 API. Success!`;
-        } else if (response.status >= 400) {
-          msg = `${response.status} error from S3 API.`;
-        } else {
-          msg = `Unknown error.`;
-        }
-
-        detail = "[S3 PutObject does not return any content]";
-      }
-    } catch (error) {
-      console.error("Fetch threw an error:", error);
-      msg = `Fetch threw "${error}" - see the console and/or network tab for more details`;
-      detail = error.stack;
+  const updatePost = async (imageUrl) => {
+    if (!userId) {
+      console.error("User ID is required.");
+      setConversionError("You must be logged in to update a post!");
+      return false;
     }
-  };
-
-  const editPost = async () => {
-    if (!newImage) {
-      // If no new image, just update other fields
-      setLoading(true);
-      try {
-        const body = {
-          ...formData,
-          userId: userId,
-        };
-        const response = await fetch(`/api/post/${id}`, {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(body),
-        });
-
-        if (!response.ok) {
-          throw new Error("Failed to update post");
-        }
-
-        closeModal();
-      } catch (error) {
-        console.error("Error updating post:", error);
-      } finally {
-        setLoading(false);
-      }
-      return;
-    }
-
-    const imageFile = newImage;
-    const updatedNewImage = imageFile.name;
-    setLoading(true);
+    
     try {
-      const imageReferenceUrl = process.env.NEXT_PUBLIC_DATABASE_IMAGE_URL;
       const body = {
         ...formData,
-        image: `${imageReferenceUrl}/${updatedNewImage}`,
+        image: imageUrl || formData.image, // Use new image URL if provided, otherwise keep the current one
         userId: userId,
       };
+      
       const response = await fetch(`/api/post/${id}`, {
         method: "PATCH",
         headers: {
@@ -289,37 +254,65 @@ const EditPostModal = ({
       });
 
       if (!response.ok) {
-        throw new Error("Failed to update post");
+        throw new Error(
+          `Failed to update post: ${response.status} - ${response.statusText}`
+        );
       }
-
-      closeModal();
+      return true;
     } catch (error) {
-      console.error("Error updating post:", error);
-    } finally {
-      setLoading(false);
+      console.error("Post update error:", error);
+      setConversionError(`Failed to update post: ${error.message}`);
+      return false;
     }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("submitting form:", formData);
-    if (newImage) {
-      await uploadImageToB2();
+    setConversionError(null);
+    setLoading(true);
+
+    try {
+      let imageUrl = formData.image;
+      
+      // Only process and upload a new image if one has been selected
+      if (newImage) {
+        imageUrl = await processAndUploadImage();
+        if (!imageUrl) {
+          setLoading(false);
+          return; // Stop if upload failed
+        }
+      }
+
+      // Then update the post in your database with the processed image URL
+      const postSuccess = await updatePost(imageUrl);
+      if (!postSuccess) {
+        setLoading(false);
+        return; // Stop if post update failed
+      }
+
+      // If everything succeeded, close modal and refresh
+      closeModal();
+      router.refresh();
+    } catch (error) {
+      console.error("Error during submission:", error);
+      setConversionError("An error occurred while saving your changes.");
+    } finally {
+      setLoading(false);
     }
-    await editPost();
-    router.refresh();
   };
 
   const removeImage = () => {
-    setIsImageRemoved(true);
-    setFormData((prevFormData) => {
-      const newFormData = {
-        ...prevFormData,
-        image: "", // Clear the image
-      };
-      console.log("Updated formData:", newFormData);
-      return newFormData;
+    setIsImageDropped(false);
+    if (newImage && newImage.preview) {
+      URL.revokeObjectURL(newImage.preview);
+    }
+    setNewImage(null);
+    setCurrentImage(null);
+    setFormData({
+      ...formData,
+      image: "",
     });
+    setConversionError(null);
   };
 
   if (!isOpen) return null;
@@ -327,21 +320,23 @@ const EditPostModal = ({
   return (
     <div className="fixed inset-0 bg-gray-500 bg-opacity-75 z-50 flex items-center justify-center p-4">
       <div className="bg-[#4C4138] p-6 shadow-md w-full max-w-md sm:max-w-lg md:max-w-xl rounded-lg max-h-[90vh] overflow-y-auto">
-        <h2 className="text-xl font-bold mb-4 text-[#110A02] text-end">
+        <h2 className="text-xl font-bold mb-4 text-[#000000] text-end">
           edit post
         </h2>
         <form onSubmit={handleSubmit}>
-          {isImageRemoved ? (
+          {!currentImage ? (
             <div
-              className="h-48 w-full sm:w-3/4 md:w-2/3 mx-auto bg-[#4C4138] border-dashed border-2 border-[#ECE2D8] flex flex-col justify-center items-center"
+              className="h-48 w-full sm:w-3/4 md:w-2/3 mx-auto bg-[#4C4138] border-dashed border-2 border-[#D7CDBF] flex flex-col justify-center items-center"
               {...getRootProps()}
             >
               <input name="image" type="file" {...getInputProps()} />
-              <FaRegCircleUp className="w-5 h-5 fill-current" />
               {isConverting ? (
                 <p className="px-3 text-center">loading...</p>
               ) : (
-                <p className="px-3 text-center">add image</p>
+                <>
+                  <FaRegCircleUp className="w-5 h-5 fill-current" />
+                  <p className="px-3 text-center">add image</p>
+                </>
               )}
             </div>
           ) : (
@@ -370,10 +365,17 @@ const EditPostModal = ({
               )}
             </div>
           )}
+
+          {conversionError && (
+            <div className="mx-auto w-full mt-2 bg-red-800 bg-opacity-50 text-[#ECE2D8] p-2 rounded">
+              {conversionError}
+            </div>
+          )}
+
           <div className="my-4">
             <label
               htmlFor="title"
-              className="block text-sm font-medium text-[#110A02]"
+              className="block text-sm font-medium text-[#000000]"
             >
               title
             </label>
@@ -383,13 +385,13 @@ const EditPostModal = ({
               name="title"
               defaultValue={title}
               onChange={handleChange}
-              className="mt-1 p-2 w-full border border-[#1E1912] text-[#1E1912] bg-[#4C4138]"
+              className="mt-1 p-2 w-full border border-[#14100E] text-[#14100E] bg-[#4C4138]"
             />
           </div>
           <div className="mb-4">
             <label
               htmlFor="link"
-              className="block text-sm font-medium text-[#110A02]"
+              className="block text-sm font-medium text-[#000000]"
             >
               link
             </label>
@@ -399,13 +401,13 @@ const EditPostModal = ({
               name="link"
               defaultValue={link}
               onChange={handleChange}
-              className="mt-1 p-2 w-full border border-[#1E1912] text-[#1E1912] bg-[#4C4138]"
+              className="mt-1 p-2 w-full border border-[#14100E] text-[#14100E] bg-[#4C4138]"
             />
           </div>
           <div className="mb-4">
             <label
               htmlFor="description"
-              className="block text-sm font-medium text-[#110A02]"
+              className="block text-sm font-medium text-[#000000]"
             >
               description
             </label>
@@ -414,38 +416,37 @@ const EditPostModal = ({
               name="description"
               defaultValue={description}
               onChange={handleChange}
-              className="mt-1 p-2 w-full border border-[#1E1912] text-[#1E1912] bg-[#4C4138]"
+              className="mt-1 p-2 w-full border border-[#14100E] text-[#14100E] bg-[#4C4138]"
             />
           </div>
           <div className="mb-4">
             <label
               htmlFor="list"
-              className="block text-sm font-medium text-[#110A02]"
+              className="block text-sm font-medium text-[#000000]"
             >
               list
             </label>
             <select
-              className="border border-[#1E1912] bg-transparent text-[#1E1912] mt-2 px-2 py-1 focus:within:bg-[#ECE2D8] outline-none w-full block p-2"
+              className="border border-[#14100E] bg-transparent text-[#14100E] mt-2 px-2 py-1 focus:within:bg-[#D7CDBF] outline-none w-full block p-2"
+              defaultValue={listId}
               onChange={(e) =>
                 setFormData({ ...formData, listId: e.target.value })
               }
             >
-              <option>{list}</option>
-              {lists?.map((list) => {
-                return (
-                  <option key={list.id} value={list.id}>
-                    {list.title}
-                  </option>
-                );
-              })}
+              <option value="">select a list</option>
+              {lists?.map((list) => (
+                <option key={list.id} value={list.id}>
+                  {list.title}
+                </option>
+              ))}
             </select>
           </div>
           <div className="flex my-2 self-start items-center">
-            <Field className="flex my-2 text-[#1E1912] self-start items-center">
+            <Field className="flex my-2 text-[#14100E] self-start items-center">
               <Switch
                 checked={enabled}
                 onChange={handlePrivateToggle}
-                className="group relative flex h-7 w-14 cursor-pointer rounded-full bg-white/10 p-1 transition-colors duration-200 ease-in-out focus:outline-none data-[focus]:outline-1 data-[focus]:outline-white data-[checked]:bg-[#ECE2D8]"
+                className="group relative flex h-7 w-14 cursor-pointer rounded-full bg-white/10 p-1 transition-colors duration-200 ease-in-out focus:outline-none data-[focus]:outline-1 data-[focus]:outline-white data-[checked]:bg-[#D7CDBF]"
               >
                 <span
                   aria-hidden="true"
@@ -459,18 +460,18 @@ const EditPostModal = ({
             <button
               type="button"
               onClick={closeModal}
-              className="mr-4 text-[#110A02] hover:text-[#1E1912]"
+              className="mr-4 text-[#000000] hover:text-[#14100E]"
             >
               cancel
             </button>
             <button
               type="submit"
               className={`w-1/2 ${
-                loading ? "bg-[#4C4138]" : "bg-[#1E1912]"
-              } text-[#ECE2D8] p-2 hover:bg-[#110A02] disabled:opacity-50`}
-              disabled={loading || isConverting}
+                loading ? "bg-[#4C4138]" : "bg-[#14100E]"
+              } text-[#D7CDBF] p-2 hover:bg-[#000000] disabled:opacity-50`}
+              disabled={loading || isConverting || isUploading}
             >
-              {loading ? "saving..." : "save changes"}
+              {loading || isUploading ? "saving..." : "save changes"}
             </button>
           </div>
         </form>
@@ -742,13 +743,13 @@ export default EditPostModal;
 //   return (
 //     <div className="fixed inset-0 bg-gray-500 bg-opacity-75 z-50 flex items-center justify-center">
 //       <div className="bg-[#4C4138] p-6 shadow-md w-96">
-//         <h2 className="text-xl font-bold mb-4 text-[#110A02] text-end">
+//         <h2 className="text-xl font-bold mb-4 text-[#000000] text-end">
 //           edit post
 //         </h2>
 //         <form onSubmit={handleSubmit}>
 //           {isImageRemoved ? (
 //             <div
-//               className="h-48 w-2/4 mx-auto bg-[#4C4138] border-dashed border-2 border-[#ECE2D8] flex flex-col jusify-center items-center place-content-center"
+//               className="h-48 w-2/4 mx-auto bg-[#4C4138] border-dashed border-2 border-[#D7CDBF] flex flex-col jusify-center items-center place-content-center"
 //               {...getRootProps()}
 //             >
 //               <input name="image" type="file" {...getInputProps()} />
@@ -776,7 +777,7 @@ export default EditPostModal;
 //           <div className="my-4">
 //             <label
 //               htmlFor="title"
-//               className="block text-sm font-medium text-[#110A02]"
+//               className="block text-sm font-medium text-[#000000]"
 //             >
 //               title
 //             </label>
@@ -786,13 +787,13 @@ export default EditPostModal;
 //               name="title"
 //               defaultValue={title}
 //               onChange={handleChange}
-//               className="mt-1 p-2 w-full border border-[#1E1912] text-[#1E1912] bg-[#4C4138]"
+//               className="mt-1 p-2 w-full border border-[#14100E] text-[#14100E] bg-[#4C4138]"
 //             />
 //           </div>
 //           <div className="mb-4">
 //             <label
 //               htmlFor="link"
-//               className="block text-sm font-medium text-[#110A02]"
+//               className="block text-sm font-medium text-[#000000]"
 //             >
 //               link
 //             </label>
@@ -802,13 +803,13 @@ export default EditPostModal;
 //               name="link"
 //               defaultValue={link}
 //               onChange={handleChange}
-//               className="mt-1 p-2 w-full border border-[#1E1912] text-[#1E1912] bg-[#4C4138]"
+//               className="mt-1 p-2 w-full border border-[#14100E] text-[#14100E] bg-[#4C4138]"
 //             />
 //           </div>
 //           <div className="mb-4">
 //             <label
 //               htmlFor="description"
-//               className="block text-sm font-medium text-[#110A02]"
+//               className="block text-sm font-medium text-[#000000]"
 //             >
 //               description
 //             </label>
@@ -817,18 +818,18 @@ export default EditPostModal;
 //               name="description"
 //               defaultValue={description}
 //               onChange={handleChange}
-//               className="mt-1 p-2 w-full border border-[#1E1912] text-[#1E1912] bg-[#4C4138]"
+//               className="mt-1 p-2 w-full border border-[#14100E] text-[#14100E] bg-[#4C4138]"
 //             />
 //           </div>
 //           <div className="mb-4">
 //             <label
 //               htmlFor="list"
-//               className="block text-sm font-medium text-[#110A02]"
+//               className="block text-sm font-medium text-[#000000]"
 //             >
 //               list
 //             </label>
 //             <select
-//               className="border border-[#1E1912] bg-transparent text-[#1E1912] mt-2 px-2 py-1 focus:within:bg-[#ECE2D8] outline-none w-full block p-2"
+//               className="border border-[#14100E] bg-transparent text-[#14100E] mt-2 px-2 py-1 focus:within:bg-[#D7CDBF] outline-none w-full block p-2"
 //               onChange={(e) =>
 //                 setFormData({ ...formData, listId: e.target.value })
 //               }
@@ -844,11 +845,11 @@ export default EditPostModal;
 //             </select>
 //           </div>
 //           <div className="flex my-2 self-start items-center">
-//             <Field className="flex my-2 text-[#1E1912] self-start items-center">
+//             <Field className="flex my-2 text-[#14100E] self-start items-center">
 //               <Switch
 //                 checked={enabled}
 //                 onChange={handlePrivateToggle}
-//                 className="group relative flex h-7 w-14 cursor-pointer rounded-full bg-white/10 p-1 transition-colors duration-200 ease-in-out focus:outline-none data-[focus]:outline-1 data-[focus]:outline-white data-[checked]:bg-[#ECE2D8]"
+//                 className="group relative flex h-7 w-14 cursor-pointer rounded-full bg-white/10 p-1 transition-colors duration-200 ease-in-out focus:outline-none data-[focus]:outline-1 data-[focus]:outline-white data-[checked]:bg-[#D7CDBF]"
 //               >
 //                 <span
 //                   aria-hidden="true"
@@ -862,15 +863,15 @@ export default EditPostModal;
 //             <button
 //               type="button"
 //               onClick={closeModal}
-//               className="mr-4 text-[#110A02] hover:text-[#1E1912]"
+//               className="mr-4 text-[#000000] hover:text-[#14100E]"
 //             >
 //               cancel
 //             </button>
 //             <button
 //               type="submit"
 //               className={`w-1/2 ${
-//                 loading ? "bg-[#4C4138]" : "bg-[#1E1912]"
-//               } text-[#ECE2D8] p-2 hover:bg-[#110A02] disabled:opacity-50`}
+//                 loading ? "bg-[#4C4138]" : "bg-[#14100E]"
+//               } text-[#D7CDBF] p-2 hover:bg-[#000000] disabled:opacity-50`}
 //               disabled={loading}
 //             >
 //               {loading ? "saving..." : "save changes"}

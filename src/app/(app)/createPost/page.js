@@ -12,7 +12,7 @@ const CreatePostForm = dynamic(
 
 export default function CreatePost() {
   return (
-    <div className="h-screen w-full bg-[#110A02]">
+    <div className="h-screen w-full bg-[#000000]">
       <CreatePostForm />
     </div>
   );
@@ -22,7 +22,7 @@ export default function CreatePost() {
 
 // export default function CreatePost() {
 //   return (
-//     <div className='h-screen w-full bg-[#110A02]'>
+//     <div className='h-screen w-full bg-[#000000]'>
 //       <CreatePostForm />
 //     </div>
 //   );

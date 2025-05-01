@@ -58,7 +58,7 @@ function UserPage(props) {
 
   if (isLoading) {
     return (
-      <div className="h-screen w-full flex justify-center items-center bg-[#110A02] text-[#FBF8F4]">
+      <div className="h-screen w-full flex justify-center items-center bg-[#000000] text-[#D7CDBF]">
         <h2>loading...</h2>
       </div>
     );
@@ -104,9 +104,9 @@ function UserPage(props) {
   };
 
   return (
-    <div className="h-screen bg-[#110A02] text-[#FBF8F4]">
+    <div className="h-screen bg-[#000000] text-[#D7CDBF]">
       {user && (
-        <div className="flex flex-col items-end text-[#FBF8F4] pr-1 lowercase">
+        <div className="flex flex-col items-end text-[#D7CDBF] pr-1 lowercase">
           <p className="text-xl font-bold">{user.firstName}</p>
           <p className="text-xl font-bold">{user.lastName}</p>
           <p className="text-md">@{user.username}</p>
@@ -119,11 +119,11 @@ function UserPage(props) {
           onClick={handleFollowToggle}
           className={`w-1/3 py-2 flex justify-center items-center hover:bg-opacity-75 rounded- ${
             isFollowing
-              ? "bg-[#FBF8F4] border border-[#1E1912]"
-              : "bg-[#1E1912] border border-[#FBF8F4]"
+              ? "bg-[#D7CDBF] border border-[#14100E]"
+              : "bg-[#14100E] border border-[#D7CDBF]"
           }`}
         >
-          <p className={`${isFollowing ? "text-[#1E1912]" : "text-[#FBF8F4]"}`}>
+          <p className={`${isFollowing ? "text-[#14100E]" : "text-[#D7CDBF]"}`}>
             {isFollowing ? "following" : "follow"}
           </p>
         </Button>
@@ -132,7 +132,7 @@ function UserPage(props) {
         <UserListsProfilePage />
       </div>
 
-      <div className="w-full grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 justify-center items-center bg-[#110A02] text-[#FBF8F4] overflow-y-auto pb-2">
+      <div className="w-full grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 justify-center items-center bg-[#000000] text-[#D7CDBF] overflow-y-auto pb-2">
         {posts?.map((post) => (
           <PostItemUserProfilePage
             key={post.id}
