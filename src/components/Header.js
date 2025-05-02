@@ -37,9 +37,10 @@ export default function Header() {
               <Image
                 src={rcmndLogo}
                 alt="rcmnd"
-                height={20}
-                width={20}
-                className="w-full"
+                width={50}
+                height={40}
+                className="w-6 sm:w-8 md:w-9 lg:w-10 xl:w-11 h-auto"
+                style={{ maxWidth: "none" }}
               />
             </MenuButton>
             <MenuItems
