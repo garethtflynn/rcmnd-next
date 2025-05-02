@@ -38,10 +38,10 @@ function ProfilePage(props) {
   return (
     <div className="bg-[#000000] text-[#D7CDBF] h-screen">
       {user && (
-        <div className="flex flex-col items-end text-[#D7CDBF] pr-1 lowercase">
-          <p className="text-xl font-bold">{user.firstName}</p>
-          <p className="text-xl font-bold">{user.lastName}</p>
-          <p className="text-sm font-light">@{user.username}</p>
+        <div className="flex flex-col items-end  pr-1 lowercase">
+          <p className="text-xl font-bold text-[#FBF8F4]">{user.firstName}</p>
+          <p className="text-xl font-bold text-[#FBF8F4]">{user.lastName}</p>
+          <p className="text-sm font-light text-[#F1E9DA]">@{user.username}</p>
         </div>
       )}
       <div className="pt-4 pb-3">

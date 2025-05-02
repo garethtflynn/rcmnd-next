@@ -12,12 +12,12 @@ module.exports = {
       //   "brown": "#1E1912",
       //   "cream": "#ECE2D8",
       //   "lightBrown": "#4C4138",
-      //   "white": "#FBF8F4",
       // },
       //newColors: {
         // black: #000000
-        // darkGrey: #14100E
-        // offWhite: #D7CDBF
+        // darkGrey: #131110
+        // offWhite: #F1E9DA
+        // white: "#FBF8F4",
       // }
     },
   },
