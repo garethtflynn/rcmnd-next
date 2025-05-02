@@ -69,13 +69,13 @@ export default function PostItem({
           </MenuButton>
           <MenuItems
             transition
-            className="absolute right-0 w-40 origin-top-right bg-[#D7CDBF] transition focus:outline-none data-[closed]:scale-95 data-[closed]:transform data-[closed]:opacity-0 data-[enter]:duration-100 data-[leave]:duration-75 data-[enter]:ease-out data-[leave]:ease-in"
+            className="absolute right-0 w-40 origin-top-right bg-[#000000] transition focus:outline-none data-[closed]:scale-95 data-[closed]:transform data-[closed]:opacity-0 data-[enter]:duration-100 data-[leave]:duration-75 data-[enter]:ease-out data-[leave]:ease-in"
           >
             <div className="py-1">
-              <MenuItem className="block px-4 py-2 text-sm text-[#000000] hover:opacity-25">
+              <MenuItem className="block px-4 py-2 text-sm text-[#F1E9DA] font-semibold hover:opacity-25">
                 <p onClick={handleEditPost}>edit post</p>
               </MenuItem>
-              <MenuItem className="block px-4 py-2 text-sm text-[#000000] hover:opacity-25">
+              <MenuItem className="block px-4 py-2 text-sm text-[#F1E9DA] font-semibold hover:opacity-25">
                 <p onClick={handleDeletePost}>delete post</p>
               </MenuItem>
             </div>

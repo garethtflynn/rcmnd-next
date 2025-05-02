@@ -51,7 +51,7 @@ function UserLists(props) {
             <li
               key={list.id}
               onClick={() => handleListClick(list.id)}
-              className="text-[#4C4138] p-2 cursor-pointer text-nowrap	text-base italic"
+              className="text-[#FBF8F4] font-semibold text-lg p-2 cursor-pointer text-nowrap italic"
             >
               {list.title}
             </li>

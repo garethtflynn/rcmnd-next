@@ -189,28 +189,32 @@ const EditPostModal = ({
 
     try {
       const imageFile = newImage;
-      
+
       // Create a FormData object to send the image to our API
       const formData = new FormData();
-      formData.append('image', imageFile);
-      
+      formData.append("image", imageFile);
+
       // Send to our single API endpoint that handles processing and uploading
-      const response = await fetch('/api/upload-with-processing', {
-        method: 'POST',
+      const response = await fetch("/api/upload-with-processing", {
+        method: "POST",
         body: formData,
       });
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.error || 'Failed to process and upload image');
+        throw new Error(
+          errorData.error || "Failed to process and upload image"
+        );
       }
 
       // Get the processed image URL
       const result = await response.json();
       return result.url; // Return the URL of the uploaded image
     } catch (error) {
-      console.error('Process and upload error:', error);
-      setConversionError(`Failed to process and upload image: ${error.message}`);
+      console.error("Process and upload error:", error);
+      setConversionError(
+        `Failed to process and upload image: ${error.message}`
+      );
       return null;
     } finally {
       setIsUploading(false);
@@ -237,14 +241,14 @@ const EditPostModal = ({
       setConversionError("You must be logged in to update a post!");
       return false;
     }
-    
+
     try {
       const body = {
         ...formData,
         image: imageUrl || formData.image, // Use new image URL if provided, otherwise keep the current one
         userId: userId,
       };
-      
+
       const response = await fetch(`/api/post/${id}`, {
         method: "PATCH",
         headers: {
@@ -273,7 +277,7 @@ const EditPostModal = ({
 
     try {
       let imageUrl = formData.image;
-      
+
       // Only process and upload a new image if one has been selected
       if (newImage) {
         imageUrl = await processAndUploadImage();
@@ -367,7 +371,7 @@ const EditPostModal = ({
           )}
 
           {conversionError && (
-            <div className="mx-auto w-full mt-2 bg-red-800 bg-opacity-50 text-[#ECE2D8] p-2 rounded">
+            <div className="mx-auto w-full mt-2 bg-red-800 bg-opacity-50 text-[#FBF8F4] p-2 rounded">
               {conversionError}
             </div>
           )}

@@ -52,12 +52,12 @@ function Search(props) {
         placeholder="search"
         onChange={handleSearch}
         value={searchQuery}
-        className="w-36 sm:w-full py-2 border-b-2 border-[#FBF8F4] bg-transparent text-[#FBF8F4] hover:bg-[#4C4138] outline-none placeholder-[#14100E]"
+        className="w-36 sm:w-full py-2 border-b-2 border-[#FBF8F4] bg-transparent text-[#FBF8F4] hover:bg-[#131110] outline-none placeholder-[#14100E]"
       />
 
       {/* Search Results */}
       {filteredUsers.length > 0 && (
-        <div className="absolute top-full mt-2 w-52 sm:w-full max-h-60 overflow-y-auto bg-[#FBF8F4] shadow-lg border border-[#ECE2D8] z-10 p-1 hover:bg-stone-300">
+        <div className="absolute top-full mt-2 w-52 sm:w-full max-h-60 overflow-y-auto bg-[#FBF8F4] shadow-lg border border-[#FBF8F4] z-10 p-1 hover:bg-stone-300">
           {filteredUsers.map((user) => (
             <Link
               key={user.id}

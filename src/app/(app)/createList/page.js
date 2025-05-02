@@ -85,13 +85,13 @@ function CreateList(props) {
             <button
               onClick={handleCancelClick}
               type="button"
-              className="w-1/4 mt-2 bg-transparent hover:text-opacity-50 text-[#D7CDBF] font-bold py-2 px-4 rounded-md duration-500 mr-2"
+              className="w-1/4 mt-2 bg-transparent hover:text-opacity-50 text-[#F1E9DA] font-bold py-2 px-4 rounded-md duration-500 mr-2"
             >
               cancel
             </button>
             <button
               type="submit"
-              className="w-1/4 mt-2 bg-[#D7CDBF] hover:bg-opacity-50 text-[#000000] font-bold py-2 px-4 rounded-md duration-500"
+              className="w-1/4 mt-2 bg-[#F1E9DA] hover:opacity-75 text-[#131110] font-bold py-2 px-4 rounded-md duration-500"
             >
               create
             </button>

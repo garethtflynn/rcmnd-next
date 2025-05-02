@@ -151,28 +151,32 @@ const CreatePostForm = () => {
 
     try {
       const imageFile = image[0];
-      
+
       // Create a FormData object to send the image to our API
       const formData = new FormData();
-      formData.append('image', imageFile);
-      
+      formData.append("image", imageFile);
+
       // Send to our single API endpoint that handles processing and uploading
-      const response = await fetch('/api/upload-with-processing', {
-        method: 'POST',
+      const response = await fetch("/api/upload-with-processing", {
+        method: "POST",
         body: formData,
       });
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.error || 'Failed to process and upload image');
+        throw new Error(
+          errorData.error || "Failed to process and upload image"
+        );
       }
 
       // Get the processed image URL
       const result = await response.json();
       return result.url; // Return the URL of the uploaded image
     } catch (error) {
-      console.error('Process and upload error:', error);
-      setConversionError(`Failed to process and upload image: ${error.message}`);
+      console.error("Process and upload error:", error);
+      setConversionError(
+        `Failed to process and upload image: ${error.message}`
+      );
       return null;
     } finally {
       setIsUploading(false);
@@ -185,7 +189,7 @@ const CreatePostForm = () => {
       setConversionError("You must be logged in to create a post!");
       return false;
     }
-    
+
     // Ensure formData has required properties
     if (!formData.title || !formData.link || !imageUrl) {
       setConversionError("Title, link and image are required!");
@@ -198,7 +202,7 @@ const CreatePostForm = () => {
         image: imageUrl,
         userId: userId,
       };
-      
+
       const apiUrl = "/api/post";
       const requestData = {
         method: "POST",
@@ -331,27 +335,23 @@ const CreatePostForm = () => {
     >
       {isImageDropped ? (
         <div
-          className="h-96 w-3/4 md:h-1/2 md:w-1/2 lg:h-1/2 lg:w-1/2  mx-auto bg-[#14100E] border-dashed border-2 border-[#ECE2D8] flex flex-col jusify-center items-center place-content-center"
+          className="h-96 w-3/4 md:h-1/2 md:w-1/2 lg:h-1/2 lg:w-1/2  mx-auto border-dashed border-2 border-[#FBF8F4] flex flex-col jusify-center items-center place-content-center"
           {...getRootProps()}
         >
           <input name="image" type="file" {...getInputProps()} />
           {isConverting ? (
-            <p className="px-3 text-center text-[#ECE2D8]">
-              loading...
-            </p>
+            <p className="px-3 text-center text-[#FBF8F4]">loading...</p>
           ) : (
             <>
-              <FaRegCircleUp className="w-5 h-5 fill-current text-[#ECE2D8]" />
-              <p className="px-3 text-center text-[#ECE2D8]">add image</p>
+              <FaRegCircleUp className="w-5 h-5 fill-current text-[#FBF8F4]" />
+              <p className="px-3 text-center text-[#FBF8F4]">add image</p>
             </>
           )}
         </div>
       ) : (
         <div className="h-fit w-full flex justify-center overflow-hidden">
           {isConverting ? (
-            <p className="px-3 text-center text-[#ECE2D8]">
-              loading...
-            </p>
+            <p className="px-3 text-center text-[#FBF8F4]">loading...</p>
           ) : (
             preview
           )}
@@ -359,7 +359,7 @@ const CreatePostForm = () => {
       )}
 
       {conversionError && (
-        <div className="mx-auto w-10/12 mt-2 bg-red-800 bg-opacity-50 text-[#ECE2D8] p-2 rounded">
+        <div className="mx-auto w-10/12 mt-2 bg-red-800 bg-opacity-50 text-[#FBF8F4] p-2 rounded">
           {conversionError}
         </div>
       )}
@@ -371,7 +371,7 @@ const CreatePostForm = () => {
           name="title"
           onChange={(e) => setFormData({ ...formData, title: e.target.value })}
           placeholder="title"
-          className="border border-[#ECE2D8] bg-transparent text-[#ECE2D8] px-2 py-1 my-2 rounded hover:bg-[#4C4138] focus:within:bg-[#ECE2D8] focus:within:text-[#110A02] outline-none placeholder-[#4C4138] w-full"
+          className="border border-[#FBF8F4] bg-transparent text-[#FBF8F4] px-2 py-1 my-2 rounded hover:bg-[#4C4138] focus:within:bg-[#FBF8F4] focus:within:text-[#110A02] outline-none placeholder-[#131110] w-full"
         />
         <input
           value={formData.link}
@@ -379,7 +379,7 @@ const CreatePostForm = () => {
           name="link"
           onChange={(e) => setFormData({ ...formData, link: e.target.value })}
           placeholder="link"
-          className="border border-[#ECE2D8] bg-transparent text-[#ECE2D8] px-2 py-1 rounded hover:bg-[#4C4138] focus:within:bg-[#ECE2D8] focus:within:text-[#110A02] outline-none placeholder-[#4C4138] w-full"
+          className="border border-[#FBF8F4] bg-transparent text-[#FBF8F4] px-2 py-1 rounded hover:bg-[#4C4138] focus:within:bg-[#FBF8F4] focus:within:text-[#110A02] outline-none placeholder-[#131110] w-full"
         />
         <textarea
           value={formData.description}
@@ -390,10 +390,10 @@ const CreatePostForm = () => {
           }
           rows={4}
           placeholder="description"
-          className="border border-[#ECE2D8] bg-transparent text-[#ECE2D8] mt-2 px-2 py-1 rounded hover:bg-[#4C4138] focus:within:bg-[#ECE2D8] focus:within:text-[#110A02] outline-none placeholder-[#4C4138]  w-full"
+          className="border border-[#FBF8F4] bg-transparent text-[#FBF8F4] mt-2 px-2 py-1 rounded hover:bg-[#4C4138] focus:within:bg-[#FBF8F4] focus:within:text-[#110A02] outline-none placeholder-[#131110]  w-full"
         />
         <select
-          className="border border-[#ECE2D8] bg-transparent text-[#ECE2D8] mt-2 px-2 py-1 rounded hover:bg-[#4C4138] focus:within:bg-[#ECE2D8] outline-none w-full"
+          className="border border-[#FBF8F4] bg-transparent text-[#131110] mt-2 px-2 py-1 rounded hover:bg-[#4C4138] focus:within:bg-[#FBF8F4] outline-none w-full"
           value={formData.listId}
           onChange={(e) => setFormData({ ...formData, listId: e.target.value })}
         >
@@ -404,35 +404,35 @@ const CreatePostForm = () => {
             </option>
           ))}
         </select>
-        <div className="flex my-2 text-[#ECE2D8] self-start items-center">
-          <Field className="flex my-2 text-[#ECE2D8] self-start items-center">
+        <div className="flex my-2 text-[#FBF8F4] self-start items-center">
+          <Field className="flex my-2 text-[#FBF8F4] self-start items-center">
             <Switch
               checked={enabled}
               onChange={handlePrivateToggle}
-              className="group relative flex h-7 w-14 cursor-pointer rounded-full bg-white/10 p-1 transition-colors duration-200 ease-in-out focus:outline-none data-[focus]:outline-1 data-[focus]:outline-white data-[checked]:bg-[#ECE2D8]"
+              className="group relative flex h-7 w-14 cursor-pointer rounded-full bg-white/10 p-1 transition-colors duration-200 ease-in-out focus:outline-none data-[focus]:outline-1 data-[focus]:outline-white data-[checked]:bg-[#FBF8F4]"
             >
               <span
                 aria-hidden="true"
                 className="pointer-events-none inline-block size-5 translate-x-0 rounded-full bg-white ring-0 shadow-lg transition duration-200 ease-in-out group-data-[checked]:translate-x-7"
               />
             </Switch>
-            <Label className="pl-2">private</Label>
+            <Label className="pl-2 text-[#F1E9DA]">private</Label>
           </Field>
         </div>
         <div className="w-full flex items-center justify-center">
           <button
             onClick={handleCancelClick}
             type="button"
-            className="w-1/2 mt-2 bg-transparent hover:text-opacity-50 text-[#ECE2D8] font-bold py-2 px-4 rounded-md duration-500 mr-2"
+            className="w-1/2 mt-2 bg-transparent hover:text-opacity-50 text-[#F1E9DA] font-bold py-2 px-4 rounded-md duration-500 mr-2"
           >
             cancel
           </button>
           <button
             type="submit"
-            className="w-1/2 mt-2 bg-[#D7CDBF] hover:opacity-75 text-[#110A02] font-bold py-2 px-4 rounded-md duration-500"
+            className="w-1/2 mt-2 bg-[#F1E9DA] hover:opacity-75 text-[#131110] font-bold py-2 px-4 rounded-md duration-500"
             disabled={isConverting || isUploading}
           >
-            {isUploading ? 'loading...' : 'create'}
+            {isUploading ? "loading..." : "create"}
           </button>
         </div>
       </div>
@@ -699,7 +699,7 @@ export default CreatePostForm;
 //     >
 //       {isImageDropped ? (
 //         <div
-//           className="h-96 w-3/4 md:h-1/2 md:w-1/2 lg:h-1/2 lg:w-1/2  mx-auto bg-[#4C4138] border-dashed border-2 border-[#ECE2D8] flex flex-col jusify-center items-center place-content-center"
+//           className="h-96 w-3/4 md:h-1/2 md:w-1/2 lg:h-1/2 lg:w-1/2  mx-auto bg-[#4C4138] border-dashed border-2 border-[#FBF8F4] flex flex-col jusify-center items-center place-content-center"
 //           {...getRootProps()}
 //         >
 //           <input
@@ -723,7 +723,7 @@ export default CreatePostForm;
 //           name="title"
 //           onChange={(e) => setFormData({ ...formData, title: e.target.value })}
 //           placeholder="title"
-//           className="border border-[#ECE2D8] bg-transparent text-[#ECE2D8] px-2 py-1 my-2 rounded hover:bg-[#4C4138] focus:within:bg-[#ECE2D8] outline-none placeholder-[#4C4138] w-full"
+//           className="border border-[#FBF8F4] bg-transparent text-[#FBF8F4] px-2 py-1 my-2 rounded hover:bg-[#4C4138] focus:within:bg-[#FBF8F4] outline-none placeholder-[#4C4138] w-full"
 //         />
 //         <input
 //           defaultValue={formData.link}
@@ -731,7 +731,7 @@ export default CreatePostForm;
 //           name="link"
 //           onChange={(e) => setFormData({ ...formData, link: e.target.value })}
 //           placeholder="link"
-//           className="border border-[#ECE2D8] bg-transparent text-[#ECE2D8] px-2 py-1 rounded hover:bg-[#4C4138] focus:within:bg-[#ECE2D8] outline-none placeholder-[#4C4138] w-full"
+//           className="border border-[#FBF8F4] bg-transparent text-[#FBF8F4] px-2 py-1 rounded hover:bg-[#4C4138] focus:within:bg-[#FBF8F4] outline-none placeholder-[#4C4138] w-full"
 //         />
 //         <textarea
 //           defaultValue={formData.description}
@@ -742,10 +742,10 @@ export default CreatePostForm;
 //           }
 //           rows={4}
 //           placeholder="description"
-//           className="border border-[#ECE2D8] bg-transparent text-[#ECE2D8] mt-2 px-2 py-1 rounded hover:bg-[#4C4138] focus:within:bg-[#ECE2D8] outline-none placeholder-[#4C4138]  w-full"
+//           className="border border-[#FBF8F4] bg-transparent text-[#FBF8F4] mt-2 px-2 py-1 rounded hover:bg-[#4C4138] focus:within:bg-[#FBF8F4] outline-none placeholder-[#4C4138]  w-full"
 //         />
 //         <select
-//           className="border border-[#ECE2D8] bg-transparent text-[#4C4138] mt-2 px-2 py-1 rounded hover:bg-[#4C4138] focus:within:bg-[#ECE2D8] outline-none w-full"
+//           className="border border-[#FBF8F4] bg-transparent text-[#4C4138] mt-2 px-2 py-1 rounded hover:bg-[#4C4138] focus:within:bg-[#FBF8F4] outline-none w-full"
 //           onChange={(e) => setFormData({ ...formData, listId: e.target.value })}
 //         >
 //           <option>list</option>
@@ -765,7 +765,7 @@ export default CreatePostForm;
 //               value="private"
 //               checked={enabled}
 //               onChange={handlePrivateToggle}
-//               className="group relative flex h-7 w-14 cursor-pointer rounded-full bg-white/10 p-1 transition-colors duration-200 ease-in-out focus:outline-none data-[focus]:outline-1 data-[focus]:outline-white data-[checked]:bg-[#ECE2D8]"
+//               className="group relative flex h-7 w-14 cursor-pointer rounded-full bg-white/10 p-1 transition-colors duration-200 ease-in-out focus:outline-none data-[focus]:outline-1 data-[focus]:outline-white data-[checked]:bg-[#FBF8F4]"
 //             >
 //               <span
 //                 aria-hidden="true"
@@ -779,13 +779,13 @@ export default CreatePostForm;
 //           <button
 //             onClick={handleCancelClick}
 //             type="button"
-//             className="w-1/2 mt-2 bg-transparent hover:text-opacity-50 text-[#ECE2D8] font-bold py-2 px-4 rounded-md duration-500 mr-2"
+//             className="w-1/2 mt-2 bg-transparent hover:text-opacity-50 text-[#FBF8F4] font-bold py-2 px-4 rounded-md duration-500 mr-2"
 //           >
 //             cancel
 //           </button>
 //           <button
 //             type="submit"
-//             className="w-1/2 mt-2 bg-[#ECE2D8] hover:opacity-75 text-[#110A02] font-bold py-2 px-4 rounded-md duration-500 "
+//             className="w-1/2 mt-2 bg-[#FBF8F4] hover:opacity-75 text-[#110A02] font-bold py-2 px-4 rounded-md duration-500 "
 //           >
 //             create
 //           </button>
