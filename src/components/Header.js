@@ -38,6 +38,7 @@ export default function Header() {
     try {
       await signOut({ redirect: true, callbackUrl: "/welcome" });
       console.log("logged out!");
+      setIsOpen(false);
     } catch (error) {
       console.error("Logout error:", error);
     }
@@ -246,7 +247,9 @@ export default function Header() {
             className="text-2xl md:text-3xl text-[#F1E9DA] cursor-pointer"
             style={{ opacity: 0 }}
           >
-            <Link href="/createPost">create post</Link>
+            <Link href="/createPost" onClick={() => setIsOpen(false)}>
+              create post
+            </Link>
           </div>
 
           <div
@@ -254,7 +257,9 @@ export default function Header() {
             className="text-2xl md:text-3xl text-[#F1E9DA] cursor-pointer"
             style={{ opacity: 0 }}
           >
-            <Link href="/createList">create list</Link>
+            <Link href="/createList" onClick={() => setIsOpen(false)}>
+              create list
+            </Link>
           </div>
 
           <div
@@ -262,7 +267,9 @@ export default function Header() {
             className="text-2xl md:text-3xl text-[#F1E9DA] cursor-pointer"
             style={{ opacity: 0 }}
           >
-            <Link href="/profilePage">profile</Link>
+            <Link href="/profilePage" onClick={() => setIsOpen(false)}>
+              profile
+            </Link>
           </div>
 
           <div
