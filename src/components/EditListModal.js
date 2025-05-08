@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import { Field, Label, Switch } from "@headlessui/react";
+import { useRouter } from "next/navigation";
 
 function EditListModal({ isOpen, closeModal, title, listId, isPrivate }) {
+  const router = useRouter()
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     title: title,
