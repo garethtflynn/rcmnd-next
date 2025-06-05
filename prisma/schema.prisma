@@ -51,3 +51,4 @@ model List {
   userId    String?  @db.ObjectId
   isPrivate Boolean? @default(false)
 }
+

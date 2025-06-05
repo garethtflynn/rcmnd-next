@@ -5,6 +5,8 @@ import dynamic from "next/dynamic";
 import Image from "next/image";
 import Link from "next/link";
 
+import AppImage from "./AppImage";
+
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 import { FaEllipsisVertical } from "react-icons/fa6";
 
@@ -47,12 +49,12 @@ export default function PostItem({
   return (
     <div className="px-1 relative h-72 md:h-96">
       <Link id={id} href={`/post/${id}`}>
-        <Image
+        <AppImage
           className="w-full h-full object-cover"
           src={image}
           alt={title}
-          width="300"
-          height="300"
+          // width="300"
+          // height="300"
         />
       </Link>
       <div>

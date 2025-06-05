@@ -3,6 +3,8 @@ import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 
+import AppImage from "./AppImage";
+
 export default function PostItemHomePage({
   id,
   title,
@@ -36,13 +38,12 @@ export default function PostItemHomePage({
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
       >
-        {/* Normal Image */}
-        <Image
+        <AppImage
           className="w-full h-full object-cover duration-700"
           src={image}
           alt={title}
-          width={400}
-          height={400}
+          // width={400}
+          // height={400}
           style={style}
         />
         {/* Title Overlay */}
