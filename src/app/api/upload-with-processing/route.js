@@ -1,4 +1,3 @@
-// File: app/api/upload-with-processing/route.js
 import { NextResponse } from "next/server";
 import sharp from "sharp";
 import { getServerSession } from "next-auth";

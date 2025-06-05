@@ -371,7 +371,7 @@ const CreatePostForm = () => {
           name="title"
           onChange={(e) => setFormData({ ...formData, title: e.target.value })}
           placeholder="title"
-          className="border border-[#FBF8F4] bg-transparent text-[#FBF8F4] px-2 py-1 my-2 rounded hover:bg-[#4C4138] focus:within:bg-[#FBF8F4] focus:within:text-[#110A02] outline-none placeholder-[#131110] w-full"
+          className="border border-[#FBF8F4] bg-transparent text-[#FBF8F4] px-2 py-1 my-2 rounded hover:bg-[#4C4138] focus:within:bg-[#FBF8F4] focus:within:text-[#110A02] outline-none placeholder-[#252220] w-full"
         />
         <input
           value={formData.link}
@@ -379,7 +379,7 @@ const CreatePostForm = () => {
           name="link"
           onChange={(e) => setFormData({ ...formData, link: e.target.value })}
           placeholder="link"
-          className="border border-[#FBF8F4] bg-transparent text-[#FBF8F4] px-2 py-1 rounded hover:bg-[#4C4138] focus:within:bg-[#FBF8F4] focus:within:text-[#110A02] outline-none placeholder-[#131110] w-full"
+          className="border border-[#FBF8F4] bg-transparent text-[#FBF8F4] px-2 py-1 rounded hover:bg-[#4C4138] focus:within:bg-[#FBF8F4] focus:within:text-[#110A02] outline-none placeholder-[#252220] w-full"
         />
         <textarea
           value={formData.description}
@@ -390,10 +390,10 @@ const CreatePostForm = () => {
           }
           rows={4}
           placeholder="description"
-          className="border border-[#FBF8F4] bg-transparent text-[#FBF8F4] mt-2 px-2 py-1 rounded hover:bg-[#4C4138] focus:within:bg-[#FBF8F4] focus:within:text-[#110A02] outline-none placeholder-[#131110]  w-full"
+          className="border border-[#FBF8F4] bg-transparent text-[#FBF8F4] mt-2 px-2 py-1 rounded hover:bg-[#4C4138] focus:within:bg-[#FBF8F4] focus:within:text-[#110A02] outline-none placeholder-[#252220]  w-full"
         />
         <select
-          className="border border-[#FBF8F4] bg-transparent text-[#131110] mt-2 px-2 py-1 rounded hover:bg-[#4C4138] focus:within:bg-[#FBF8F4] outline-none w-full"
+          className="border border-[#FBF8F4] bg-transparent text-[#252220] mt-2 px-2 py-1 rounded hover:bg-[#4C4138] focus:within:bg-[#FBF8F4] outline-none w-full"
           value={formData.listId}
           onChange={(e) => setFormData({ ...formData, listId: e.target.value })}
         >
@@ -429,7 +429,7 @@ const CreatePostForm = () => {
           </button>
           <button
             type="submit"
-            className="w-1/2 mt-2 bg-[#F1E9DA] hover:opacity-75 text-[#131110] font-bold py-2 px-4 rounded-md duration-500"
+            className="w-1/2 mt-2 bg-[#F1E9DA] hover:opacity-75 text-[#252220] font-bold py-2 px-4 rounded-md duration-500"
             disabled={isConverting || isUploading}
           >
             {isUploading ? "loading..." : "create"}

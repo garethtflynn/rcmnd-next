@@ -84,7 +84,7 @@ function UserPostsHomePage(props) {
     );
   }
   return (
-    <div className="md:min-h-screen min-w-full bg-[#000000] text-[#D7CDBF] grid grid-cols-2 md:grid-cols-3 md:content-center lg:grid-cols-4 gap-4 px-2">
+    <div className="md:min-h-screen min-w-full bg-[#000000] text-[#D7CDBF] grid grid-cols-2 md:grid-cols-3 md:content-center lg:grid-cols-4 gap-2 px-1">
       {posts?.map((post) => {
         return (
           <PostItemHomePage

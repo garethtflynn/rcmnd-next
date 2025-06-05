@@ -163,10 +163,10 @@ export default function Header() {
         animate(
           item,
           {
-            scale: 1.05,
-            x: 10,
+            scale: 1.25,
+            // x: 10,
           },
-          { duration: 0.2 }
+          { duration: 0.35 }
         );
       });
 
@@ -337,7 +337,7 @@ export default function Header() {
 //             </MenuButton>
 //             <MenuItems
 //               transition
-//               className="absolute right-0 z-10 mt-3 w-40 origin-top-right bg-[#131110] transition focus:outline-none data-[closed]:scale-95 data-[closed]:transform data-[closed]:opacity-0 data-[enter]:duration-100 data-[leave]:duration-75 data-[enter]:ease-out data-[leave]:ease-in"
+//               className="absolute right-0 z-10 mt-3 w-40 origin-top-right bg-[#252220] transition focus:outline-none data-[closed]:scale-95 data-[closed]:transform data-[closed]:opacity-0 data-[enter]:duration-100 data-[leave]:duration-75 data-[enter]:ease-out data-[leave]:ease-in"
 //             >
 //               <MenuItem>
 //                 <Link

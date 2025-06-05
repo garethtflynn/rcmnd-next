@@ -91,7 +91,7 @@ function CreateList(props) {
             </button>
             <button
               type="submit"
-              className="w-1/4 mt-2 bg-[#F1E9DA] hover:opacity-75 text-[#131110] font-bold py-2 px-4 rounded-md duration-500"
+              className="w-1/4 mt-2 bg-[#F1E9DA] hover:opacity-75 text-[#252220] font-bold py-2 px-4 rounded-md duration-500"
             >
               create
             </button>
