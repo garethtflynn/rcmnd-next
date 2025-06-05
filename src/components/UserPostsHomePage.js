@@ -64,7 +64,7 @@ function UserPostsHomePage(props) {
 
           // You can now shuffle and slice posts if you need
           const shuffledPosts = shuffleArray(postsData);
-          setPosts(shuffledPosts.slice(0, 4));
+          setPosts(shuffledPosts.slice(0, 6));
         } catch (err) {
           setError(err.message);
         } finally {
