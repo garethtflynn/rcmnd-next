@@ -18,7 +18,7 @@ export default function PostItemDetailsPage({
       id={id}
       className="h-screen w-full bg-[#000000] place-content-center place-items-center px-1 text-[#D7CDBF] md:grid md:grid-cols-2"
     >
-      <div className="mx-auto w-9/12 sm:w-6/12 md:w-8/12">
+      <div className="mx-auto w-6/12 md:w-8/12 xl:w-6/12">
         <AppImage
           className="mx-auto"
           src={image}
