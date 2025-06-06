@@ -41,21 +41,21 @@ function AppImage({
       container: "relative w-full h-64 md:h-80",
       background: "bg-white",
       padding: "p-4",
-      // objectFit: "contain",
+      objectFit: "contain",
       sizes: "(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
     },
     square: {
       container: "relative w-full aspect-square",
       background: "bg-gradient-to-br from-gray-50 to-white",
       padding: "p-6",
-      // objectFit: "contain",
+      objectFit: "contain",
       sizes: "(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 400px"
     },
     hero: {
       container: "relative w-full h-96 md:h-[32rem]",
       background: "bg-white",
       padding: "p-8",
-      // objectFit: "contain",
+      objectFit: "contain",
       sizes: "100vw"
     }
   };
@@ -88,13 +88,13 @@ function AppImage({
   return (
     <div className={`${config.container} ${config.background} rounded-md overflow-hidden group`}>
       {/* Loading state */}
-      {isLoading && (
+      {/* {isLoading && (
         <div className="absolute inset-0 flex items-center justify-center bg-transparent">
           <div className="animate-pulse">
-            <div className="w-16 h-16 bg-gray-200 rounded"></div>
+            <div className="w-16 h-16  rounded"></div>
           </div>
         </div>
-      )}
+      )} */}
 
       {/* Error state */}
       {hasError && (
