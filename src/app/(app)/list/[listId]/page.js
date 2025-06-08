@@ -12,7 +12,7 @@ import PostItem from "@/components/PostItemUserProfilePage";
 import PostItemProfilePage from "@/components/PostItemYourProfilePage";
 import EditListModal from "@/components/EditListModal";
 import AddPostModal from "@/components/AddPostModal";
-import Loading from "../components/Loading";
+import Loading from "@/components/Loading";
 
 function ListPage() {
   const { listId } = useParams();

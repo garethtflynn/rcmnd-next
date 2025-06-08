@@ -7,7 +7,7 @@ import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import PostItemDetailsPage from "@/components/PostItemDetailsPage";
-import Loading from "../components/Loading";
+import Loading from "@/components/Loading";
 
 function PostPage(props) {
   const { postId } = useParams();
