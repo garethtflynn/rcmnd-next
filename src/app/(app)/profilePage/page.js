@@ -4,6 +4,7 @@ import { useSession } from "next-auth/react";
 import Footer from "@/components/Footer";
 import UserPostsProfilePage from "@/components/UserPostsProfilePage";
 import UserLists from "@/components/YourListsProfilePage";
+import Loading from "@/components/Loading";
 
 function ProfilePage(props) {
   const { data: session } = useSession();
@@ -28,11 +29,7 @@ function ProfilePage(props) {
   }, [currentUserId]);
 
   if (isLoading) {
-    return (
-      <div className="h-screen w-full flex justify-center items-center bg-[#000000] text-[#D7CDBF]">
-        <h2>loading...</h2>
-      </div>
-    );
+    return      <Loading />;;
   }
 
   return (

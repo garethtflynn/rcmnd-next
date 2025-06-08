@@ -247,13 +247,21 @@ export default function Header() {
             className="text-2xl md:text-3xl text-[#F1E9DA] cursor-pointer"
             style={{ opacity: 0 }}
           >
+            <Link href="/homeFeed" onClick={() => setIsOpen(false)}>
+              home
+            </Link>
+          </div>
+          <div
+            ref={(el) => (menuItemsRef.current[1] = el)}
+            className="text-2xl md:text-3xl text-[#F1E9DA] cursor-pointer"
+            style={{ opacity: 0 }}
+          >
             <Link href="/createPost" onClick={() => setIsOpen(false)}>
               create post
             </Link>
           </div>
-
           <div
-            ref={(el) => (menuItemsRef.current[1] = el)}
+            ref={(el) => (menuItemsRef.current[2] = el)}
             className="text-2xl md:text-3xl text-[#F1E9DA] cursor-pointer"
             style={{ opacity: 0 }}
           >
@@ -261,9 +269,8 @@ export default function Header() {
               create list
             </Link>
           </div>
-
           <div
-            ref={(el) => (menuItemsRef.current[2] = el)}
+            ref={(el) => (menuItemsRef.current[3] = el)}
             className="text-2xl md:text-3xl text-[#F1E9DA] cursor-pointer"
             style={{ opacity: 0 }}
           >
@@ -273,7 +280,7 @@ export default function Header() {
           </div>
 
           <div
-            ref={(el) => (menuItemsRef.current[3] = el)}
+            ref={(el) => (menuItemsRef.current[4] = el)}
             className="text-2xl md:text-3xl text-[#F1E9DA] cursor-pointer"
             style={{ opacity: 0 }}
           >

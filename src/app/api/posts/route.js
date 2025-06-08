@@ -24,6 +24,13 @@ export async function GET(req, res) {
         },
         isPrivate: false,
       },
+      include: {
+        user: {
+          select: {
+            username: true,
+          },
+        },
+      },
       orderBy: {
         createdAt: "desc",
       },

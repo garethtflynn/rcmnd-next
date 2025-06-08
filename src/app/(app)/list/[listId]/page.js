@@ -12,6 +12,7 @@ import PostItem from "@/components/PostItemUserProfilePage";
 import PostItemProfilePage from "@/components/PostItemYourProfilePage";
 import EditListModal from "@/components/EditListModal";
 import AddPostModal from "@/components/AddPostModal";
+import Loading from "../components/Loading";
 
 function ListPage() {
   const { listId } = useParams();
@@ -104,11 +105,8 @@ function ListPage() {
   };
 
   if (isLoading) {
-    return (
-      <div className="h-screen w-full flex justify-center items-center bg-[#000000] text-[#D7CDBF]">
-        <h2>loading...</h2>
-      </div>
-    );
+    return 
+     <Loading />;
   }
 
   return (

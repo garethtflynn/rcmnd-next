@@ -8,7 +8,7 @@ export async function GET(req) {
     // Get the session from the request
     const session = await getServerSession(authOptions);
 
-    console.log("Session Data in Route Handler:", session); // Log session data for debugging
+    // console.log("Session Data in Route Handler:", session); // Log session data for debugging
 
     if (!session) {
       return new NextResponse(JSON.stringify({ message: "Unauthorized" }), {
@@ -19,13 +19,6 @@ export async function GET(req) {
     const userId = session?.user?.id;
     const posts = await prisma.post.findMany({
       where: { userId },
-      include: {
-        list: {
-          select: {
-            title: true, // Include only the title of the list
-          },
-        },
-      },
       orderBy: {
         createdAt: "desc",
       },

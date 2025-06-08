@@ -7,9 +7,11 @@ import AppImage from "./AppImage";
 
 export default function PostItemHomePage({
   id,
+  userId,
   title,
   link,
   description,
+  username,
   image,
 }) {
   const [style, setStyle] = useState({});
@@ -32,27 +34,30 @@ export default function PostItemHomePage({
   };
 
   return (
-    <Link id={id} href={`/post/${id}`}>
-      <div
-        className="relative h-72 md:h-96"
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
-      >
-        <AppImage
-          className="w-full h-full object-cover duration-700"
-          src={image}
-          alt={title}
-          // width={400}
-          // height={400}
-          style={style}
-        />
-        {/* Title Overlay */}
-        {isHovered && (
-          <div className="absolute top-0 left-0 w-full h-full flex justify-center items-center bg-opacity-100">
-            <p className="text-[#D7CDBF] text-lg font-semibold">{title}</p>
-          </div>
-        )}
-      </div>
-    </Link>
+    <div>
+      <Link id={id} href={`/post/${id}`}>
+        <div
+          className="relative "
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
+        >
+          <AppImage
+            className="w-full h-full object-cover duration-700"
+            src={image}
+            alt={title}
+            // width={400}
+            // height={400}
+            style={style}
+          />
+          {/* Title Overlay */}
+          {isHovered && (
+            <div className="absolute top-0 left-0 w-full h-full flex justify-center items-center bg-opacity-100">
+              <p className="text-[#D7CDBF] text-lg font-semibold">{title}</p>
+            </div>
+          )}
+        </div>
+      </Link>
+      <Link href={`/user/${userId}`}className="text-[#252220] text-sm pt-1" >@{username}</Link>
+    </div>
   );
 }
