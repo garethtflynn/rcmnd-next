@@ -27,8 +27,8 @@ import rcmndLogo from '../../public/rcmndLogo.png'
 function AppImage({ 
   src, 
   alt, 
-  variant = 'standard', // 'standard', 'square', 'hero'
-  fallbackSrc = {rcmndLogo},
+  variant = 'standard',
+  fallbackSrc = rcmndLogo, 
   ...props 
 }) {
   const [imgSrc, setImgSrc] = useState(src);
@@ -78,7 +78,14 @@ function AppImage({
 
   // Generate optimized image URL (example with Cloudinary-style params)
   const getOptimizedUrl = (url) => {
-    if (!url || url.includes('data:')) return url;
+    // Check if url is a valid string
+    if (!url || typeof url !== 'string') {
+      console.warn('Invalid URL passed to getOptimizedUrl:', url, typeof url);
+      return url;
+    }
+    
+    // Skip data URLs
+    if (url.includes('data:')) return url;
     
     // For external image optimization service
     const params = variant === 'square' ? 'w_400,h_400,c_pad' : 'w_600,h_480,c_pad';
@@ -87,15 +94,6 @@ function AppImage({
 
   return (
     <div className={`${config.container} ${config.background} rounded-md overflow-hidden group`}>
-      {/* Loading state */}
-      {/* {isLoading && (
-        <div className="absolute inset-0 flex items-center justify-center bg-transparent">
-          <div className="animate-pulse">
-            <div className="w-16 h-16  rounded"></div>
-          </div>
-        </div>
-      )} */}
-
       {/* Error state */}
       {hasError && (
         <div className="absolute inset-0 flex flex-col items-center justify-center text-gray-400">

@@ -10,6 +10,7 @@ import { Button } from "@headlessui/react";
 
 import PostItemUserProfilePage from "@/components/PostItemUserProfilePage";
 import UserListsProfilePage from "@/components/UserListsProfilePage";
+import Loading from "@/components/Loading";
 
 function UserPage(props) {
   const router = useRouter();
@@ -57,11 +58,7 @@ function UserPage(props) {
   }, [userId]);
 
   if (isLoading) {
-    return (
-      <div className="h-screen w-full flex justify-center items-center bg-[#000000] text-[#D7CDBF]">
-        <h2>loading...</h2>
-      </div>
-    );
+    return      <Loading />;
   }
 
   const handleFollowToggle = async () => {

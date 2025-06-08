@@ -7,7 +7,7 @@ export async function GET(req) {
   try {
     // Get session data
     const session = await getServerSession(authOptions);
-    console.log("Session Data in Route Handler:", session); // Log session data for debugging
+    // console.log("Session Data in Route Handler:", session); // Log session data for debugging
 
     // If no session exists, return unauthorized response
     if (!session || !session.user || !session.user.id) {

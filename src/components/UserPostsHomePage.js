@@ -1,6 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import PostItemHomePage from "./PostItemHomePage";
+import Loading from "../components/Loading";
 import { useSession } from "next-auth/react";
 
 const shuffleArray = (array) => {
@@ -60,7 +61,7 @@ function UserPostsHomePage(props) {
           }
 
           const postsData = await postsRes.json();
-          // console.log(postsData);
+          console.log(postsData);
 
           // You can now shuffle and slice posts if you need
           const shuffledPosts = shuffleArray(postsData);
@@ -77,23 +78,20 @@ function UserPostsHomePage(props) {
   }, [userId]);
 
   if (isLoading) {
-    return (
-      <div className="h-screen w-full flex justify-center items-center bg-[#000000] text-[#D7CDBF]">
-        <h2>loading...</h2>
-      </div>
-    );
+    return <Loading />;
   }
   return (
-    <div className="md:min-h-screen min-w-full bg-[#000000] text-[#D7CDBF] grid grid-cols-2 md:grid-cols-3 md:content-center lg:grid-cols-4 gap-2 px-1">
+    <div className="md:min-h-screen min-w-full bg-[#000000] text-[#D7CDBF] grid grid-cols-2 md:grid-cols-3 md:content-center gap-2 gap-y-6 px-1">
       {posts?.map((post) => {
         return (
           <PostItemHomePage
             key={post.id}
             title={post.title}
             href={`/post/${post.id}`}
-            src={post.image}
+            image={post.image}
+            username={post.user?.username}
+            userId={post.userId}
             alt={post.title}
-            {...post}
           />
         );
       })}
