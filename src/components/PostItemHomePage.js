@@ -13,6 +13,7 @@ export default function PostItemHomePage({
   description,
   username,
   image,
+  href
 }) {
   const [style, setStyle] = useState({});
   const [isHovered, setIsHovered] = useState(false);
@@ -35,9 +36,9 @@ export default function PostItemHomePage({
 
   return (
     <div>
-      <Link id={id} href={`/post/${id}`}>
+      <Link id={id} href={href}>
         <div
-          className="relative "
+          className="relative"
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
         >
@@ -57,7 +58,7 @@ export default function PostItemHomePage({
           )}
         </div>
       </Link>
-      <Link href={`/user/${userId}`}className="text-[#252220] text-sm pt-1" >@{username}</Link>
+      <Link href={`/user/${userId}`}className="text-[#F1E9DA] text-sm pt-1" >@{username}</Link>
     </div>
   );
 }

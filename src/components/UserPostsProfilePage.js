@@ -26,8 +26,8 @@ function UserPosts(props) {
             throw new Error("Failed to fetch posts");
           }
           const data = await res.json();
-          // console.log(data);
           setPosts(data);
+          // console.log(data)
         } catch (err) {
           console.log(err);
           // setError(err.message);

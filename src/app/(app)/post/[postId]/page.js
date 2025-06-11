@@ -4,8 +4,8 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { useSession } from "next-auth/react";
 
-import Image from "next/image";
-import Link from "next/link";
+// import Image from "next/image";
+// import Link from "next/link";
 import PostItemDetailsPage from "@/components/PostItemDetailsPage";
 import Loading from "@/components/Loading";
 
@@ -32,8 +32,9 @@ function PostPage(props) {
           const data = await res.json();
           // console.log(data);
           setPost(data);
+          // console.log("postId page data", data);
         } catch (err) {
-          setError(err.message);
+          console.log(err.message);
         } finally {
           setLoading(false);
         }

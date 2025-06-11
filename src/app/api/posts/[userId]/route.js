@@ -23,7 +23,6 @@ export async function GET(req) {
         createdAt: "desc",
       },
     });
-
     return NextResponse.json(posts);
   } catch (error) {
     console.error("Error fetching posts:", error);
