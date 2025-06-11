@@ -7,7 +7,7 @@ export async function GET(req, res) {
   const url = new URL(req.url); // Access the URL from NextRequest
   const userIds = url.searchParams.get("userIds"); // Get userIds from the query string
 
-  console.log("USER IDS IN POSTS ROUTE HANDLER", userIds); // Log for debugging
+  // console.log("USER IDS IN POSTS ROUTE HANDLER", userIds); // Log for debugging
 
   if (!userIds) {
     return res.status(400).json({ error: "No user IDs provided" });
@@ -36,7 +36,6 @@ export async function GET(req, res) {
       },
     });
     console.log("POSTS BEING RETURNED IN POSTS RH", posts);
-
     return NextResponse.json(posts);
   } catch (err) {
     return NextResponse.json(err);
