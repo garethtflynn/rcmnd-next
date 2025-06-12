@@ -13,7 +13,7 @@ export default function PostItemHomePage({
   description,
   username,
   image,
-  href
+  href,
 }) {
   const [style, setStyle] = useState({});
   const [isHovered, setIsHovered] = useState(false);
@@ -50,15 +50,20 @@ export default function PostItemHomePage({
             // height={400}
             style={style}
           />
-          {/* Title Overlay */}
+          {/* hover for title */}
           {isHovered && (
             <div className="absolute top-0 left-0 w-full h-full flex justify-center items-center bg-opacity-100">
-              <p className="text-[#D7CDBF] text-lg font-semibold">{title}</p>
+              <p className="text-[#D7CDBF] text-lg text-center font-semibold">{title}</p>
             </div>
           )}
         </div>
       </Link>
-      <Link href={`/user/${userId}`}className="text-[#F1E9DA] text-sm pt-1" >@{username}</Link>
+      <Link
+        href={`/user/${userId}`}
+        className="text-[#F1E9DA] text-opacity-30 text-sm pt-1"
+      >
+        @{username}
+      </Link>
     </div>
   );
 }

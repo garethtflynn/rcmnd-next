@@ -83,7 +83,7 @@ function UserPostsHomePage(props) {
     return <Loading />;
   }
   return (
-    <div className="md:min-h-screen min-w-full bg-[#000000] text-[#D7CDBF] grid grid-cols-2 md:grid-cols-3 md:content-center gap-2 gap-y-6 px-1">
+    <div className="md:min-h-screen bg-[#000000] text-[#D7CDBF] grid grid-cols-2 md:grid-cols-3 md:content-center gap-2 gap-y-6 mx-1">
       {posts?.map((post) => {
         return (
           <PostItemHomePage
