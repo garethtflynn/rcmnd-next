@@ -45,7 +45,7 @@ function Search(props) {
   };
 
   return (
-    <div className="relative w-full flex justify-center">
+    <div className="relative w-full sm:flex sm:justify-center">
       {/* Search Input */}
       <Input
         className="block rounded-lg border px-3 text-base focus:not-data-focus:outline-none data-focus:outline-2 data-focus:-outline-offset-2 data-focus:outline-white/25 py-2 border-[#FBF8F4] bg-transparent text-[#FBF8F4] hover:bg-[#252220] active:bg-[#252220] outline-none placeholder-[#252220] w-2/4 focus:w-3/4 md:focus:w-2/3 transition-all duration-700	"
@@ -67,7 +67,7 @@ function Search(props) {
               onClick={handleUserSelect}
             >
               <p>{user.firstName + " " + user.lastName}</p>
-              <p className="text-sm text-[#4C4138]">@{user.username}</p>
+              <p className="text-sm text-[#1E1912]">@{user.username}</p>
             </Link>
           ))}
         </div>

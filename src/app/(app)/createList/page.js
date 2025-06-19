@@ -61,10 +61,10 @@ function CreateList(props) {
             type="text"
             name="title"
             placeholder="title"
-            className="w-1/2 border border-[#D7CDBF] bg-transparent text-[#D7CDBF] px-2 py-1 my-2 rounded hover:bg-[#4C4138] focus:within:bg-[#D7CDBF] outline-none placeholder-[#4C4138]"
+            className="w-1/2 border border-[#D7CDBF] bg-transparent text-[#D7CDBF] px-2 py-1 my-2 rounded hover:bg-[#4C4138] focus:within:bg-[#D7CDBF] outline-none placeholder-[#1E1912]"
           />
           <div className="w-1/2">
-            <Field className="flex my-2 text-[#4C4138] items-center">
+            <Field className="flex my-2 text-[#1E1912] items-center">
               <Switch
                 label="private"
                 description="private"
