@@ -14,7 +14,7 @@ export async function GET(request) {
 //     });
 //   }
 
-  // Fetch users from the database using Prisma, filtered by name or email
+  // Fetch users from the database using Prisma, filtered by name
   const filteredUsers = await prisma.user.findMany({
     where: {
       OR: [

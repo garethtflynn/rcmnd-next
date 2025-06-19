@@ -5,6 +5,7 @@ import Link from "next/link";
 import { signOut } from "next-auth/react";
 import Image from "next/image";
 import { animate, inView, scroll, stagger, timeline } from "motion";
+import { IoMdSearch } from "react-icons/io";
 
 import rcmndLogo from "../../public/rcmndLogo.png";
 import SearchBar from "./SearchBar";
@@ -186,12 +187,12 @@ export default function Header() {
   return (
     <>
       <nav className="w-full flex h-max bg-[#000000] duration-1000 py-4 z-20">
-        <div className="text-[#FBF8F4] place-content-center pl-2">
+        <div className="hidden sm:block text-[#FBF8F4] place-content-center pl-2  ">
           <a href="/homeFeed" className="font-semibold text-2xl md:text-3xl">
             rcmnd
           </a>
         </div>
-        <div className="w-full">
+        <div className="w-full pl-2 sm:pl-0">
           <SearchBar />
         </div>
         <div className="w-auto flex-grow lg:w-auto flex flex-end items-center">
