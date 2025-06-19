@@ -191,7 +191,9 @@ export default function Header() {
             rcmnd
           </a>
         </div>
-        <SearchBar />
+        <div className="w-full">
+          <SearchBar />
+        </div>
         <div className="w-auto flex-grow lg:w-auto flex flex-end items-center">
           <div className="w-full text-sm flex justify-end items-center">
             <div className="relative">

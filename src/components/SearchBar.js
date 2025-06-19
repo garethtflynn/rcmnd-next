@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
+import { Input } from "@headlessui/react";
 
 function Search(props) {
   const [searchQuery, setSearchQuery] = useState("");
@@ -44,20 +45,20 @@ function Search(props) {
   };
 
   return (
-    <div className="relative w-full max-w-sm mx-auto ml-4">
+    <div className="relative w-full flex justify-center">
       {/* Search Input */}
-      <input
+      <Input
+        className="block rounded-lg border px-3 text-sm/6 focus:not-data-focus:outline-none data-focus:outline-2 data-focus:-outline-offset-2 data-focus:outline-white/25 py-2 border-[#FBF8F4] bg-transparent text-[#FBF8F4] hover:bg-[#252220] active:bg-[#252220] outline-none placeholder-[#252220] w-2/4 focus:w-3/4 md:focus:w-2/3 transition-all duration-700	"
         type="text"
         name="search"
         placeholder="search"
         onChange={handleSearch}
         value={searchQuery}
-        className="w-36 sm:w-full py-2 border-b-2 border-[#FBF8F4] bg-transparent text-[#FBF8F4] hover:bg-[#252220] outline-none placeholder-[#14100E]"
       />
 
       {/* Search Results */}
       {filteredUsers.length > 0 && (
-        <div className="absolute top-full mt-2 w-52 sm:w-full max-h-60 overflow-y-auto bg-[#FBF8F4] shadow-lg border border-[#FBF8F4] z-10 p-1 hover:bg-stone-300">
+        <div className="absolute top-full mt-2 w-3/4 sm:w-2/3 max-h-60 overflow-y-auto bg-[#FBF8F4] shadow-lg border border-[#FBF8F4] z-10 p-1 hover:bg-stone-300 rounded-lg">
           {filteredUsers.map((user) => (
             <Link
               key={user.id}
