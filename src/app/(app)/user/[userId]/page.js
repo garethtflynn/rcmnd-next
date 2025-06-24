@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 
 import { Button } from "@headlessui/react";
+import { FaUserPlus, FaUserCheck } from "react-icons/fa6";
 
 import PostItemUserProfilePage from "@/components/PostItemUserProfilePage";
 import UserListsProfilePage from "@/components/UserListsProfilePage";
@@ -58,7 +59,7 @@ function UserPage(props) {
   }, [userId]);
 
   if (isLoading) {
-    return      <Loading />;
+    return <Loading />;
   }
 
   const handleFollowToggle = async () => {
@@ -110,24 +111,31 @@ function UserPage(props) {
         </div>
       )}
 
-      <div className="my-2 h-8 flex pl-1">
+      <div className="my-2 h-8 flex justify-between pl-1">
+        <UserListsProfilePage />
         {/* Follow Button */}
         <Button
           onClick={handleFollowToggle}
-          className={`w-1/3 py-2 flex justify-center items-center hover:bg-opacity-75 rounded- ${
+          className={`inline-flex items-center justify-center gap-x-2 rounded-md px-4 py-1 text-base font-semibold shadow-sm ring-1 ring-inset italic transition-all duration-200 mr-1 ${
             isFollowing
-              ? "bg-[#D7CDBF] border border-[#14100E]"
-              : "bg-[#14100E] border border-[#D7CDBF]"
+              ? "bg-[#252220] text-[#FBF8F4] ring-[#252220] hover:bg-[#1a1816] hover:ring-[#1a1816]"
+              : "bg-[#000000] text-[#FBF8F4] ring-[#252220] hover:bg-[#252220] hover:ring-[#252220]"
           }`}
         >
-          <p className={`${isFollowing ? "text-[#14100E]" : "text-[#D7CDBF]"}`}>
-            {isFollowing ? "following" : "follow"}
-          </p>
+          {isFollowing ? (
+            <>
+              <FaUserCheck className="w-3 h-3" />
+              following
+            </>
+          ) : (
+            <>
+              <FaUserPlus className="w-3 h-3" />
+              follow
+            </>
+          )}
         </Button>
       </div>
-      <div>
-        <UserListsProfilePage />
-      </div>
+      <div></div>
 
       <div className="w-full grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 justify-center items-center bg-[#000000] text-[#D7CDBF] overflow-y-auto pb-2">
         {posts?.map((post) => (

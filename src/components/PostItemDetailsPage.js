@@ -34,7 +34,7 @@ export default function PostItemDetailsPage({
           </Link>
           <h1 className="text-xl py-4">NOTES</h1>
         </div>
-        <div className="border mx-1 p-2">
+        <div className="border rounded mx-1 p-4">
           <p>{title}</p>
           <br />
           <Link href={link} target="_blank">
