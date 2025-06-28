@@ -93,7 +93,7 @@ function UserLists({ isListsOpen, setIsListsOpen }) {
               </button>
 
               {/* Horizontal scrollable lists */}
-              <div className="flex gap-6 overflow-x-auto no-scrollbar py-1 h-8">
+              <div className="flex gap-6 overflow-x-auto overflow-y-clip no-scrollbar py-1 h-8">
                 {lists && lists.length > 0 ? (
                   <ul className="flex flex-row gap-32 md:gap-56 no-scrollbar text-[#D7CDBF] text-lg overflow-x-auto">
                     {lists.map((list) => {

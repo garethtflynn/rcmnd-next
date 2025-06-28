@@ -90,7 +90,7 @@ function UserLists(props) {
                 {/* Close button */}
                 <button
                   onClick={handleToggle}
-                  className="flex-shrink-0 p-1 hover:bg-[#252220] rounded transition-colors duration-700"
+                  className="flex-shrink-0 overflow-x-auto overflow-y-clip p-1 hover:bg-[#252220] rounded transition-colors duration-700"
                 >
                   <FaAngleUp color="#FBF8F4" />
                 </button>
