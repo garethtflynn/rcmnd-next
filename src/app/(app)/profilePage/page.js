@@ -29,7 +29,7 @@ function ProfilePage(props) {
   }, [currentUserId]);
 
   if (isLoading) {
-    return      <Loading />;;
+    return <Loading />;
   }
 
   return (
@@ -41,10 +41,10 @@ function ProfilePage(props) {
           <p className="text-sm font-light text-[#F1E9DA]">@{user.username}</p>
         </div>
       )}
-      <div className="pt-4 pb-3">
+      <div>
         <UserLists />
       </div>
-      <UserPostsProfilePage />
+        <UserPostsProfilePage />
     </div>
   );
 }
