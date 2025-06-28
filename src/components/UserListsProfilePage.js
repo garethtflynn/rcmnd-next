@@ -59,10 +59,10 @@ function UserLists({ isListsOpen, setIsListsOpen }) {
           className={`
             flex items-center transition-all duration-500 ease-in-out
             rounded-md bg-[#000000] shadow-sm ring-1 ring-inset ring-[#252220] 
-            hover:bg-[#252220] cursor-pointer
+            hover:bg-[#252220] cursor-pointer overflow-y-clip
             ${
               isListsOpen
-                ? "px-4 py-1 justify-start gap-4 overflow-x-auto no-scrollbar h-8"
+                ? "px-4 py-1 justify-start gap-4 no-scrollbar h-8"
                 : "px-4 py-1 justify-center gap-x-1.5 w-36 h-8"
             }
           `}
@@ -95,17 +95,16 @@ function UserLists({ isListsOpen, setIsListsOpen }) {
               {/* Horizontal scrollable lists */}
               <div className="flex gap-6 overflow-x-auto overflow-y-clip no-scrollbar py-1 h-8">
                 {lists && lists.length > 0 ? (
-                  <ul className="flex flex-row gap-32 md:gap-56 no-scrollbar text-[#D7CDBF] text-lg overflow-x-auto">
+                  <ul className="flex flex-row gap-32 md:gap-56 no-scrollbar text-[#D7CDBF] text-lg">
                     {lists.map((list) => {
                       return (
-                          <button
+                        <button
                           key={list.id}
-                            onClick={() => handleListClick(list.id)}
-                            className="text-[#D7CDBF] cursor-pointer text-xl text-nowrap hover:text-[#FBF8F4] transition-colors duration-200 self-center"
-                          >
-                            {list.title}
-                          </button>
-
+                          onClick={() => handleListClick(list.id)}
+                          className="text-[#D7CDBF] cursor-pointer text-xl text-nowrap hover:text-[#FBF8F4] transition-colors duration-200 self-center"
+                        >
+                          {list.title}
+                        </button>
                       );
                     })}
                   </ul>

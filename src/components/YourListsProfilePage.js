@@ -57,63 +57,63 @@ function UserLists(props) {
             ${isListsOpen ? "w-full" : "inline-block "}
           `}
         > */}
-          {/* Button/Expanded Container */}
-          <div
-            className={`
+        {/* Button/Expanded Container */}
+        <div
+          className={`
               flex items-center transition-all duration-500 ease-in-out
               rounded-md bg-[#000000] shadow-sm ring-1 ring-inset ring-[#252220] 
               hover:bg-[#252220] cursor-pointer
               ${
                 isListsOpen
-                  ? "px-4 py-1 justify-start gap-4 overflow-x-auto no-scrollbar h-8"
+                  ? "px-4 py-1 justify-start gap-4 overflow-x-auto overflow-y-clip no-scrollbar h-8"
                   : "px-4 py-1 justify-center gap-x-1.5 w-36 h-8"
               }
             `}
-            onClick={!isListsOpen ? handleToggle : undefined}
-          >
-            {/* Lists Button (collapsed state) */}
-            {!isListsOpen && (
-              <>
-                <button className="text-lg font-semibold text-[#FBF8F4] italic transition-colors duration-700">
-                  Lists
-                </button>
-                <FaAngleDown
-                  className="self-center transition-transform duration-300"
-                  color="#FBF8F4"
-                />
-              </>
-            )}
+          onClick={!isListsOpen ? handleToggle : undefined}
+        >
+          {/* Lists Button (collapsed state) */}
+          {!isListsOpen && (
+            <>
+              <button className="text-lg font-semibold text-[#FBF8F4] italic transition-colors duration-700">
+                Lists
+              </button>
+              <FaAngleDown
+                className="self-center transition-transform duration-300"
+                color="#FBF8F4"
+              />
+            </>
+          )}
 
-            {/* Expanded Lists (expanded state) */}
-            {isListsOpen && (
-              <>
-                {/* Close button */}
-                <button
-                  onClick={handleToggle}
-                  className="flex-shrink-0 overflow-x-auto overflow-y-clip p-1 hover:bg-[#252220] rounded transition-colors duration-700"
-                >
-                  <FaAngleUp color="#FBF8F4" />
-                </button>
+          {/* Expanded Lists (expanded state) */}
+          {isListsOpen && (
+            <>
+              {/* Close button */}
+              <button
+                onClick={handleToggle}
+                className="flex-shrink-0 overflow-x-auto overflow-y-clip p-1 hover:bg-[#252220] rounded transition-colors duration-700"
+              >
+                <FaAngleUp color="#FBF8F4" />
+              </button>
 
-                {/* Horizontal scrollable lists */}
-                <div className="flex gap-6 overflow-x-auto no-scrollbar py-1 h-8">
-                  <ul className="flex flex-row gap-32 md:gap-56 no-scrollbar text-[#D7CDBF] text-lg overflow-x-auto">
-                    {lists?.map((list) => {
-                      return (
-                        <button
-                          key={list.id}
-                          onClick={() => handleListClick(list.id)}
-                          className="text-[#D7CDBF] cursor-pointer text-xl text-nowrap	self-center"
-                        >
-                          {list.title}
-                        </button>
-                      );
-                    })}
-                  </ul>
-                </div>
-              </>
-            )}
-          </div>
+              {/* Horizontal scrollable lists */}
+              <div className="flex gap-6 overflow-x-auto overflow-y-clip no-scrollbar py-1 h-8">
+                <ul className="flex flex-row gap-32 md:gap-56 no-scrollbar text-[#D7CDBF] text-lg">
+                  {lists?.map((list) => {
+                    return (
+                      <button
+                        key={list.id}
+                        onClick={() => handleListClick(list.id)}
+                        className="text-[#D7CDBF] cursor-pointer text-xl text-nowrap	self-center"
+                      >
+                        {list.title}
+                      </button>
+                    );
+                  })}
+                </ul>
+              </div>
+            </>
+          )}
+        </div>
         {/* </div> */}
       </div>
 
