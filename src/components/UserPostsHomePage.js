@@ -39,7 +39,7 @@ function UserPostsHomePage(props) {
             throw new Error("Failed to fetch following users");
           }
 
-          const followingData = await followingRes.json(); // This should return the list of users the logged-in user is following
+          const followingData = await followingRes.json();
           // console.log(followingData);
           // setPostUser(followingData.username)
 

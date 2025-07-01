@@ -2,7 +2,6 @@
 
 import React, { useState } from "react";
 import dynamic from "next/dynamic";
-import Image from "next/image";
 import Link from "next/link";
 
 import AppImage from "./AppImage";
@@ -10,12 +9,9 @@ import AppImage from "./AppImage";
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 import { FaEllipsisVertical } from "react-icons/fa6";
 
-const EditPostModal = dynamic(
-  () => import("@/components/EditPostModal"), // Adjust path to where your modal component is located
-  { ssr: false }
-);
-
-// import EditPostModal from "./EditPostModal";
+const EditPostModal = dynamic(() => import("@/components/EditPostModal"), {
+  ssr: false,
+});
 
 export default function PostItem({
   id,
@@ -34,7 +30,7 @@ export default function PostItem({
 
   const handleDeletePost = () => {
     if (deletePostCallback) {
-      deletePostCallback(id); // Pass the post ID to the callback function for deletion
+      deletePostCallback(id);
     }
     console.log(`Post with ID ${id} deleted.`);
   };
@@ -50,7 +46,7 @@ export default function PostItem({
     <div className="px-1 relative h-72 md:h-96">
       <Link id={id} href={`/post/${id}`}>
         <AppImage
-          className="w-full h-full object-cover"
+          className="w-full h-full"
           src={image}
           alt={title}
           // width="300"
@@ -83,7 +79,6 @@ export default function PostItem({
             </div>
           </MenuItems>
         </Menu>
-        {/* modal */}
         <EditPostModal
           isOpen={isModalOpen}
           closeModal={closeModal}

@@ -6,7 +6,7 @@ import { useParams } from "next/navigation";
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 import { FaAngleDown, FaAngleUp } from "react-icons/fa";
 
-function UserLists({ isListsOpen, setIsListsOpen }) {
+function UserListsProfilePage({ isListsOpen, setIsListsOpen }) {
   const router = useRouter();
   const { userId } = useParams();
 
@@ -45,7 +45,7 @@ function UserLists({ isListsOpen, setIsListsOpen }) {
 
   const handleListClick = (listId) => {
     // console.log("List ID:", listId);
-    router.push(`/list/${listId}`); // Navigate to the list page
+    router.push(`/list/${listId}`);
   };
 
   const handleToggle = () => {
@@ -59,7 +59,7 @@ function UserLists({ isListsOpen, setIsListsOpen }) {
           className={`
             flex items-center transition-all duration-500 ease-in-out
             rounded-md bg-[#000000] shadow-sm ring-1 ring-inset ring-[#252220] 
-            hover:bg-[#252220] cursor-pointer overflow-y-clip
+           cursor-pointer overflow-y-clip
             ${
               isListsOpen
                 ? "px-4 py-1 justify-start gap-4 no-scrollbar h-8"
@@ -71,7 +71,7 @@ function UserLists({ isListsOpen, setIsListsOpen }) {
           {/* Lists Button (collapsed state) */}
           {!isListsOpen && (
             <>
-              <button className="text-lg font-semibold text-[#FBF8F4] italic transition-colors duration-700 ">
+              <button className="text-lg font-semibold text-[#FBF8F4] transition-colors duration-700 ">
                 Lists
               </button>
               <FaAngleDown
@@ -120,7 +120,7 @@ function UserLists({ isListsOpen, setIsListsOpen }) {
       </div>
 
       {/* Custom CSS for animations */}
-      <style jsx>{`
+      {/* <style jsx>{`
         .no-scrollbar {
           -ms-overflow-style: none;
           scrollbar-width: none;
@@ -143,9 +143,9 @@ function UserLists({ isListsOpen, setIsListsOpen }) {
         .animate-fade-in {
           animation: fade-in 0.7s ease-out;
         }
-      `}</style>
+      `}</style> */}
     </>
   );
 }
 
-export default UserLists;
+export default UserListsProfilePage;
