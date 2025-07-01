@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { FaAngleDown, FaAngleUp } from "react-icons/fa";
 
-function UserLists(props) {
+function YourListsProfilePage(props) {
   const router = useRouter();
   const { data: session } = useSession();
   const userId = session?.user?.id;
@@ -40,7 +40,6 @@ function UserLists(props) {
 
   const handleListClick = (listId) => {
     router.push(`/list/${listId}`);
-    // Optionally close after selection
     // setIsListsOpen(false);
   };
 
@@ -51,18 +50,12 @@ function UserLists(props) {
   return (
     <>
       <div className="px-2 my-2">
-        {/* <div
-          className={`
-            relative overflow-hidden transition-all duration-500 ease-in-out py-1
-            ${isListsOpen ? "w-full" : "inline-block "}
-          `}
-        > */}
         {/* Button/Expanded Container */}
         <div
           className={`
               flex items-center transition-all duration-500 ease-in-out
               rounded-md bg-[#000000] shadow-sm ring-1 ring-inset ring-[#252220] 
-              hover:bg-[#252220] cursor-pointer
+               cursor-pointer
               ${
                 isListsOpen
                   ? "px-4 py-1 justify-start gap-4 overflow-x-auto overflow-y-clip no-scrollbar h-8"
@@ -74,11 +67,11 @@ function UserLists(props) {
           {/* Lists Button (collapsed state) */}
           {!isListsOpen && (
             <>
-              <button className="text-lg font-semibold text-[#FBF8F4] italic transition-colors duration-700">
+              <button className="text-lg font-semibold text-[#FBF8F4] transition-colors duration-700">
                 Lists
               </button>
               <FaAngleDown
-                className="self-center transition-transform duration-300"
+                className="self-center transition-transform duration-700"
                 color="#FBF8F4"
               />
             </>
@@ -114,11 +107,10 @@ function UserLists(props) {
             </>
           )}
         </div>
-        {/* </div> */}
       </div>
 
       {/* Custom CSS for animations */}
-      <style jsx>{`
+      {/* <style jsx>{`
         .no-scrollbar {
           -ms-overflow-style: none;
           scrollbar-width: none;
@@ -141,9 +133,9 @@ function UserLists(props) {
         .animate-fade-in {
           animation: fade-in 0.4s ease-out;
         }
-      `}</style>
+      `}</style> */}
     </>
   );
 }
 
-export default UserLists;
+export default YourListsProfilePage;
