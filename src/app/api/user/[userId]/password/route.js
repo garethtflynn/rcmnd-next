@@ -1,6 +1,6 @@
 import prisma from "@/libs/db";
 import { NextResponse } from "next/server";
-import { compare, hash } from "bcryptjs";
+import { compare, hash } from "bcrypt";
 
 export async function PATCH(req, res) {
   const { currentPassword, newPassword } = req.body;
