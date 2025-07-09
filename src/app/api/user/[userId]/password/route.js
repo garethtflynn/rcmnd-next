@@ -1,6 +1,6 @@
 import prisma from "@/libs/db";
 import { NextResponse } from "next/server";
-import { compare } from "bcryptjs";
+import { compare, hash } from "bcryptjs";
 
 export async function PATCH(req, res) {
   const { currentPassword, newPassword } = req.body;
@@ -22,7 +22,7 @@ export async function PATCH(req, res) {
     return res.status(400).json({ message: "Password too short" });
   }
 
-  const hashedPassword = await bcrypt.hash(newPassword, 12);
+  const hashedPassword = await hash(newPassword, 12);
 
   await db.user.update({
     where: { id: userId },
