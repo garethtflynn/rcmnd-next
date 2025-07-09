@@ -1,7 +1,6 @@
 import prisma from "@/libs/db";
 import { NextResponse } from "next/server";
-import bcrypt from 'bcryptjs';
-
+import { compare } from "bcryptjs";
 
 export async function PATCH(req, res) {
   const { currentPassword, newPassword } = req.body;
@@ -13,7 +12,7 @@ export async function PATCH(req, res) {
     return res.status(404).json({ message: "User not found" });
   }
 
-  const isMatch = await bcrypt.compare(currentPassword, user.password);
+  const isMatch = await compare(currentPassword, user.password);
 
   if (!isMatch) {
     return res.status(401).json({ message: "Incorrect current password" });
