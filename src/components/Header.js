@@ -226,14 +226,12 @@ export default function Header() {
         onClick={() => setIsOpen(false)}
       ></div>
 
-      {/* Fullscreen Menu */}
       <div
         ref={menuRef}
         className="fixed inset-0 z-40 flex flex-col items-center justify-center bg-black bg-opacity-60"
         style={{ display: "none", opacity: 0 }}
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Close button */}
         <div
           ref={closeButtonRef}
           className="absolute top-6 right-6 cursor-pointer text-[#F1E9DA] text-3xl"
@@ -243,7 +241,6 @@ export default function Header() {
           ✕
         </div>
 
-        {/* Menu content */}
         <div className="text-center space-y-6">
           <div
             ref={(el) => (menuItemsRef.current[0] = el)}
@@ -281,9 +278,18 @@ export default function Header() {
               profile
             </Link>
           </div>
-
           <div
             ref={(el) => (menuItemsRef.current[4] = el)}
+            className="text-2xl md:text-3xl text-[#F1E9DA] cursor-pointer"
+            style={{ opacity: 0 }}
+          >
+            <Link href="/accountPage" onClick={() => setIsOpen(false)}>
+              account
+            </Link>
+          </div>
+
+          <div
+            ref={(el) => (menuItemsRef.current[5] = el)}
             className="text-2xl md:text-3xl text-[#F1E9DA] cursor-pointer"
             style={{ opacity: 0 }}
           >
@@ -299,91 +305,3 @@ export default function Header() {
     </>
   );
 }
-
-// "use client";
-
-// import React, { useState } from "react";
-// import Link from "next/link";
-// import { signOut } from "next-auth/react";
-// import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
-
-// import rcmndLogo from "../../public/rcmndLogo.png";
-// import SearchBar from "./SearchBar";
-// import Image from "next/image";
-
-// export default function Header() {
-//   const handleLogout = async () => {
-//     try {
-//       await signOut({ redirect: true, callbackUrl: "/welcome" });
-//       console.log("logged out!");
-//     } catch (error) {
-//       console.error("Logout error:", error);
-//     }
-//   };
-
-//   return (
-//     <nav className="w-full flex h-max bg-[#000000] duration-1000 py-4">
-//       <div className="text-[#FBF8F4] place-content-center pl-2">
-//         <a href="/homeFeed" className="font-semibold text-2xl md:text-3xl">
-//           rcmnd
-//         </a>
-//       </div>
-//       <SearchBar />
-//       <div className="w-auto flex-grow lg:w-auto flex flex-end items-center">
-//         <div className="w-full text-sm flex justify-end items-center">
-//           <Menu
-//             as="div"
-//             className="relative inline-block text-left bg-transparent duration-1000"
-//           >
-//             <MenuButton className="full flex justify-center items-center pr-2">
-//               <Image
-//                 src={rcmndLogo}
-//                 alt="rcmnd"
-//                 width={50}
-//                 height={40}
-//                 className="w-6 sm:w-8 md:w-9 lg:w-10 xl:w-11 h-auto"
-//                 style={{ maxWidth: "none" }}
-//               />
-//             </MenuButton>
-//             <MenuItems
-//               transition
-//               className="absolute right-0 z-10 mt-3 w-40 origin-top-right bg-[#252220] transition focus:outline-none data-[closed]:scale-95 data-[closed]:transform data-[closed]:opacity-0 data-[enter]:duration-100 data-[leave]:duration-75 data-[enter]:ease-out data-[leave]:ease-in"
-//             >
-//               <MenuItem>
-//                 <Link
-//                   href="/createPost"
-//                   className="block px-4 py-2 text-sm text-[#F1E9DA] hover:opacity-25"
-//                 >
-//                   create post
-//                 </Link>
-//               </MenuItem>
-//               <MenuItem className="block px-4 py-2 text-sm text-[#F1E9DA] hover:opacity-25">
-//                 <Link href="/createList">create list</Link>
-//               </MenuItem>
-//               <MenuItem>
-//                 <Link
-//                   href="/profilePage"
-//                   className="block w-full px-4 py-2 text-left text-sm text-[#F1E9DA] hover:opacity-25"
-//                 >
-//                   profile
-//                 </Link>
-//               </MenuItem>
-//               <MenuItem>
-//                 <button
-//                   onClick={handleLogout}
-//                   className="block w-full px-4 py-2 text-left text-sm text-[#F1E9DA] font- hover:opacity-25"
-//                 >
-//                   sign out
-//                 </button>
-//               </MenuItem>
-//             </MenuItems>
-//           </Menu>
-//           <Menu
-//             as="div"
-//             className="relative inline-block text-left bg-transparent hover:text-[#FBF8F4] duration-1000"
-//           ></Menu>
-//         </div>
-//       </div>
-//     </nav>
-//   );
-// }

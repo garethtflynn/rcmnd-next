@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import PostItemProfilePage from "./PostItemYourProfilePage";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
+import { FaRegFileLines } from "react-icons/fa6";
 
 function UserPosts(props) {
   const { data: session } = useSession();
@@ -60,6 +61,26 @@ function UserPosts(props) {
       // You might want to show an error message to the user
     }
   };
+
+  if (!isLoading && (!posts || posts.length === 0)) {
+    return (
+      <div className="h-screen w-full flex justify-center items-center bg-[#000000] text-[#D7CDBF]">
+        <div className="text-center">
+          <div className="mb-4 flex justify-center">
+            <FaRegFileLines size={60} />
+          </div>
+          <h3 className="text-xl font-medium mb-2">No posts created yet</h3>
+          <p className="text-gray-400 mb-6">rcmnd your favorite products</p>
+          <Link
+            href="/createPost"
+            className="inline-block bg-[#D7CDBF] text-[#000000] px-6 py-3 rounded-lg font-medium hover:bg-opacity-90 transition-colors"
+          >
+            Create Your First Post
+          </Link>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-fit w-full grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 justify-center items-center bg-[#000000] text-[#D7CDBF] overflow-y-auto pb-2">

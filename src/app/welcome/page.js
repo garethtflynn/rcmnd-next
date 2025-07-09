@@ -15,14 +15,14 @@ export default function Welcome() {
       />
       <div className="my-2">
         <Link href="/sign-in">
-          <button className="w-64 border border-[#D7CDBF] bg-[#000000] text-[#D7CDBF] hover:bg-[#4C4138] py-2 px-4 duration-500">
+          <button className="w-64 border border-[#D7CDBF] bg-[#000000] text-[#D7CDBF] hover:bg-[#4C4138] py-2 px-4 duration-500 rounded">
             sign in
           </button>
         </Link>
       </div>
       <div>
         <Link href="/sign-up">
-          <button className="w-64 border border-[#D7CDBF] bg-[#000000] text-[#D7CDBF] hover:bg-[#4C4138] py-2 px-4 duration-500">
+          <button className="w-64 border border-[#D7CDBF] bg-[#000000] text-[#D7CDBF] hover:bg-[#4C4138] py-2 px-4 duration-500 rounded">
             sign up
           </button>
         </Link>

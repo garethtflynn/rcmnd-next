@@ -2,7 +2,8 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
-import { FaAngleDown, FaAngleUp } from "react-icons/fa";
+import { FaAngleDown, FaAngleUp, FaPlus } from "react-icons/fa";
+import Link from "next/link";
 
 function YourListsProfilePage(props) {
   const router = useRouter();
@@ -47,6 +48,22 @@ function YourListsProfilePage(props) {
     setIsListsOpen(!isListsOpen);
   };
 
+  if (!isLoading && (!lists || lists.length === 0)) {
+    return (
+      <div className="px-2 my-2">
+        <div className="flex items-center justify-center px-4 py-1 w-36 h-8 rounded-md bg-[#000000] shadow-sm ring-1 ring-inset ring-[#252220]">
+          <Link
+            href="/createList"
+            className="flex items-center gap-2 text-[#FBF8F4] hover:text-[#D7CDBF] transition-colors duration-300 text-lg font-semibold"
+          >
+            <FaPlus size={15} />
+            create list
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <>
       <div className="px-2 my-2">
@@ -54,7 +71,7 @@ function YourListsProfilePage(props) {
         <div
           className={`
               flex items-center transition-all duration-500 ease-in-out
-              rounded-md bg-[#000000] shadow-sm ring-1 ring-inset ring-[#252220] 
+              rounded-md bg-[#000000] shadow-sm ring-1 ring-inset ring-[#252220]
                cursor-pointer
               ${
                 isListsOpen
@@ -77,7 +94,7 @@ function YourListsProfilePage(props) {
             </>
           )}
 
-          {/* Expanded Lists (expanded state) */}
+          {/* Expanded Lists (expanded state)  */}
           {isListsOpen && (
             <>
               {/* Close button */}

@@ -105,8 +105,7 @@ function ListPage() {
   };
 
   if (isLoading) {
-    return 
-     <Loading />;
+    <Loading />;
   }
 
   return (
