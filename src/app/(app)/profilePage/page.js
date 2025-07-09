@@ -1,5 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
+import Link from "next/link";
+
 import { useSession } from "next-auth/react";
 import Footer from "@/components/Footer";
 import UserPostsProfilePage from "@/components/UserPostsProfilePage";
@@ -44,7 +46,7 @@ function ProfilePage(props) {
       <div>
         <UserLists />
       </div>
-        <UserPostsProfilePage />
+      <UserPostsProfilePage />
     </div>
   );
 }

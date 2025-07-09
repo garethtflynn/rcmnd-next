@@ -14,13 +14,103 @@ datasource db {
   relationMode = "prisma"
 }
 
-model User {
+// model User {
+//   id           String   @id @default(auto()) @map("_id") @db.ObjectId
+//   firstName    String
+//   lastName     String
+//   username     String   @unique
+//   email        String   @unique
+//   password     String?
+//   provider     String?
+//   providerId   String?
+//   posts        Post[]
+//   lists        List[]
+//   followers    User[]   @relation("UserFollows", fields: [followersIDs], references: [id])
+//   followersIDs String[] @db.ObjectId
+//   following    User[]   @relation("UserFollows", fields: [followingIDs], references: [id])
+//   followingIDs String[] @db.ObjectId
+// }
+
+// model Post {
+//   id          String    @id @default(auto()) @map("_id") @db.ObjectId
+//   title       String
+//   link        String?
+//   description String?
+//   image       String
+//   createdAt   DateTime? @default(now())
+//   user        User?     @relation(fields: [userId], references: [id])
+//   userId      String?   @db.ObjectId
+//   list        List?     @relation(fields: [listId], references: [id])
+//   listId      String?   @db.ObjectId
+//   isPrivate   Boolean?  @default(false)
+// }
+
+// model List {
+//   id        String   @id @default(auto()) @map("_id") @db.ObjectId
+//   title     String
+//   posts     Post[]
+//   user      User?    @relation(fields: [userId], references: [id])
+//   userId    String?  @db.ObjectId
+//   isPrivate Boolean? @default(false)
+// }
+
+// NextAuth Required Models
+model Account {
+  id                String  @id @default(auto()) @map("_id") @db.ObjectId
+  userId            String  @db.ObjectId
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.String
+  access_token      String? @db.String
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.String
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
   id           String   @id @default(auto()) @map("_id") @db.ObjectId
-  firstName    String
-  lastName     String
-  username     String   @unique
-  email        String   @unique
-  password     String
+  sessionToken String   @unique
+  userId       String   @db.ObjectId
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+// Your existing User model with NextAuth additions
+model User {
+  id            String    @id @default(auto()) @map("_id") @db.ObjectId
+  firstName     String?   // Made optional for OAuth users
+  lastName      String?   // Made optional for OAuth users
+  username      String?   @unique // Made optional for OAuth users
+  email         String    @unique
+  password      String?   // Keep optional for OAuth users
+  provider      String?   // Keep your custom field
+  providerId    String?   // Keep your custom field
+  emailVerified DateTime? // NextAuth field for email verification
+  // image         String?   // NextAuth field for profile pictures
+  createdAt     DateTime?  @default(now())
+  updatedAt     DateTime?  @updatedAt
+  
+  // NextAuth relations
+  accounts Account[]
+  sessions Session[]
+  
+  // Your existing relations
   posts        Post[]
   lists        List[]
   followers    User[]   @relation("UserFollows", fields: [followersIDs], references: [id])
@@ -29,6 +119,7 @@ model User {
   followingIDs String[] @db.ObjectId
 }
 
+// Your existing models (unchanged)
 model Post {
   id          String    @id @default(auto()) @map("_id") @db.ObjectId
   title       String
@@ -51,4 +142,3 @@ model List {
   userId    String?  @db.ObjectId
   isPrivate Boolean? @default(false)
 }
-

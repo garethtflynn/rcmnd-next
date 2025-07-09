@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { useSession, signIn, signOut } from "next-auth/react";
 import { useSearchParams, useRouter } from "next/navigation";
+
+import { FcGoogle } from "react-icons/fc";
 import Alert from "@/components/Alert";
 
 function LoginForm(props) {
@@ -20,8 +22,6 @@ function LoginForm(props) {
         password,
         callbackUrl,
       });
-      // console.log("CALLBACK URL", callbackUrl);
-      // console.log(res);
       if (!res?.error) {
         router.push(callbackUrl);
       } else {
@@ -29,6 +29,16 @@ function LoginForm(props) {
       }
     } catch (error) {
       setError(error?.message);
+    }
+  };
+
+  const handleGoogleSignIn = async () => {
+    try {
+      await signIn("google", {
+        callbackUrl,
+      });
+    } catch (error) {
+      setError("Failed to sign in with Google");
     }
   };
 
@@ -61,6 +71,21 @@ function LoginForm(props) {
           </button>
         </div>
       </form>
+      <div className="flex items-center justify-center my-4">
+        <div className="border-t border-[#4C4138] flex-grow"></div>
+        <span className="px-3 text-[#4C4138] text-sm">or</span>
+        <div className="border-t border-[#4C4138] flex-grow"></div>
+      </div>
+      <div className="flex justify-center">
+        <button
+          type="button"
+          onClick={handleGoogleSignIn}
+          className="w-64 bg-transparent border border-[#D7CDBF] text-[#D7CDBF] hover:bg-[#4C4138] font-bold py-2 px-4 rounded-md duration-500 flex items-center justify-center gap-2"
+        >
+          sign in with Google
+          <FcGoogle />
+        </button>
+      </div>
     </div>
   );
 }

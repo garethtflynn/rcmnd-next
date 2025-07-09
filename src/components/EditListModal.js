@@ -3,12 +3,12 @@ import { Field, Label, Switch } from "@headlessui/react";
 import { useRouter } from "next/navigation";
 
 function EditListModal({ isOpen, closeModal, title, listId, isPrivate }) {
-  const router = useRouter()
+  const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     title: title,
     listId: listId,
-    isPrivate: isPrivate, // Initial state for isPrivate, set to false by default
+    isPrivate: isPrivate,
   });
   const [enabled, setEnabled] = useState(isPrivate);
 

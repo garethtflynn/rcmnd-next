@@ -1,40 +1,6 @@
 import prisma from "@/libs/db";
+import { hash } from "bcrypt";
 import { NextResponse } from "next/server";
-
-// get a specific user
-// export async function GET(req, { params }) {
-//   const { userId } = params; // Destructure userId from params
-
-//   console.log("REQ QUERY:", userId); // Debugging log
-
-//   try {
-//     // Fetch a single user by their unique userId
-//     const user = await prisma.user.findUnique({
-//       where: {
-//         id: userId,
-//       },
-//       include: {
-//         posts: true,
-//         lists: true,
-//       },
-//     });
-
-//     if (!user) {
-//       // Return a 404 if the user is not found
-//       return new Response(JSON.stringify({ error: "User not found" }), {
-//         status: 404,
-//       });
-//     }
-
-//     // Return the user data
-//     return new Response(JSON.stringify(user), { status: 200 });
-//   } catch (error) {
-//     console.error(error); // Log the error for debugging
-//     return new Response(JSON.stringify({ error: "Failed to get user" }), {
-//       status: 500,
-//     });
-//   }
-// }
 
 //get a specific user
 export async function GET(req, { params }) {
@@ -86,5 +52,44 @@ export async function GET(req, { params }) {
     return new Response(JSON.stringify({ error: "Failed to get user" }), {
       status: 500,
     });
+  }
+}
+
+export async function PATCH(req, { params }) {
+  try {
+    const { userId } = params;
+    const { firstName, lastName, email, username, password } = await req.json();
+
+    const hashedPassword = await hash(password, 12);
+
+    const user = await prisma.user.update({
+      where: {
+        id: userId,
+      },
+      data: {
+        firstName: firstName,
+        lastName: lastName,
+        email: email,
+        username: username,
+        password: hashedPassword,
+      },
+    });
+
+    return NextResponse.json({
+      user: {
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email,
+        username: user.username,
+        password: user.password,
+      },
+    });
+  } catch (err) {
+    return new NextResponse(
+      JSON.stringify({
+        error: err.message,
+      }),
+      { status: 500 }
+    );
   }
 }

@@ -13,8 +13,8 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={`${inter.className} bg-[#000000]`}>
-        <HeaderWithPathname />
         <Providers>
+          <HeaderWithPathname />
           <ExtensionAuthConnector />
           {children}
         </Providers>
