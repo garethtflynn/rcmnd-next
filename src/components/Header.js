@@ -7,7 +7,6 @@ import Link from "next/link";
 import { signOut } from "next-auth/react";
 import Image from "next/image";
 import { animate, inView, scroll, stagger, timeline } from "motion";
-import { IoMdSearch } from "react-icons/io";
 
 import rcmndLogo from "../../public/rcmndLogo.png";
 import SearchBar from "./SearchBar";
@@ -16,7 +15,7 @@ import CreateModal from "./CreateModal";
 // import CreateListModal from "./CreateListModal"
 
 export default function Header() {
-  const router = useRouter()
+  const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const [showCreateModal, setShowCreateModal] = useState(false);
   // const [isCreatePostOpen, setIsCreatePostOpen] = useState(false);
@@ -43,6 +42,8 @@ export default function Header() {
   };
 
   const handleLogout = async () => {
+    setShowCreateModal(false);
+    setIsOpen(false);
     try {
       await signOut({ redirect: true, callbackUrl: "/welcome" });
       console.log("logged out!");
@@ -71,16 +72,22 @@ export default function Header() {
   // };
 
   const createPost = async () => {
-    router.push('/createPost');
+    router.push("/createPost");
     setShowCreateModal(false);
-  }
+  };
   const createList = async () => {
-    router.push('/createList');
+    router.push("/createList");
     setShowCreateModal(false);
-  }
+  };
 
   const handleMenuItemClick = async () => {
     setShowCreateModal(false);
+    setIsOpen(false);
+  };
+
+  // Handle clicks outside the menu to close it
+  const handleOverlayClick = () => {
+    console.log("screen clicked");
     setIsOpen(false);
   };
 
@@ -116,10 +123,6 @@ export default function Header() {
     if (!menuRef.current || !menuOverlayRef.current) return;
 
     if (isOpen) {
-      // Show menu overlay
-      menuOverlayRef.current.style.display = "block";
-      menuRef.current.style.display = "flex";
-
       // Overlay fade in
       animate(
         menuOverlayRef.current,
@@ -164,33 +167,6 @@ export default function Header() {
           }
         );
       }
-    } else {
-      // Hide menu with animation
-      animate(
-        menuOverlayRef.current,
-        { opacity: [1, 0] },
-        { duration: 0.3, easing: "ease-in" }
-      );
-
-      const menuAnimation = animate(
-        menuRef.current,
-        {
-          opacity: [1, 0],
-          scale: [1, 0.98],
-        },
-        {
-          duration: 0.3,
-          easing: "ease-in",
-        }
-      );
-
-      // Hide menu after animation completes
-      menuAnimation.finished.then(() => {
-        if (menuRef.current && menuOverlayRef.current) {
-          menuRef.current.style.display = "none";
-          menuOverlayRef.current.style.display = "none";
-        }
-      });
     }
   }, [isOpen]);
 
@@ -237,7 +213,6 @@ export default function Header() {
         <div className="w-auto flex-grow lg:w-auto flex flex-end items-center">
           <div className="w-full text-sm flex justify-end items-center">
             <div className="relative">
-              {/* Logo */}
               <div
                 ref={logoRef}
                 onClick={toggleMenu}
@@ -257,85 +232,97 @@ export default function Header() {
         </div>
       </nav>
 
-      {/* Fullscreen Modal Overlay */}
-      <div
-        ref={menuOverlayRef}
-        className="fixed inset-0 bg-black bg-opacity-80 z-30"
-        style={{ display: "none", opacity: 0 }}
-        onClick={() => setIsOpen(false)}
-      ></div>
-
-      <div
-        ref={menuRef}
-        className="fixed inset-0 z-40 flex flex-col items-center justify-center bg-black bg-opacity-60"
-        style={{ display: "none", opacity: 0 }}
-        onClick={(e) => e.stopPropagation()}
-      >
-        <div
-          ref={closeButtonRef}
-          className="absolute top-6 right-6 cursor-pointer text-[#F1E9DA] text-3xl"
-          onClick={handleMenuItemClick}
-          style={{ opacity: 0 }}
-        >
-          ✕
-        </div>
-
-        <div className="text-center space-y-6">
+      {isOpen && (
+        <>
           <div
-            ref={(el) => (menuItemsRef.current[0] = el)}
-            className="text-2xl md:text-3xl text-[#F1E9DA] cursor-pointer"
+            ref={menuOverlayRef}
+            className="fixed inset-0 bg-black bg-opacity-80 z-40"
+            style={{ opacity: 0 }}
+            onClick={handleOverlayClick}
+          />
+          <div
+            ref={menuRef}
+            className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-transparent pointer-events-none"
             style={{ opacity: 0 }}
           >
-            <Link href="/homeFeed" onClick={() => setIsOpen(false)}>
-              home
-            </Link>
-          </div>
-          <div
-            ref={(el) => (menuItemsRef.current[1] = el)}
-            className="text-2xl md:text-3xl text-[#F1E9DA] cursor-pointer"
-            style={{ opacity: 0 }}
-          >
-            <button onClick={openCreateModal}>create</button>
-          </div>
-          <div
-            ref={(el) => (menuItemsRef.current[2] = el)}
-            className="text-2xl md:text-3xl text-[#F1E9DA] cursor-pointer"
-            style={{ opacity: 0 }}
-          >
-            <Link href="/profilePage" onClick={() => setIsOpen(false)}>
-              profile
-            </Link>
-          </div>
-          <div
-            ref={(el) => (menuItemsRef.current[3] = el)}
-            className="text-2xl md:text-3xl text-[#F1E9DA] cursor-pointer"
-            style={{ opacity: 0 }}
-          >
-            <Link href="/accountPage" onClick={() => setIsOpen(false)}>
-              account
-            </Link>
-          </div>
-
-          <div
-            ref={(el) => (menuItemsRef.current[4] = el)}
-            className="text-2xl md:text-3xl text-[#F1E9DA] cursor-pointer"
-            style={{ opacity: 0 }}
-          >
-            <button
-              onClick={handleLogout}
-              className="bg-transparent border-none text-2xl md:text-3xl text-[#F1E9DA]"
+            <div
+              className="pointer-events-auto"
+              onClick={(e) => e.stopPropagation()}
             >
-              sign out
-            </button>
+              <div
+                ref={closeButtonRef}
+                className="absolute top-6 right-6 cursor-pointer text-[#F1E9DA] text-3xl"
+                onClick={handleMenuItemClick}
+                style={{ opacity: 0 }}
+              >
+                ✕
+              </div>
+
+              <div className="text-center space-y-6">
+                <div
+                  ref={(el) => (menuItemsRef.current[0] = el)}
+                  className="text-2xl md:text-3xl text-[#F1E9DA] cursor-pointer"
+                  style={{ opacity: 0 }}
+                >
+                  <Link href="/homeFeed" onClick={handleMenuItemClick}>
+                    home
+                  </Link>
+                </div>
+                <div
+                  ref={(el) => (menuItemsRef.current[1] = el)}
+                  className="text-2xl md:text-3xl text-[#F1E9DA] cursor-pointer"
+                  style={{ opacity: 0 }}
+                >
+                  <button onClick={openCreateModal}>create</button>
+                </div>
+                <div
+                  ref={(el) => (menuItemsRef.current[2] = el)}
+                  className="text-2xl md:text-3xl text-[#F1E9DA] cursor-pointer"
+                  style={{ opacity: 0 }}
+                >
+                  <Link href="/profilePage" onClick={handleMenuItemClick}>
+                    profile
+                  </Link>
+                </div>
+                <div
+                  ref={(el) => (menuItemsRef.current[3] = el)}
+                  className="text-2xl md:text-3xl text-[#F1E9DA] cursor-pointer"
+                  style={{ opacity: 0 }}
+                >
+                  <Link href="/accountPage" onClick={handleMenuItemClick}>
+                    account
+                  </Link>
+                </div>
+
+                <div
+                  ref={(el) => (menuItemsRef.current[4] = el)}
+                  className="text-2xl md:text-3xl text-[#F1E9DA] cursor-pointer"
+                  style={{ opacity: 0 }}
+                >
+                  <button
+                    onClick={handleLogout}
+                    className="bg-transparent border-none text-2xl md:text-3xl text-[#F1E9DA]"
+                  >
+                    sign out
+                  </button>
+                </div>
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
+        </>
+      )}
       {showCreateModal && (
-        <CreateModal
-          onClose={() => setShowCreateModal(false)}
-          onPost={createPost}
-          onList={createList}
-        />
+        <>
+          <div
+            className="fixed inset-0 bg-black bg-opacity-50 z-40"
+            onClick={() => setShowCreateModal(false)}
+          />
+          <CreateModal
+            onClose={() => setShowCreateModal(false)}
+            onPost={createPost}
+            onList={createList}
+          />
+        </>
       )}
 
       {/* {isCreatePostOpen && (
