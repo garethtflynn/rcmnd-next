@@ -236,7 +236,7 @@ export default function Header() {
         <>
           <div
             ref={menuOverlayRef}
-            className="fixed inset-0 bg-black bg-opacity-80 z-40"
+            className="fixed inset-0 bg-black bg-opacity-95 z-40"
             style={{ opacity: 0 }}
             onClick={handleOverlayClick}
           />

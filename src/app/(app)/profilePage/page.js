@@ -43,9 +43,8 @@ function ProfilePage(props) {
           <p className="text-sm font-light text-[#F1E9DA]">@{user.username}</p>
         </div>
       )}
-      <div>
-        <UserLists />
-      </div>
+
+      <UserLists />
       <UserPostsProfilePage />
     </div>
   );

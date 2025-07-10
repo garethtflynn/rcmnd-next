@@ -322,8 +322,8 @@ const EditPostModal = ({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-gray-500 bg-opacity-75 z-50 flex items-center justify-center p-4">
-      <div className="bg-[#4C4138] p-6 shadow-md w-full max-w-md sm:max-w-lg md:max-w-xl rounded-lg max-h-[90vh] overflow-y-auto">
+    <div className="fixed inset-0 bg-[#252220] bg-opacity-75 z-50 flex items-center justify-center p-4">
+      <div className="bg-[#000000] p-6 shadow-md w-full max-w-md sm:max-w-lg md:max-w-xl rounded max-h-[90vh] overflow-y-auto">
         <h2 className="text-xl font-bold mb-4 text-[#000000] text-end">
           edit post
         </h2>
@@ -376,10 +376,10 @@ const EditPostModal = ({
             </div>
           )}
 
-          <div className="my-4">
+          <div className="my-2">
             <label
               htmlFor="title"
-              className="block text-sm font-medium text-[#000000]"
+              className="block text-sm font-medium text-[#FBF8F4]"
             >
               title
             </label>
@@ -389,13 +389,13 @@ const EditPostModal = ({
               name="title"
               defaultValue={title}
               onChange={handleChange}
-              className="mt-1 p-2 w-full border border-[#14100E] text-[#14100E] bg-[#4C4138]"
+              className="border border-[#FBF8F4] bg-transparent text-[#FBF8F4] px-2 py-1 rounded hover:bg-[#4C4138] outline-none placeholder-[#252220] w-full"
             />
           </div>
-          <div className="mb-4">
+          <div className="my-2">
             <label
               htmlFor="link"
-              className="block text-sm font-medium text-[#000000]"
+              className="block text-sm font-medium text-[#FBF8F4]"
             >
               link
             </label>
@@ -405,13 +405,13 @@ const EditPostModal = ({
               name="link"
               defaultValue={link}
               onChange={handleChange}
-              className="mt-1 p-2 w-full border border-[#14100E] text-[#14100E] bg-[#4C4138]"
+              className="border border-[#FBF8F4] bg-transparent text-[#FBF8F4] px-2 py-1 rounded hover:bg-[#4C4138] outline-none placeholder-[#252220] w-full"
             />
           </div>
-          <div className="mb-4">
+          <div className="mt-2">
             <label
               htmlFor="description"
-              className="block text-sm font-medium text-[#000000]"
+              className="block text-sm font-medium text-[#FBF8F4]"
             >
               description
             </label>
@@ -420,18 +420,18 @@ const EditPostModal = ({
               name="description"
               defaultValue={description}
               onChange={handleChange}
-              className="mt-1 p-2 w-full border border-[#14100E] text-[#14100E] bg-[#4C4138]"
+              className="border border-[#FBF8F4] bg-transparent text-[#FBF8F4] px-2 py-1 rounded hover:bg-[#4C4138] outline-none placeholder-[#252220] w-full"
             />
           </div>
-          <div className="mb-4">
+          <div className="mt-2">
             <label
               htmlFor="list"
-              className="block text-sm font-medium text-[#000000]"
+              className="block text-sm font-medium text-[#FBF8F4]"
             >
               list
             </label>
             <select
-              className="border border-[#14100E] bg-transparent text-[#14100E] mt-2 px-2 py-1 focus:within:bg-[#D7CDBF] outline-none w-full block p-2"
+              className="border border-[#FBF8F4] bg-transparent text-[#FBF8F4] px-2 py-1 rounded hover:bg-[#4C4138] outline-none placeholder-[#252220] w-full"
               defaultValue={listId}
               onChange={(e) =>
                 setFormData({ ...formData, listId: e.target.value })
@@ -464,7 +464,7 @@ const EditPostModal = ({
             <button
               type="button"
               onClick={closeModal}
-              className="mr-4 text-[#000000] hover:text-[#14100E]"
+              className="w-1/2 text-[#F1E9DA] hover:text-[#14100E]"
             >
               cancel
             </button>
@@ -472,7 +472,7 @@ const EditPostModal = ({
               type="submit"
               className={`w-1/2 ${
                 loading ? "bg-[#4C4138]" : "bg-[#14100E]"
-              } text-[#D7CDBF] p-2 hover:bg-[#000000] disabled:opacity-50`}
+              } text-[#D7CDBF] p-2 hover:bg-[#000000] disabled:opacity-50 rounded`}
               disabled={loading || isConverting || isUploading}
             >
               {loading || isUploading ? "saving..." : "save changes"}

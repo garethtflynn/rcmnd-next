@@ -3,7 +3,7 @@ import React from "react";
 function Footer(props) {
   const footerYear = new Date().getFullYear();
   return (
-    <footer className="bg-[#000000] text-[#D7CDBF] flex justify-center text-xs py-3 h-fit w-full ">
+    <footer className="bg-[#000000] text-[#252220] flex justify-center text-xs py-3 h-fit w-full ">
       <p>©{footerYear} rcmnd. All Rights Reserved.</p>
     </footer>
   );
