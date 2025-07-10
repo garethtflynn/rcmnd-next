@@ -37,10 +37,10 @@ function ListPage() {
       fetch(`/api/list/${listId}`)
         .then((res) => res.json())
         .then((data) => {
-          // console.log(data);
-          // console.log(data.userId);
-          // console.log(data.userId);
-          // console.log(data.posts);
+          console.log(data);
+          console.log(data.userId);
+          console.log(data.userId);
+          console.log(data.posts);
           setList(data);
           setUser(data.userId);
           setPosts(data.posts);
@@ -100,12 +100,11 @@ function ListPage() {
   };
 
   const handleAddPost = async () => {
-    // console.log("adding post to list from list page");
     openAddpost();
   };
 
   if (isLoading) {
-    <Loading />;
+    return <Loading />;
   }
 
   return (

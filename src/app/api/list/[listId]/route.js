@@ -4,7 +4,6 @@ import { NextResponse } from "next/server";
 export async function GET(req, { params }) {
   const { listId } = params;
   console.log("REQ QUERY:", listId);
-  // get a single list with its unique ID
   try {
     // Fetch specific list and return post(s)
     const list = await prisma.list.findUnique({
@@ -12,7 +11,7 @@ export async function GET(req, { params }) {
         id: listId, // Filter posts by the given listId
       },
       include: {
-        posts: true, // include the posts information in the response
+        posts: true,
       },
     });
     console.log("LIST IN RH", list);

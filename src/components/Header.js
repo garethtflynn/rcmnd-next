@@ -9,10 +9,15 @@ import { IoMdSearch } from "react-icons/io";
 
 import rcmndLogo from "../../public/rcmndLogo.png";
 import SearchBar from "./SearchBar";
+import CreateModal from "./CreateModal";
+import CreatePostModal from "./CreatePostModal";
+import CreateListModal from "./CreateListModal"
 
 export default function Header() {
-  // State to control the menu visibility
   const [isOpen, setIsOpen] = useState(false);
+  const [showCreateModal, setShowCreateModal] = useState(false);
+  const [isCreatePostOpen, setIsCreatePostOpen] = useState(false);
+  const [isCreateListOpen, setIsCreateListOpen] = useState(false);
 
   // Refs for animation targets
   const menuRef = useRef(null);
@@ -21,7 +26,6 @@ export default function Header() {
   const logoRef = useRef(null);
   const closeButtonRef = useRef(null);
 
-  // Toggle menu visibility
   const toggleMenu = () => {
     setIsOpen(!isOpen);
 
@@ -43,6 +47,29 @@ export default function Header() {
     } catch (error) {
       console.error("Logout error:", error);
     }
+  };
+
+  const openCreateModal = async () => {
+    setShowCreateModal(true);
+    setIsOpen(false);
+  };
+
+  const closeCreatePost = () => setIsCreatePostOpen(false);
+  const closeCreateList = async () => setIsCreateListOpen(false);
+
+  const openCreatePost = async () => {
+    setIsCreatePostOpen(true);
+    setShowCreateModal(false);
+  };
+
+  const openCreateList = async () => {
+    setIsCreateListOpen(true);
+    setShowCreateModal(false);
+  };
+
+  const handleMenuItemClick = async () => {
+    setShowCreateModal(false);
+    setIsOpen(false);
   };
 
   // Handle escape key to close menu
@@ -235,7 +262,7 @@ export default function Header() {
         <div
           ref={closeButtonRef}
           className="absolute top-6 right-6 cursor-pointer text-[#F1E9DA] text-3xl"
-          onClick={() => setIsOpen(false)}
+          onClick={handleMenuItemClick}
           style={{ opacity: 0 }}
         >
           ✕
@@ -256,21 +283,10 @@ export default function Header() {
             className="text-2xl md:text-3xl text-[#F1E9DA] cursor-pointer"
             style={{ opacity: 0 }}
           >
-            <Link href="/createPost" onClick={() => setIsOpen(false)}>
-              create post
-            </Link>
+            <button onClick={openCreateModal}>create</button>
           </div>
           <div
             ref={(el) => (menuItemsRef.current[2] = el)}
-            className="text-2xl md:text-3xl text-[#F1E9DA] cursor-pointer"
-            style={{ opacity: 0 }}
-          >
-            <Link href="/createList" onClick={() => setIsOpen(false)}>
-              create list
-            </Link>
-          </div>
-          <div
-            ref={(el) => (menuItemsRef.current[3] = el)}
             className="text-2xl md:text-3xl text-[#F1E9DA] cursor-pointer"
             style={{ opacity: 0 }}
           >
@@ -279,7 +295,7 @@ export default function Header() {
             </Link>
           </div>
           <div
-            ref={(el) => (menuItemsRef.current[4] = el)}
+            ref={(el) => (menuItemsRef.current[3] = el)}
             className="text-2xl md:text-3xl text-[#F1E9DA] cursor-pointer"
             style={{ opacity: 0 }}
           >
@@ -289,7 +305,7 @@ export default function Header() {
           </div>
 
           <div
-            ref={(el) => (menuItemsRef.current[5] = el)}
+            ref={(el) => (menuItemsRef.current[4] = el)}
             className="text-2xl md:text-3xl text-[#F1E9DA] cursor-pointer"
             style={{ opacity: 0 }}
           >
@@ -302,6 +318,21 @@ export default function Header() {
           </div>
         </div>
       </div>
+      {showCreateModal && (
+        <CreateModal
+          onClose={() => setShowCreateModal(false)}
+          onPost={openCreatePost}
+          onList={openCreateList}
+        />
+      )}
+
+      {isCreatePostOpen && (
+        <CreatePostModal isOpen={isCreatePostOpen} closeModal={closeCreatePost} />
+      )}
+
+      {isCreateListOpen && (
+        <CreateListModal isOpen={isCreateListOpen} closeModal={closeCreateList} />
+      )}
     </>
   );
 }
