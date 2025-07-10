@@ -1,6 +1,8 @@
 "use client";
 
 import React, { useState, useRef, useEffect } from "react";
+import { useRouter } from "next/navigation";
+
 import Link from "next/link";
 import { signOut } from "next-auth/react";
 import Image from "next/image";
@@ -10,14 +12,15 @@ import { IoMdSearch } from "react-icons/io";
 import rcmndLogo from "../../public/rcmndLogo.png";
 import SearchBar from "./SearchBar";
 import CreateModal from "./CreateModal";
-import CreatePostModal from "./CreatePostModal";
-import CreateListModal from "./CreateListModal"
+// import CreatePostModal from "./CreatePostModal";
+// import CreateListModal from "./CreateListModal"
 
 export default function Header() {
+  const router = useRouter()
   const [isOpen, setIsOpen] = useState(false);
   const [showCreateModal, setShowCreateModal] = useState(false);
-  const [isCreatePostOpen, setIsCreatePostOpen] = useState(false);
-  const [isCreateListOpen, setIsCreateListOpen] = useState(false);
+  // const [isCreatePostOpen, setIsCreatePostOpen] = useState(false);
+  // const [isCreateListOpen, setIsCreateListOpen] = useState(false);
 
   // Refs for animation targets
   const menuRef = useRef(null);
@@ -54,18 +57,27 @@ export default function Header() {
     setIsOpen(false);
   };
 
-  const closeCreatePost = () => setIsCreatePostOpen(false);
-  const closeCreateList = async () => setIsCreateListOpen(false);
+  // const closeCreatePost = () => setIsCreatePostOpen(false);
+  // const closeCreateList = async () => setIsCreateListOpen(false);
 
-  const openCreatePost = async () => {
-    setIsCreatePostOpen(true);
-    setShowCreateModal(false);
-  };
+  // const openCreatePost = async () => {
+  //   setIsCreatePostOpen(true);
+  //   setShowCreateModal(false);
+  // };
 
-  const openCreateList = async () => {
-    setIsCreateListOpen(true);
+  // const openCreateList = async () => {
+  //   setIsCreateListOpen(true);
+  //   setShowCreateModal(false);
+  // };
+
+  const createPost = async () => {
+    router.push('/createPost');
     setShowCreateModal(false);
-  };
+  }
+  const createList = async () => {
+    router.push('/createList');
+    setShowCreateModal(false);
+  }
 
   const handleMenuItemClick = async () => {
     setShowCreateModal(false);
@@ -321,18 +333,18 @@ export default function Header() {
       {showCreateModal && (
         <CreateModal
           onClose={() => setShowCreateModal(false)}
-          onPost={openCreatePost}
-          onList={openCreateList}
+          onPost={createPost}
+          onList={createList}
         />
       )}
 
-      {isCreatePostOpen && (
+      {/* {isCreatePostOpen && (
         <CreatePostModal isOpen={isCreatePostOpen} closeModal={closeCreatePost} />
       )}
 
       {isCreateListOpen && (
         <CreateListModal isOpen={isCreateListOpen} closeModal={closeCreateList} />
-      )}
+      )} */}
     </>
   );
 }
