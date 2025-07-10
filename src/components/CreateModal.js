@@ -9,7 +9,7 @@ export default function CreateModal({
 }) {
   return (
     <div
-      className="fixed bottom-0 left-1/2 transform -translate-x-1/2 w-[95%] max-w-md h-1/6 bg-[#000000] bg-opacity-95 z-50 flex items-center justify-center px-6 shadow-lg transition-transform duration-1000 ease-in-out rounded"
+      className="fixed bottom-0 left-1/2 transform -translate-x-1/2 w-[95%] max-w-md h-[12%] bg-[#000000] z-50 flex items-center justify-center px-6 shadow-lg transition-transform duration-1000 ease-in-out rounded"
       onClick={onClose}
     >
       <div
