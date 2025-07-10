@@ -40,6 +40,7 @@ function YourListsProfilePage(props) {
   }, [userId]);
 
   const handleListClick = (listId) => {
+    console.log('LIST ID', listId)
     router.push(`/list/${listId}`);
     // setIsListsOpen(false);
   };
