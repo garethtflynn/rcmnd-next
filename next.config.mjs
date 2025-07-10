@@ -12,6 +12,12 @@ const nextConfig = {
         port: "",
         pathname: "/**", // Allows any path within the bucket
       },
+      {
+        protocol: "http",
+        hostname: "**",
+        port: "",
+        pathname: "/**", // Allows any path within the bucket
+      },
     ],
   },
   // api: {

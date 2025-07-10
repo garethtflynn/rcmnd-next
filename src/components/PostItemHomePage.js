@@ -18,17 +18,13 @@ export default function PostItemHomePage({
   const [style, setStyle] = useState({});
   const [isHovered, setIsHovered] = useState(false);
 
-  // Function to handle hover
   const handleMouseEnter = () => {
-    //custom logic for when the image is hovered
     // console.log("Image is hovered", id);
     setIsHovered(true);
-    setStyle({ opacity: 0.25 }); // Opacity should be a value between 0 and 1
+    setStyle({ opacity: 0.25 });
   };
 
-  // Function to handle hover end
   const handleMouseLeave = () => {
-    // Your custom logic for when the hover ends
     // console.log("Image hover ended");
     setIsHovered(false);
     setStyle({ opacity: 1 });
@@ -50,17 +46,19 @@ export default function PostItemHomePage({
             // height={400}
             style={style}
           />
-          {/* hover for title */}
+
           {isHovered && (
             <div className="absolute top-0 left-0 w-full h-full flex justify-center items-center bg-opacity-100">
-              <p className="text-[#D7CDBF] text-lg text-center font-semibold">{title}</p>
+              <p className="text-[#252220] text-lg text-center font-semibold">
+                {title}
+              </p>
             </div>
           )}
         </div>
       </Link>
       <Link
         href={`/user/${userId}`}
-        className="text-[#F1E9DA] text-opacity-30 text-sm pt-1"
+        className="text-[#F1E9DA] text-opacity-60 hover:text-opacity-30 text-sm pt-1"
       >
         @{username}
       </Link>

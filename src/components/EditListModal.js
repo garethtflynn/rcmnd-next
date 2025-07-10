@@ -55,9 +55,9 @@ function EditListModal({ isOpen, closeModal, title, listId, isPrivate }) {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-gray-500 bg-opacity-75 z-50 flex items-center justify-center">
-      <div className="bg-[#4C4138] p-6 shadow-md w-96">
-        <h2 className="text-xl font-bold mb-4 text-[#000000] text-end">
+    <div className="fixed inset-0 bg-[#252220] bg-opacity-75 z-50 flex items-center justify-center p-3">
+      <div className="bg-[#000000] p-6 shadow-md w-96 rounded">
+        <h2 className="text-xl font-bold mb-4 text-[#FBF8F4] text-end">
           edit list
         </h2>
         <form onSubmit={handleSubmit}>
@@ -74,7 +74,7 @@ function EditListModal({ isOpen, closeModal, title, listId, isPrivate }) {
               name="title"
               defaultValue={title}
               onChange={handleChange}
-              className="mt-1 p-2 w-full border border-[#14100E] text-[#14100E] bg-[#4C4138]"
+              className="border border-[#FBF8F4] bg-transparent text-[#FBF8F4] px-2 py-1 rounded hover:bg-[#4C4138] outline-none placeholder-[#252220] w-full"
             />
           </div>
           <div className="flex my-2 self-start items-center">
@@ -96,7 +96,7 @@ function EditListModal({ isOpen, closeModal, title, listId, isPrivate }) {
             <button
               type="button"
               onClick={closeModal}
-              className="mr-4 text-[#000000] hover:text-[#14100E]"
+              className="w-1/2 text-[#F1E9DA] hover:text-[#14100E]"
             >
               cancel
             </button>

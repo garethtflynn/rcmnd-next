@@ -67,7 +67,7 @@ function YourListsProfilePage(props) {
 
   return (
     <>
-      <div className="px-2 my-2">
+      <div className="px-2 my-3">
         {/* Button/Expanded Container */}
         <div
           className={`
