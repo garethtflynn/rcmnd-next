@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import PostItemHomePage from "./PostItemHomePage";
 import { useSession } from "next-auth/react";
 
-import Loading from "@/components/Loading";
+import Loading from "@/components/common/Loading";
 
 const shuffleArray = (array) => {
   const shuffled = [...array]; // Create a copy of the array to avoid mutating the original

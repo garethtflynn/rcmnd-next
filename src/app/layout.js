@@ -1,8 +1,8 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { Providers } from "./providers";
-import HeaderWithPathname from "@/components/HeaderWithPathname";
-import { ExtensionAuthConnector } from "@/components/ExtensionAuthConnector";
+import HeaderWithPathname from "@/components/common/HeaderWithPathname";
+import { ExtensionAuthConnector } from "@/components/extensions/ExtensionAuthConnector";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {

@@ -8,11 +8,12 @@ import { useSession } from "next-auth/react";
 import { FaEllipsis } from "react-icons/fa6";
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 
-import PostItem from "@/components/PostItemUserProfilePage";
-import PostItemProfilePage from "@/components/PostItemYourProfilePage";
-import EditListModal from "@/components/EditListModal";
-import AddPostModal from "@/components/AddPostModal";
-import Loading from "@/components/Loading";
+import {
+  PostItemUserProfilePage,
+  PostItemYourProfilePage,
+} from "@/components/posts";
+import { Loading } from "@/components/common";
+import { AddPostModal, EditListModal } from "@/components/modals";
 
 function ListPage() {
   const { listId } = useParams();
@@ -37,10 +38,10 @@ function ListPage() {
       fetch(`/api/list/${listId}`)
         .then((res) => res.json())
         .then((data) => {
-          console.log(data);
-          console.log(data.userId);
-          console.log(data.userId);
-          console.log(data.posts);
+          // console.log(data);
+          // console.log(data.userId);
+          // console.log(data.userId);
+          // console.log(data.posts);
           setList(data);
           setUser(data.userId);
           setPosts(data.posts);
@@ -176,7 +177,7 @@ function ListPage() {
         <div className="w-full py-1 px-4 gap-4 grid grid-cols-2 md:grid-cols-3 text-[#D7CDBF]">
           {posts.map((post) =>
             isOwner ? ( // Check if the current user is the owner of the post
-              <PostItemProfilePage
+              <PostItemYourProfilePage
                 key={post.id}
                 title={post.title}
                 href={`/post/${post.id}`}
@@ -187,7 +188,7 @@ function ListPage() {
                 {...post} // Passing other props that are needed for the post
               />
             ) : (
-              <PostItem
+              <PostItemUserProfilePage
                 key={post.id}
                 title={post.title}
                 href={`/post/${post.id}`}

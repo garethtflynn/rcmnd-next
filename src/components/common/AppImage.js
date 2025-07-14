@@ -1,6 +1,8 @@
-import { useState } from "react";
+'use client'
+
+import React, { useState } from "react";
 import Image from "next/image";
-import rcmndLogo from "../../public/rcmndLogo.png";
+import rcmndLogo from "../../../public/rcmndLogo.png";
 
 function AppImage({
   src,

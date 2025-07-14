@@ -2,8 +2,8 @@
 import React, { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 
-import AccountPageForm from "@/components/AccountPageForm";
-import Loading from "@/components/Loading";
+import AccountPageForm from "@/components/forms/AccountPageForm";
+import Loading from "@/components/common/Loading";
 
 function AccountPage(props) {
   const { data: session } = useSession();
@@ -31,7 +31,7 @@ function AccountPage(props) {
     return <Loading />;
   }
   return (
-    <div className='h-screen w-full flex flex-col justify-center items-center bg-[#000000]'>
+    <div className="h-screen w-full flex flex-col justify-center items-center bg-[#000000]">
       <div>
         <AccountPageForm
           firstName={user.firstName}

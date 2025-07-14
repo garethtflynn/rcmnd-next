@@ -4,7 +4,7 @@ import dynamic from "next/dynamic";
 
 // Import the component with no SSR
 const CreatePostForm = dynamic(
-  () => import("../../../components/CreatePostForm"),
+  () => import("../../../components/forms/CreatePostForm"),
   {
     ssr: false,
   }

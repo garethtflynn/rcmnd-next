@@ -1,5 +1,5 @@
-import UserPostsHomePage from "@/components/UserPostsHomePage";
-import Footer from "@/components/Footer";
+import UserPostsHomePage from "@/components/posts/UserPostsHomePage";
+import Footer from "@/components/common/Footer";
 
 export default function HomeFeed(props) {
   return (

@@ -3,7 +3,7 @@ import { useSession, signIn, signOut } from "next-auth/react";
 import { useSearchParams, useRouter } from "next/navigation";
 
 import { FcGoogle } from "react-icons/fc";
-import Alert from "@/components/Alert";
+import Alert from "@/components/common/Alert";
 
 function LoginForm(props) {
   const router = useRouter();

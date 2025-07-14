@@ -1,5 +1,4 @@
-import HomeFeed from "./(app)/homeFeed/page";
-import Welcome from "./welcome/page";
+import Welcome from "@/app/welcome/page";
 
 export default function Home() {
   return <Welcome />;

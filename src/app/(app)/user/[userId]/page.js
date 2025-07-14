@@ -9,9 +9,9 @@ import { useSession } from "next-auth/react";
 import { Button } from "@headlessui/react";
 import { FaUserPlus, FaUserCheck } from "react-icons/fa6";
 
-import PostItemUserProfilePage from "@/components/PostItemUserProfilePage";
-import UserListsProfilePage from "@/components/UserListsProfilePage";
-import Loading from "@/components/Loading";
+import PostItemUserProfilePage from "@/components/posts/PostItemUserProfilePage";
+import UserListsProfilePage from "@/components/lists/UserListsProfilePage";
+import Loading from "@/components/common/Loading";
 
 function UserPage(props) {
   const router = useRouter();
@@ -114,7 +114,7 @@ function UserPage(props) {
 
       <div className="my-2 grid grid-cols-2 justify-between">
         <div className={isListsOpen ? "col-span-2" : ""}>
-          <UserListsProfilePage 
+          <UserListsProfilePage
             isListsOpen={isListsOpen}
             setIsListsOpen={setIsListsOpen}
           />

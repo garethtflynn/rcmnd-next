@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 
-import AppImage from "./AppImage";
+import AppImage from "../common/AppImage";
 
 export default function PostItemHomePage({
   id,
@@ -48,7 +48,7 @@ export default function PostItemHomePage({
           />
 
           {isHovered && (
-            <div className="absolute top-0 left-0 w-full h-full flex justify-center items-center bg-opacity-100">
+            <div className="absolute top-0 left-0 w-full h-full flex justify-center items-center">
               <p className="text-[#252220] text-lg text-center font-semibold">
                 {title}
               </p>
