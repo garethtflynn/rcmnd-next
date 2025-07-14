@@ -1,12 +1,10 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import Link from "next/link";
 
 import { useSession } from "next-auth/react";
-import Footer from "@/components/Footer";
-import UserPostsProfilePage from "@/components/UserPostsProfilePage";
-import UserLists from "@/components/YourListsProfilePage";
-import Loading from "@/components/Loading";
+import UserPostsProfilePage from "@/components/posts/UserPostsProfilePage";
+import UserLists from "@/components/lists/YourListsProfilePage";
+import Loading from "@/components/common/Loading";
 
 function ProfilePage(props) {
   const { data: session } = useSession();
@@ -43,7 +41,6 @@ function ProfilePage(props) {
           <p className="text-sm font-light text-[#F1E9DA]">@{user.username}</p>
         </div>
       )}
-
       <UserLists />
       <UserPostsProfilePage />
     </div>

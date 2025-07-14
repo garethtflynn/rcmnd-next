@@ -2,7 +2,7 @@
 import Image from "next/image";
 import Link from "next/link";
 
-import AppImage from "./AppImage";
+import AppImage from "../common/AppImage";
 
 export default function PostItemDetailsPage({
   id,

@@ -2,12 +2,9 @@
 
 import React, { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
-import { useSession } from "next-auth/react";
 
-// import Image from "next/image";
-// import Link from "next/link";
-import PostItemDetailsPage from "@/components/PostItemDetailsPage";
-import Loading from "@/components/Loading";
+import PostItemDetailsPage from "@/components/posts/PostItemDetailsPage";
+import Loading from "@/components/common/Loading";
 
 function PostPage(props) {
   const { postId } = useParams();

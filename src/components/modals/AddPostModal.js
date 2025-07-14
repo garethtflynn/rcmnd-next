@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Field, Label, Switch } from "@headlessui/react";
-import AddPostForm from "./AddPostForm";
+import { AddPostForm } from "../forms";
 
 function AddPostModal({
   isOpen,

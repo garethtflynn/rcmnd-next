@@ -8,18 +8,16 @@ import { signOut } from "next-auth/react";
 import Image from "next/image";
 import { animate, inView, scroll, stagger, timeline } from "motion";
 
-import rcmndLogo from "../../public/rcmndLogo.png";
+import rcmndLogo from "../../../public/rcmndLogo.png";
 import SearchBar from "./SearchBar";
-import CreateModal from "./CreateModal";
-// import CreatePostModal from "./CreatePostModal";
-// import CreateListModal from "./CreateListModal"
+import CreateModal from "../modals/CreateModal";
+
 
 export default function Header() {
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const [showCreateModal, setShowCreateModal] = useState(false);
-  // const [isCreatePostOpen, setIsCreatePostOpen] = useState(false);
-  // const [isCreateListOpen, setIsCreateListOpen] = useState(false);
+
 
   // Refs for animation targets
   const menuRef = useRef(null);
@@ -58,18 +56,6 @@ export default function Header() {
     setIsOpen(false);
   };
 
-  // const closeCreatePost = () => setIsCreatePostOpen(false);
-  // const closeCreateList = async () => setIsCreateListOpen(false);
-
-  // const openCreatePost = async () => {
-  //   setIsCreatePostOpen(true);
-  //   setShowCreateModal(false);
-  // };
-
-  // const openCreateList = async () => {
-  //   setIsCreateListOpen(true);
-  //   setShowCreateModal(false);
-  // };
 
   const createPost = async () => {
     router.push("/createPost");
@@ -231,12 +217,11 @@ export default function Header() {
           </div>
         </div>
       </nav>
-
       {isOpen && (
         <>
           <div
             ref={menuOverlayRef}
-            className="fixed inset-0 bg-black bg-opacity-95 z-40"
+            className="fixed inset-0 bg-black bg-opacity-90 z-40"
             style={{ opacity: 0 }}
             onClick={handleOverlayClick}
           />
@@ -324,14 +309,6 @@ export default function Header() {
           />
         </>
       )}
-
-      {/* {isCreatePostOpen && (
-        <CreatePostModal isOpen={isCreatePostOpen} closeModal={closeCreatePost} />
-      )}
-
-      {isCreateListOpen && (
-        <CreateListModal isOpen={isCreateListOpen} closeModal={closeCreateList} />
-      )} */}
     </>
   );
 }

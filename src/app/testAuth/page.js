@@ -1,7 +1,7 @@
 import { getServerSession } from 'next-auth'
 import { authOptions } from '../api/auth/[...nextauth]/route'
 import { LoginButton, LogoutButton } from '../auth'
-import { User } from '../../components/userTest'
+import { User } from '../../components/forms/userTest'
 import { useSession } from 'next-auth/react';
 
 

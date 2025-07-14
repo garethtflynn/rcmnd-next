@@ -1,5 +1,4 @@
-import HomeFeed from "./(app)/homeFeed/page";
-import Welcome from "./welcome/page";
+import {Welcome} from "../components/common";
 
 export default function Home() {
   return <Welcome />;

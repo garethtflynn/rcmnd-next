@@ -4,14 +4,17 @@ import React, { useState } from "react";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 
-import AppImage from "./AppImage";
+import AppImage from "../common/AppImage";
 
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 import { FaEllipsisVertical } from "react-icons/fa6";
 
-const EditPostModal = dynamic(() => import("@/components/EditPostModal"), {
-  ssr: false,
-});
+const EditPostModal = dynamic(
+  () => import("@/components/modals/EditPostModal"),
+  {
+    ssr: false,
+  }
+);
 
 export default function PostItem({
   id,
