@@ -5,7 +5,6 @@ import { NextResponse } from "next/server";
 
 export async function GET(req) {
   try {
-    // Get the session from the request
     const session = await getServerSession(authOptions);
 
     // console.log("Session Data in Route Handler:", session); // Log session data for debugging

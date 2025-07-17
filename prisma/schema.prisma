@@ -91,35 +91,33 @@ model VerificationToken {
   @@unique([identifier, token])
 }
 
-// Your existing User model with NextAuth additions
 model User {
   id            String    @id @default(auto()) @map("_id") @db.ObjectId
-  firstName     String?   // Made optional for OAuth users
-  lastName      String?   // Made optional for OAuth users
-  username      String?   @unique // Made optional for OAuth users
+  firstName     String? 
+  lastName      String? 
+  username      String?   @unique 
   email         String    @unique
-  password      String?   // Keep optional for OAuth users
-  provider      String?   // Keep your custom field
-  providerId    String?   // Keep your custom field
-  emailVerified DateTime? // NextAuth field for email verification
+  password      String? 
+  provider      String? 
+  providerId    String? 
+  emailVerified DateTime?
   // image         String?   // NextAuth field for profile pictures
-  createdAt     DateTime?  @default(now())
-  updatedAt     DateTime?  @updatedAt
-  
-  // NextAuth relations
+  createdAt     DateTime? @default(now())
+  updatedAt     DateTime? @updatedAt
+
   accounts Account[]
   sessions Session[]
-  
-  // Your existing relations
-  posts        Post[]
+
+  posts        Post[]   @relation("PostAuthor")
   lists        List[]
   followers    User[]   @relation("UserFollows", fields: [followersIDs], references: [id])
   followersIDs String[] @db.ObjectId
   following    User[]   @relation("UserFollows", fields: [followingIDs], references: [id])
   followingIDs String[] @db.ObjectId
-}
 
-// Your existing models (unchanged)
+  favoritePosts   Post[]   @relation("UserFavorites", fields: [favoritePostIDs], references: [id])
+  favoritePostIDs String[] @db.ObjectId
+}
 model Post {
   id          String    @id @default(auto()) @map("_id") @db.ObjectId
   title       String
@@ -127,11 +125,14 @@ model Post {
   description String?
   image       String
   createdAt   DateTime? @default(now())
-  user        User?     @relation(fields: [userId], references: [id])
+  user        User?     @relation("PostAuthor", fields: [userId], references: [id])
   userId      String?   @db.ObjectId
   list        List?     @relation(fields: [listId], references: [id])
   listId      String?   @db.ObjectId
   isPrivate   Boolean?  @default(false)
+
+  favoritedBy    User[]   @relation("UserFavorites", fields: [favoritedByIDs], references: [id])
+  favoritedByIDs String[] @db.ObjectId
 }
 
 model List {

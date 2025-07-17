@@ -9,7 +9,6 @@ import { FaAngleDown, FaAngleUp } from "react-icons/fa";
 function UserListsProfilePage({ isListsOpen, setIsListsOpen }) {
   const router = useRouter();
   const { userId } = useParams();
-
   const [lists, setLists] = useState(null);
   const [isLoading, setLoading] = useState(true);
 
@@ -118,32 +117,6 @@ function UserListsProfilePage({ isListsOpen, setIsListsOpen }) {
           )}
         </div>
       </div>
-
-      {/* Custom CSS for animations */}
-      {/* <style jsx>{`
-        .no-scrollbar {
-          -ms-overflow-style: none;
-          scrollbar-width: none;
-        }
-        .no-scrollbar::-webkit-scrollbar {
-          display: none;
-        }
-
-        @keyframes fade-in {
-          from {
-            opacity: 0;
-            transform: translateY(10px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-
-        .animate-fade-in {
-          animation: fade-in 0.7s ease-out;
-        }
-      `}</style> */}
     </>
   );
 }

@@ -1,8 +1,11 @@
 "use client";
-import Image from "next/image";
-import Link from "next/link";
 
-import AppImage from "../common/AppImage";
+import React, { useEffect, useState } from "react";
+import Link from "next/link";
+import { useSession } from "next-auth/react";
+
+import { FaBookmark, FaRegBookmark } from "react-icons/fa6";
+import { AppImage } from "../common";
 
 export default function PostItemDetailsPage({
   id,
@@ -13,6 +16,57 @@ export default function PostItemDetailsPage({
   username,
   userId,
 }) {
+  const { data: session } = useSession();
+  const currentUserId = session?.user?.id;
+  const [isFavorited, setIsFavorited] = useState(false);
+
+  useEffect(() => {
+  const checkFavoriteStatus = async () => {
+    if (!session || !currentUserId) return;
+
+    try {
+      const response = await fetch(`/api/favorites/${id}`);
+      if (response.ok) {
+        const data = await response.json();
+        setIsFavorited(data.isFavorited);
+      }
+    } catch (error) {
+      console.error('Error checking favorite status:', error);
+    }
+  };
+
+  checkFavoriteStatus();
+}, [id, session, currentUserId]);
+
+  const handleFavClick = async () => {
+    if (!session) {
+      console.log("User not authenticated");
+      return;
+    }
+
+    try {
+      const method = isFavorited ? "DELETE" : "POST";
+
+      const response = await fetch(`/api/favorites/${id}`, {
+        method: method,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || "Failed to update favorite");
+      }
+
+      const data = await response.json();
+      setIsFavorited(!isFavorited);
+      console.log(data.message);
+    } catch (error) {
+      console.error("Error updating favorite:", error);
+    }
+  };
+
   return (
     <div
       id={id}
@@ -32,8 +86,23 @@ export default function PostItemDetailsPage({
           <Link href={`/user/${userId}`} className="hover:opacity-50">
             <h1 className="text-xl">@{username}</h1>
           </Link>
-          <h1 className="text-xl py-4">NOTES</h1>
+          {isFavorited ? (
+            <FaBookmark
+              className="cursor-pointer"
+              onClick={handleFavClick}
+              color="#FBF8F4"
+              size={20}
+            />
+          ) : (
+            <FaRegBookmark
+              className="cursor-pointer"
+              onClick={handleFavClick}
+              color="#FBF8F4"
+              size={20}
+            />
+          )}
         </div>
+        <h1 className="text-lg pt-4 pb-1">NOTES</h1>
         <div className="border rounded mx-1 p-4">
           <p>{title}</p>
           <br />
