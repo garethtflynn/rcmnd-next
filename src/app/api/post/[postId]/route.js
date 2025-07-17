@@ -1,6 +1,6 @@
 import prisma from "@/libs/db";
 import { NextResponse } from "next/server";
-import backblazeS3Service from "@/utils/backblazeS3Service"; // Adjust path as needed
+import backblazeS3Service from "@/utils/backblazeS3Service";
 
 // get a specific post
 export async function GET(req, { params }) {

@@ -56,11 +56,11 @@ export default function Header() {
     setIsOpen(false);
   };
 
-
   const createPost = async () => {
     router.push("/createPost");
     setShowCreateModal(false);
   };
+
   const createList = async () => {
     router.push("/createList");
     setShowCreateModal(false);
@@ -71,13 +71,11 @@ export default function Header() {
     setIsOpen(false);
   };
 
-  // Handle clicks outside the menu to close it
   const handleOverlayClick = () => {
-    console.log("screen clicked");
+    // console.log("screen clicked");
     setIsOpen(false);
   };
 
-  // Handle escape key to close menu
   useEffect(() => {
     const handleEscKey = (event) => {
       if (event.key === "Escape" && isOpen) {
