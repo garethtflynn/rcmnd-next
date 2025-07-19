@@ -9,6 +9,7 @@ import { FaEllipsis } from "react-icons/fa6";
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 
 import {
+  PostItemListPage,
   PostItemUserProfilePage,
   PostItemYourProfilePage,
 } from "@/components/posts";
@@ -80,24 +81,7 @@ function ListPage() {
   };
 
   const handleDeletePost = async (postId) => {
-    try {
-      // Sending a DELETE request to the API
-      const response = await fetch(`/api/post/${postId}`, {
-        method: "DELETE",
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to delete post");
-      }
-
-      // If the API call is successful, update the UI (remove the post from the state)
-      setPosts(posts.filter((post) => post.id !== postId));
-
-      // console.log(`Post with ID ${postId} has been deleted.`);
-    } catch (error) {
-      console.error("Error deleting post:", error);
-      // You might want to show an error message to the user
-    }
+    setPosts((prevPosts) => prevPosts.filter((p) => p.id !== postId));
   };
 
   const handleAddPost = async () => {
@@ -109,12 +93,11 @@ function ListPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#000000]">
-      <div className="text-[#FBF8F4] px-3 py-2 flex justify-center">
+    <div className="min-h-screen bg-[#000000] px-2">
+      <div className="text-[#FBF8F4] py-2 flex justify-center">
         {list && (
           <div className="w-full flex justify-between items-center">
             <h1 className="text-2xl font-bold">{list.title}</h1>
-
             {isOwner && (
               <div className="z-50 relative">
                 <Menu
@@ -139,13 +122,13 @@ function ListPage() {
                     }}
                   >
                     <div className="py-1">
-                      <MenuItem className="block px-4 py-2 text-sm text-[#F1E9DA] hover:opacity-25 font-semibold">
+                      <MenuItem className="block px-4 py-2 text-sm text-[#FBF8F4] hover:opacity-25 font-semibold">
                         <p onClick={handleEditList}>edit list</p>
                       </MenuItem>
-                      <MenuItem className="block px-4 py-2 text-sm text-[#F1E9DA] hover:opacity-25 font-semibold">
+                      <MenuItem className="block px-4 py-2 text-sm text-[#FBF8F4] hover:opacity-25 font-semibold">
                         <p onClick={handleAddPost}>add post</p>
                       </MenuItem>
-                      <MenuItem className="block px-4 py-2 text-sm text-[#F1E9DA] hover:opacity-25 font-semibold">
+                      <MenuItem className="block px-4 py-2 text-sm text-[#FBF8F4] hover:opacity-25 font-semibold">
                         <p onClick={handleDeleteList}>delete list</p>
                       </MenuItem>
                     </div>
@@ -174,18 +157,15 @@ function ListPage() {
 
       {/* Posts Section */}
       {posts?.length > 0 ? (
-        <div className="w-full py-1 px-4 gap-4 grid grid-cols-2 md:grid-cols-3 text-[#D7CDBF]">
+        <div className="w-full py-1 gap-4 grid grid-cols-2 md:grid-cols-3">
           {posts.map((post) =>
             isOwner ? ( // Check if the current user is the owner of the post
-              <PostItemYourProfilePage
+              <PostItemListPage
+                post={post}
                 key={post.id}
-                title={post.title}
-                href={`/post/${post.id}`}
-                src={post.image}
-                alt={post.title}
                 list={post.list?.title}
                 deletePostCallback={handleDeletePost}
-                {...post} // Passing other props that are needed for the post
+                {...post}
               />
             ) : (
               <PostItemUserProfilePage
@@ -195,7 +175,7 @@ function ListPage() {
                 src={post.image}
                 alt={post.title}
                 list={post.list?.title}
-                {...post} // Passing other props for a regular post (no edit/delete)
+                {...post}
               />
             )
           )}

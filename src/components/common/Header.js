@@ -12,12 +12,10 @@ import rcmndLogo from "../../../public/rcmndLogo.png";
 import SearchBar from "./SearchBar";
 import CreateModal from "../modals/CreateModal";
 
-
 export default function Header() {
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const [showCreateModal, setShowCreateModal] = useState(false);
-
 
   // Refs for animation targets
   const menuRef = useRef(null);
@@ -256,16 +254,16 @@ export default function Header() {
                   className="text-2xl md:text-3xl text-[#F1E9DA] cursor-pointer"
                   style={{ opacity: 0 }}
                 >
-                  <button onClick={openCreateModal}>create</button>
+                  <Link href="/profilePage" onClick={handleMenuItemClick}>
+                    profile
+                  </Link>
                 </div>
                 <div
                   ref={(el) => (menuItemsRef.current[2] = el)}
                   className="text-2xl md:text-3xl text-[#F1E9DA] cursor-pointer"
                   style={{ opacity: 0 }}
                 >
-                  <Link href="/profilePage" onClick={handleMenuItemClick}>
-                    profile
-                  </Link>
+                  <button onClick={openCreateModal}>create</button>
                 </div>
                 <div
                   ref={(el) => (menuItemsRef.current[3] = el)}
