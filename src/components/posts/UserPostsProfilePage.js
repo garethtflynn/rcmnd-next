@@ -5,7 +5,7 @@ import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { FaRegFileLines } from "react-icons/fa6";
 
-function UserPosts(props) {
+function UserPostsProfilePage(props) {
   const { data: session } = useSession();
   const userId = session?.user?.id;
   const [posts, setPosts] = useState(null);
@@ -75,7 +75,7 @@ function UserPosts(props) {
             href="/createPost"
             className="inline-block bg-[#D7CDBF] text-[#000000] px-6 py-3 rounded-lg font-medium hover:bg-opacity-90 transition-colors"
           >
-            Create Your First Post
+            create your first post
           </Link>
         </div>
       </div>
@@ -102,4 +102,4 @@ function UserPosts(props) {
   );
 }
 
-export default UserPosts;
+export default UserPostsProfilePage;

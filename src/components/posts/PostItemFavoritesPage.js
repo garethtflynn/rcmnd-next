@@ -22,7 +22,7 @@ function PostItemFavoritesPage({ post }) {
         throw new Error("Failed to delete post");
       }
 
-      // If the API call is successful, update the UI (remove the post from the state)
+      // If the API call is successful update the page 
       setPost(post.filter((post) => post.id !== post.id));
 
       // console.log(`Post with ID ${postId} has been deleted.`);
@@ -34,7 +34,7 @@ function PostItemFavoritesPage({ post }) {
   };
 
   return (
-    <div className="bg-[#252220] rounded-lg p-6 border-[#F1E9DA]/25">
+    <div className="bg-[#252220] rounded-lg p-6">
       {post.image && (
         <div className="relative mb-4">
           <AppImage
@@ -77,7 +77,7 @@ function PostItemFavoritesPage({ post }) {
                 ? `${post.user.firstName} ${post.user.lastName}`
                 : post.user?.username || "Unknown User"}
             </h3>
-            <p className="text-sm text-gray-400">
+            <p className="text-sm text-[#FBF8F4]/30">
               {new Date(post.createdAt).toLocaleDateString("en-US", {
                 year: "numeric",
                 month: "short",
@@ -93,7 +93,7 @@ function PostItemFavoritesPage({ post }) {
           <h4 className="text-lg font-semibold break-words">{post.title}</h4>
         )}
         {post.description && (
-          <p className="text-gray-400 text-base break-words mb-2">
+          <p className="text-[#FBF8F4]/50 text-base break-words mb-2">
             {post.description}
           </p>
         )}
@@ -102,7 +102,7 @@ function PostItemFavoritesPage({ post }) {
             href={post.link}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-gray-300 leading-relaxed break-words overflow-hidden"
+            className="text-[#FBF8F4]/45 leading-relaxed break-words overflow-hidden"
           >
             link
           </a>

@@ -15,71 +15,72 @@ const shuffleArray = (array) => {
 };
 
 function UserPostsHomePage(props) {
-  const { data: session } = useSession();
-  const userId = session?.user?.id;
-  const [posts, setPosts] = useState(null);
-  // const [postUser, setPostUser] = useState();
-  const [isLoading, setLoading] = useState(true);
-  const [error, setError] = useState();
+  // const { data: session } = useSession();
+  // const userId = session?.user?.id;
+  // const [posts, setPosts] = useState(null);
+  // // const [postUser, setPostUser] = useState();
+  // const [isLoading, setLoading] = useState(true);
+  // const [error, setError] = useState();
 
-  useEffect(() => {
-    if (userId) {
-      const fetchPosts = async () => {
-        try {
-          const followingRes = await fetch(`/api/user/${userId}/following`, {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            credentials: "include",
-          });
+  // useEffect(() => {
+  //   if (userId) {
+  //     const fetchPosts = async () => {
+  //       try {
+  //         const followingRes = await fetch(`/api/user/${userId}/following`, {
+  //           method: "GET",
+  //           headers: {
+  //             "Content-Type": "application/json",
+  //           },
+  //           credentials: "include",
+  //         });
 
-          if (!followingRes.ok) {
-            throw new Error("Failed to fetch following users");
-          }
+  //         if (!followingRes.ok) {
+  //           throw new Error("Failed to fetch following users");
+  //         }
 
-          const followingData = await followingRes.json();
-          // console.log(followingData);
-          // setPostUser(followingData.username)
+  //         const followingData = await followingRes.json();
+  //         // console.log(followingData);
+  //         // setPostUser(followingData.username)
 
-          const followingIds = followingData.map((user) => user.id);
+  //         const followingIds = followingData.map((user) => user.id);
 
-          const postsRes = await fetch(
-            // `/api/posts?userIds=${followingIds.join(",")}`,
-            `/api/posts?userIds=${followingIds}`,
-            {
-              method: "GET",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              credentials: "include",
-            }
-          );
+  //         const postsRes = await fetch(
+  //           // `/api/posts?userIds=${followingIds.join(",")}`,
+  //           `/api/posts?userIds=${followingIds}`,
+  //           {
+  //             method: "GET",
+  //             headers: {
+  //               "Content-Type": "application/json",
+  //             },
+  //             credentials: "include",
+  //           }
+  //         );
 
-          // console.log(postsRes)
-          if (!postsRes.ok) {
-            throw new Error("Failed to fetch posts from followed users");
-          }
+  //         // console.log(postsRes)
+  //         if (!postsRes.ok) {
+  //           throw new Error("Failed to fetch posts from followed users");
+  //         }
 
-          const postsData = await postsRes.json();
-          // console.log(postsData);
+  //         const postsData = await postsRes.json();
+  //         // console.log(postsData);
 
-          const shuffledPosts = shuffleArray(postsData);
-          setPosts(shuffledPosts.slice(0, 6));
-        } catch (err) {
-          setError(err.message);
-        } finally {
-          setLoading(false);
-        }
-      };
+  //         const shuffledPosts = shuffleArray(postsData);
+  //         setPosts(shuffledPosts.slice(0, 6));
+  //       } catch (err) {
+  //         setError(err.message);
+  //       } finally {
+  //         setLoading(false);
+  //       }
+  //     };
 
-      fetchPosts();
-    }
-  }, [userId]);
+  //     fetchPosts();
+  //   }
+  // }, [userId]);
 
-  if (isLoading) {
-    return <Loading />;
-  }
+  // if (isLoading) {
+  //   return <Loading />;
+  // }
+
   return (
     <div className="md:min-h-screen bg-[#000000] text-[#D7CDBF] grid grid-cols-2 md:grid-cols-3 md:content-center gap-2 gap-y-6 mx-1">
       {posts?.map((post) => {

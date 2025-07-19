@@ -1,8 +1,9 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { Providers } from "./providers";
-import HeaderWithPathname from "@/components/common/HeaderWithPathname";
 import { ExtensionAuthConnector } from "@/components/extensions/ExtensionAuthConnector";
+import HeaderWithPathname from "@/components/common/HeaderWithPathname";
+import {Footer} from "@/components/common";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
@@ -17,6 +18,7 @@ export default function RootLayout({ children }) {
           <HeaderWithPathname />
           <ExtensionAuthConnector />
           {children}
+          <Footer />
         </Providers>
       </body>
     </html>

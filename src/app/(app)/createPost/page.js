@@ -17,13 +17,3 @@ export default function CreatePost() {
     </div>
   );
 }
-
-// import CreatePostForm from "@/components/CreatePostForm";
-
-// export default function CreatePost() {
-//   return (
-//     <div className='h-screen w-full bg-[#000000]'>
-//       <CreatePostForm />
-//     </div>
-//   );
-// }
