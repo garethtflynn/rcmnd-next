@@ -46,7 +46,7 @@ export default function PostItem({
   };
 
   return (
-    <div className="px-1 relative h-72 md:h-96">
+    <div className="px-1 relative">
       <Link id={id} href={`/post/${id}`}>
         <AppImage
           className="w-full h-full"
