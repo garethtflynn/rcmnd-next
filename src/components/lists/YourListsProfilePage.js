@@ -66,7 +66,7 @@ function YourListsProfilePage({ isListsOpen, setIsListsOpen }) {
 
   return (
     <>
-      <div className="px-2">
+      <div className="px-1">
         <div
           className={`
             flex items-center transition-all duration-500 ease-in-out
@@ -83,7 +83,7 @@ function YourListsProfilePage({ isListsOpen, setIsListsOpen }) {
           {!isListsOpen && (
             <>
               <button className="text-lg font-semibold text-[#FBF8F4] transition-colors duration-700 ">
-                Lists
+                lists
               </button>
               <FaAngleDown
                 className="self-center transition-transform duration-300"
