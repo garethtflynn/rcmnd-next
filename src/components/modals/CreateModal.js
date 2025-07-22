@@ -8,12 +8,12 @@ export default function CreateModal({
   onList,
 }) {
   return (
-    <div
-      className="fixed bottom-0 left-1/2 transform -translate-x-1/2 w-[95%] max-w-md h-[12%] bg-[#000000] z-50 flex items-center justify-center px-6 shadow-lg transition-transform duration-1000 ease-in-out rounded"
+     <div
+      className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[95%] max-w-md bg-[#000000] z-50 flex items-center justify-center px-6 py-4 shadow-lg transition-transform duration-500 ease-in-out rounded"
       onClick={onClose}
     >
       <div
-        className="w-full h-full flex items-center justify-center gap-6"
+        className="w-full flex items-center justify-center gap-6"
         onClick={(e) => e.stopPropagation()}
       >
         <button
