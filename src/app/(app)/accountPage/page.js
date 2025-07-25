@@ -31,8 +31,7 @@ function AccountPage(props) {
     return <Loading />;
   }
   return (
-    <div className="h-screen w-full flex flex-col justify-center items-center bg-[#000000]">
-      <div>
+    <div className="w-full flex flex-col justify-center items-center bg-[#000000]">
         <AccountPageForm
           firstName={user.firstName}
           lastName={user.lastName}
@@ -40,7 +39,6 @@ function AccountPage(props) {
           username={user.username}
           password={user.password}
         />
-      </div>
     </div>
   );
 }

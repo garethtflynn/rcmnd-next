@@ -14,47 +14,7 @@ datasource db {
   relationMode = "prisma"
 }
 
-// model User {
-//   id           String   @id @default(auto()) @map("_id") @db.ObjectId
-//   firstName    String
-//   lastName     String
-//   username     String   @unique
-//   email        String   @unique
-//   password     String?
-//   provider     String?
-//   providerId   String?
-//   posts        Post[]
-//   lists        List[]
-//   followers    User[]   @relation("UserFollows", fields: [followersIDs], references: [id])
-//   followersIDs String[] @db.ObjectId
-//   following    User[]   @relation("UserFollows", fields: [followingIDs], references: [id])
-//   followingIDs String[] @db.ObjectId
-// }
 
-// model Post {
-//   id          String    @id @default(auto()) @map("_id") @db.ObjectId
-//   title       String
-//   link        String?
-//   description String?
-//   image       String
-//   createdAt   DateTime? @default(now())
-//   user        User?     @relation(fields: [userId], references: [id])
-//   userId      String?   @db.ObjectId
-//   list        List?     @relation(fields: [listId], references: [id])
-//   listId      String?   @db.ObjectId
-//   isPrivate   Boolean?  @default(false)
-// }
-
-// model List {
-//   id        String   @id @default(auto()) @map("_id") @db.ObjectId
-//   title     String
-//   posts     Post[]
-//   user      User?    @relation(fields: [userId], references: [id])
-//   userId    String?  @db.ObjectId
-//   isPrivate Boolean? @default(false)
-// }
-
-// NextAuth Required Models
 model Account {
   id                String  @id @default(auto()) @map("_id") @db.ObjectId
   userId            String  @db.ObjectId
@@ -101,7 +61,6 @@ model User {
   provider      String? 
   providerId    String? 
   emailVerified DateTime?
-  // image         String?   // NextAuth field for profile pictures
   createdAt     DateTime? @default(now())
   updatedAt     DateTime? @updatedAt
 
@@ -117,6 +76,11 @@ model User {
 
   favoritePosts   Post[]   @relation("UserFavorites", fields: [favoritePostIDs], references: [id])
   favoritePostIDs String[] @db.ObjectId
+
+  // Messaging relationships
+  conversations     Conversation[] @relation("ConversationParticipants", fields: [conversationIDs], references: [id])
+  conversationIDs   String[]       @db.ObjectId
+  sentMessages      Message[]      @relation("MessageSender")
 }
 model Post {
   id          String    @id @default(auto()) @map("_id") @db.ObjectId
@@ -142,4 +106,39 @@ model List {
   user      User?    @relation(fields: [userId], references: [id])
   userId    String?  @db.ObjectId
   isPrivate Boolean? @default(false)
+}
+
+
+model Conversation {
+  id           String    @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  lastMessageAt DateTime @default(now())
+  
+  // Participants in the conversation
+  participants   User[]   @relation("ConversationParticipants", fields: [participantIDs], references: [id])
+  participantIDs String[] @db.ObjectId
+  
+  messages Message[]
+  
+  @@index([participantIDs])
+  @@index([lastMessageAt])
+}
+
+model Message {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  content   String
+  createdAt DateTime @default(now())
+  readAt    DateTime?
+  
+  // Message sender
+  sender   User   @relation("MessageSender", fields: [senderId], references: [id])
+  senderId String @db.ObjectId
+  
+  // Conversation this message belongs to
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  conversationId String       @db.ObjectId
+  
+  @@index([conversationId, createdAt])
+  @@index([senderId])
 }

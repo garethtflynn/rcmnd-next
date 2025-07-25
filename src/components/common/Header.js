@@ -7,6 +7,14 @@ import Link from "next/link";
 import { signOut } from "next-auth/react";
 import Image from "next/image";
 import { animate, inView, scroll, stagger, timeline } from "motion";
+import {
+  FiHome,
+  FiMessageSquare,
+  FiSettings,
+  FiLogOut,
+  FiPlusCircle,
+} from "react-icons/fi";
+import { LiaUserCircle } from "react-icons/lia";
 
 import rcmndLogo from "../../../public/rcmndLogo.png";
 import SearchBar from "./SearchBar";
@@ -238,51 +246,85 @@ export default function Header() {
               >
                 ✕
               </div>
-
-              <div className="text-center space-y-6">
+              <div className="text-center  space-y-6">
                 <div
                   ref={(el) => (menuItemsRef.current[0] = el)}
-                  className="text-2xl md:text-3xl text-[#F1E9DA] cursor-pointer"
+                  className="text-2xl md:text-3xl text-[#F1E9DA] cursor-pointer flex items-center"
                   style={{ opacity: 0 }}
                 >
-                  <Link href="/homeFeed" onClick={handleMenuItemClick}>
+                  <FiHome size={20} />
+                  <Link
+                    href="/homeFeed"
+                    onClick={handleMenuItemClick}
+                    className="pl-2"
+                  >
                     home
                   </Link>
                 </div>
                 <div
                   ref={(el) => (menuItemsRef.current[1] = el)}
-                  className="text-2xl md:text-3xl text-[#F1E9DA] cursor-pointer"
+                  className="text-2xl md:text-3xl text-[#F1E9DA] cursor-pointer flex items-center"
                   style={{ opacity: 0 }}
                 >
-                  <Link href="/profilePage" onClick={handleMenuItemClick}>
+                  <LiaUserCircle size={20} />
+                  <Link
+                    href="/profilePage"
+                    onClick={handleMenuItemClick}
+                    className="pl-2"
+                  >
                     profile
                   </Link>
                 </div>
                 <div
                   ref={(el) => (menuItemsRef.current[2] = el)}
-                  className="text-2xl md:text-3xl text-[#F1E9DA] cursor-pointer"
+                  className="text-2xl md:text-3xl text-[#F1E9DA] cursor-pointer flex items-center"
                   style={{ opacity: 0 }}
                 >
-                  <button onClick={openCreateModal}>create</button>
+                  <FiPlusCircle size={20} />
+                  <button onClick={openCreateModal} className="pl-2">
+                    create
+                  </button>
                 </div>
                 <div
                   ref={(el) => (menuItemsRef.current[3] = el)}
-                  className="text-2xl md:text-3xl text-[#F1E9DA] cursor-pointer"
+                  className="text-2xl md:text-3xl text-[#F1E9DA] cursor-pointer flex items-center"
                   style={{ opacity: 0 }}
                 >
-                  <Link href="/accountPage" onClick={handleMenuItemClick}>
+                  <FiMessageSquare size={20} />
+
+                  <Link
+                    href="/messages"
+                    onClick={handleMenuItemClick}
+                    className="pl-2"
+                  >
+                    messages
+                  </Link>
+                </div>
+                <div
+                  ref={(el) => (menuItemsRef.current[4] = el)}
+                  className="text-2xl md:text-3xl text-[#F1E9DA] cursor-pointer flex items-center"
+                  style={{ opacity: 0 }}
+                >
+                  <FiSettings size={20} />
+
+                  <Link
+                    href="/accountPage"
+                    onClick={handleMenuItemClick}
+                    className="pl-2"
+                  >
                     account
                   </Link>
                 </div>
-
                 <div
-                  ref={(el) => (menuItemsRef.current[4] = el)}
-                  className="text-2xl md:text-3xl text-[#F1E9DA] cursor-pointer"
+                  ref={(el) => (menuItemsRef.current[5] = el)}
+                  className="text-2xl md:text-3xl text-[#F1E9DA] cursor-pointer flex items-center"
                   style={{ opacity: 0 }}
                 >
+                  <FiLogOut size={20} />
+
                   <button
                     onClick={handleLogout}
-                    className="bg-transparent border-none text-2xl md:text-3xl text-[#F1E9DA]"
+                    className="bg-transparent border-none text-2xl md:text-3xl text-[#F1E9DA] pl-2"
                   >
                     sign out
                   </button>

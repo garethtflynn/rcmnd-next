@@ -27,7 +27,7 @@ function AccountPageForm({ firstName, lastName, username, email, password }) {
   const [loading, setLoading] = useState(false);
 
   const [passwordData, setPasswordData] = useState({
-    currentPassword: "",
+    // currentPassword: "",
     newPassword: "",
     confirmPassword: "",
   });
@@ -45,7 +45,7 @@ function AccountPageForm({ firstName, lastName, username, email, password }) {
   const handlePasswordUpdate = async () => {
     // Validation
     if (
-      !passwordData.currentPassword ||
+      // !passwordData.currentPassword ||
       !passwordData.newPassword ||
       !passwordData.confirmPassword
     ) {
@@ -69,7 +69,7 @@ function AccountPageForm({ firstName, lastName, username, email, password }) {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          currentPassword: passwordData.currentPassword,
+          // currentPassword: passwordData.currentPassword,
           newPassword: passwordData.newPassword,
         }),
       });
@@ -83,7 +83,7 @@ function AccountPageForm({ firstName, lastName, username, email, password }) {
       alert("Password updated successfully!");
       setShowChangePassword(false);
       setPasswordData({
-        currentPassword: "",
+        // currentPassword: "",
         newPassword: "",
         confirmPassword: "",
       });
@@ -136,7 +136,7 @@ function AccountPageForm({ firstName, lastName, username, email, password }) {
   };
 
   return (
-    <div className="max-w-2xl mx-auto p-6">
+    <div className="h-screen max-w-2xl mx-auto p-6">
       <div className="flex items-center justify-between mb-8">
         <div className="mr-5 md:mr-0">
           <h1 className="text-3xl font-bold text-[#D7CDBF] mb-2">
@@ -157,7 +157,7 @@ function AccountPageForm({ firstName, lastName, username, email, password }) {
         )}
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-6">
+      <form onSubmit={handleSubmit} className="space-y-6 pb-4">
         {/* Name Fields Row */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="space-y-2">
@@ -271,12 +271,12 @@ function AccountPageForm({ firstName, lastName, username, email, password }) {
 
         {/* Password Change Section */}
         {showChangePassword && (
-          <div className="space-y-4 p-4 bg-[#0F0F0F] rounded-lg border border-[#252220]">
+          <div className="space-y-4 p-4 bg-[#252220] rounded-lg">
             <h3 className="text-lg font-semibold text-[#D7CDBF] mb-3">
               Change Password
             </h3>
 
-            <div className="space-y-2">
+            {/* <div className="space-y-2">
               <label className="block text-sm font-medium text-[#D7CDBF] mb-1">
                 Current Password
               </label>
@@ -302,7 +302,7 @@ function AccountPageForm({ firstName, lastName, username, email, password }) {
                   )}
                 </button>
               </div>
-            </div>
+            </div> */}
 
             <div className="space-y-2">
               <label className="block text-sm font-medium text-[#D7CDBF] mb-1">
