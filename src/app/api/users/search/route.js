@@ -3,18 +3,14 @@ import { NextResponse } from "next/server";
 
 export async function GET(request) {
   const url = new URL(request.url);
-  const query = url.searchParams.get("query") || ""; // Get the search query from URL params
+  const query = url.searchParams.get("query") || "";
   
-//   if (query.trim() === "") {
-//     return new NextResponse(JSON.stringify([]), {
-//       // Return empty array if query is empty
-//       headers: {
-//         "Content-Type": "application/json",
-//       },
-//     });
-//   }
+if (query.trim() === "" || query.trim().length < 2) {
+  return new NextResponse(JSON.stringify([]), {
+    headers: { "Content-Type": "application/json" },
+  });
+}
 
-  // Fetch users from the database using Prisma, filtered by name
   const filteredUsers = await prisma.user.findMany({
     where: {
       OR: [
