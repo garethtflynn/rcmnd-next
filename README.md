@@ -23,9 +23,10 @@ rcmnd encourages authentic expression in a creative environment where any recomm
 ## Features
 
 - **Personalized Recommendations**: Share anything from restaurants and products to books and experiences
-- **Custom Lists**: Organize your recommendations into themed collections
+- **Custom Lists**: Organize your recommendations into specific lists
 - **Rich Content**: Add photos, descriptions, and personal reviews to your posts
 - **User Profiles**: Build your personal recommendation brand
+- **Social Interaction**: Message about, and save others' recommendations
 - **Mobile Responsive**: Full functionality across all devices
 
 ## Tech Stack

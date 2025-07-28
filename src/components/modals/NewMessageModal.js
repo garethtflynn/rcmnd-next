@@ -30,7 +30,7 @@ const onSubmit = async (e) => {
   try {
     // First, send a product context message
     const productContextBody = {
-      content: `askign about: ${productTitle}`,
+      content: `asking about: ${productTitle}`,
       recipientId: formData.recipientId,
       senderId: senderId,
       messageType: "product_context", // Optional: to identify this as a context message

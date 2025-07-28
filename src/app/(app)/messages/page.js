@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { FaRegMessage, FaUser, FaChevronRight } from "react-icons/fa6";
+import { PiPlus, PiPlusBold } from "react-icons/pi";
 
 import { Loading } from "@/components/common";
 
@@ -91,12 +92,10 @@ export default function Messages() {
   return (
     <div className="min-h-screen w-full bg-[#000000] text-[#F1E9DA]">
       <div className="container mx-auto px-4 py-8 max-w-4xl">
-        {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-[#F1E9DA] mb-2">Messages</h1>
+        <div className="mb-8 flex justify-between items-center">
+          <h1 className="text-3xl font-semibold text-[#F1E9DA] mb-2">Messages</h1>
+          <PiPlusBold size={25} onClick={() => console.log('new message!')} />
         </div>
-
-        {/* Conversations List */}
         {conversations.length === 0 ? (
           <div className="text-center py-16">
             <FaRegMessage className="mx-auto text-6xl text-[#252220] mb-6" />
