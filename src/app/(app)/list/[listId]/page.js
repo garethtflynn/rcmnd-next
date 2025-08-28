@@ -159,7 +159,7 @@ function ListPage() {
       {posts?.length > 0 ? (
         <div className="w-full py-1 gap-4 grid grid-cols-2 md:grid-cols-3">
           {posts.map((post) =>
-            isOwner ? ( // Check if the current user is the owner of the post
+            isOwner ? ( 
               <PostItemListPage
                 post={post}
                 key={post.id}
@@ -182,7 +182,7 @@ function ListPage() {
         </div>
       ) : (
         <div className="text-[#D7CDBF] flex justify-center items-center h-full">
-          <p>No posts in this list!</p>
+          <p>no posts in this list!</p>
         </div>
       )}
     </div>

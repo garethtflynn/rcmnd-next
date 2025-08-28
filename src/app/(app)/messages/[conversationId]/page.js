@@ -130,65 +130,6 @@ export default function ConversationPage({ params }) {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
-  //   const handleSendMessage = async (e) => {
-  //     e.preventDefault();
-
-  //     if (!newMessage.trim() || sending) return;
-
-  //     setSending(true);
-  //     const messageContent = newMessage.trim();
-  //     setNewMessage(""); // Clear input immediately
-
-  //     // Create a temporary message object for immediate UI update
-  //     const tempMessage = {
-  //       id: `temp-${Date.now()}`, // Temporary ID
-  //       content: messageContent,
-  //       senderId: session?.user?.id,
-  //       createdAt: new Date().toISOString(),
-  //       messageType: "user_message",
-  //       isTemporary: true, // Flag to identify temporary messages
-  //     };
-
-  //     // Add message to UI immediately
-  //     setMessages((prev) => [...prev, tempMessage]);
-
-  //     try {
-  //       const response = await fetch(`/api/conversations/${conversationId}`, {
-  //         method: "POST",
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //         },
-  //         body: JSON.stringify({ content: messageContent }),
-  //       });
-
-  //       if (!response.ok) {
-  //         throw new Error("Failed to send message");
-  //       }
-
-  //       const data = await response.json();
-
-  //       // Replace temporary message with real message from server
-  //       setMessages((prev) =>
-  //         prev.map((msg) =>
-  //           msg.id === tempMessage.id
-  //             ? { ...data.message, isTemporary: false }
-  //             : msg
-  //         )
-  //       );
-  //     } catch (error) {
-  //       console.error("Error sending message:", error);
-
-  //       // Remove temporary message on error
-  //       setMessages((prev) => prev.filter((msg) => msg.id !== tempMessage.id));
-
-  //       // Restore message in input on error
-  //       setNewMessage(messageContent);
-  //       // You might want to show an error toast here
-  //     } finally {
-  //       setSending(false);
-  //     }
-  //   };
-
   const handleSendMessage = async (e) => {
     e.preventDefault();
     if (!newMessage.trim() || sending) return;
@@ -254,9 +195,8 @@ export default function ConversationPage({ params }) {
     return currentDate !== prevDate;
   };
 
-  // Helper function to render different types of messages
   const renderMessage = (message, index, isOwnMessage, showDateSeparator) => {
-    // Check if this is a product context message
+    // Check type of message
     if (message.messageType === "product_context" || message.isSystemMessage) {
       return (
         <>
@@ -287,7 +227,6 @@ export default function ConversationPage({ params }) {
       );
     }
 
-    // Regular message rendering
     return (
       <>
         {/* Date Separator */}
@@ -369,15 +308,6 @@ export default function ConversationPage({ params }) {
         </Link>
 
         <div className="flex items-center space-x-3">
-          {/* <div className="w-10 h-10 bg-[#252220] rounded-full flex items-center justify-center">
-            {otherParticipant?.firstName ? (
-              <span className="text-[#F1E9DA] font-semibold">
-                {otherParticipant.firstName.charAt(0).toUpperCase()}
-              </span>
-            ) : (
-              <FaUser className="text-[#D7CDBF]" size={14} />
-            )}
-          </div> */}
           <div>
             <h2 className="font-semibold text-[#F1E9DA]">
               {otherParticipant?.firstName

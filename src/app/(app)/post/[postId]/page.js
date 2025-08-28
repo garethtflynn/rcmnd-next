@@ -52,10 +52,8 @@ function PostPage(props) {
         throw new Error("Failed to delete post");
       }
       
-      // If the API call is successful, update the UI (remove the post from the state)
       setPost(post.filter((post) => post.id !== postId));
       
-      // console.log(`Post with ID ${postId} has been deleted.`);
     } catch (error) {
       console.error("Error deleting post:", error);
     }

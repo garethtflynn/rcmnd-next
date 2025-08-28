@@ -19,7 +19,7 @@ export default function Page() {
           className="hover:text-[#4C4138] hover:underline decoration-2 duration-500"
           href="/sign-in"
         >
-          Sign In.
+          sign in.
         </Link>
       </p>
     </div>
