@@ -69,7 +69,7 @@ function UserPostsProfilePage(props) {
           <div className="mb-4 flex justify-center">
             <FaRegFileLines size={60} />
           </div>
-          <h3 className="text-xl font-medium mb-2">No posts created yet</h3>
+          <h3 className="text-xl font-medium mb-2">no posts created yet</h3>
           <p className="text-gray-400 mb-6">rcmnd your favorite products</p>
           <Link
             href="/createPost"

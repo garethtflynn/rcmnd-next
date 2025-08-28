@@ -93,23 +93,23 @@ export default function Messages() {
     <div className="min-h-screen w-full bg-[#000000] text-[#F1E9DA]">
       <div className="container mx-auto px-4 py-8 max-w-4xl">
         <div className="mb-8 flex justify-between items-center">
-          <h1 className="text-3xl font-semibold text-[#F1E9DA] mb-2">Messages</h1>
-          <PiPlusBold size={25} onClick={() => console.log('new message!')} />
+          <h1 className="text-3xl font-semibold text-[#F1E9DA] mb-2">messages</h1>
+          {/* <PiPlusBold size={25} onClick={() => console.log('new message!')} /> */}
         </div>
         {conversations.length === 0 ? (
           <div className="text-center py-16">
             <FaRegMessage className="mx-auto text-6xl text-[#252220] mb-6" />
             <h3 className="text-xl font-medium text-[#D7CDBF] mb-2">
-              No messages yet
+              no messages yet
             </h3>
             <p className="text-[#D7CDBF] opacity-75 mb-6">
-              Start a conversation by asking a question about a product
+              start a conversation by asking a question about a product
             </p>
             <Link
-              href="/"
+              href="/homeFeed"
               className="inline-block bg-[#252220] hover:opacity-75 text-[#FBF8F4] font-bold py-3 px-6 rounded-md duration-500"
             >
-              Browse Products
+              browse Products
             </Link>
           </div>
         ) : (
@@ -172,7 +172,7 @@ export default function Messages() {
                           </div>
                         ) : (
                           <p className="text-sm text-[#D7CDBF] opacity-75 italic">
-                            No messages yet
+                            no messages yet
                           </p>
                         )}
                       </div>
