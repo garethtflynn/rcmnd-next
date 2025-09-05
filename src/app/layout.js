@@ -7,17 +7,30 @@ import { Footer } from "@/components/common";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
-  title: "Your App Name",
+  title: "rcmnd",
   description: "rcmnd your favorite things & places",
   icons: {
     icon: "/favicon.ico",
-    apple: "/apple-icon-180x180.png",
+    apple: [
+      {
+        url: "/apple-icon-180x180.png",
+        sizes: "180x180",
+        type: "image/png",
+      },
+    ],
   },
 };
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
+      <head>
+        <link
+          rel="apple-touch-icon"
+          sizes="180x180"
+          href="/apple-icon-180x180.png"
+        />
+      </head>
       <body className={`${inter.className} bg-[#000000]`}>
         <Providers>
           <HeaderWithPathname />
