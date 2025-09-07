@@ -9,7 +9,8 @@ import {
   FaEdit,
 } from "react-icons/fa";
 
-function AccountPageForm({ firstName, lastName, username, email, password }) {
+
+function AccountPageForm({ userId, firstName, lastName, username, email, password }) {
   const [formData, setFormData] = useState({
     firstName: firstName,
     lastName: lastName,
@@ -43,7 +44,6 @@ function AccountPageForm({ firstName, lastName, username, email, password }) {
   };
 
   const handlePasswordUpdate = async () => {
-    // Validation
     if (
       // !passwordData.currentPassword ||
       !passwordData.newPassword ||
@@ -97,11 +97,11 @@ function AccountPageForm({ firstName, lastName, username, email, password }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // console.log(formData)
+    console.log(formData)
 
     setLoading(true);
     try {
-      const response = await fetch(`/api/user/${userId}`, {
+      const response = await fetch(`/api/user/${userId}/password`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),

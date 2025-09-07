@@ -81,28 +81,29 @@ export default function HomeFeed(props) {
     return <Loading />;
   }
 
-
   return (
-    <div className="md:min-h-screen bg-[#000000] text-[#D7CDBF] grid grid-cols-2 md:grid-cols-3 md:content-center gap-2 gap-y-6 mx-1">
+    <div className="bg-[#000000] text-[#D7CDBF] mx-1">
       {!posts || posts.length === 0 ? (
-        <div className="h-screen w-full flex flex-col justify-center items-center bg-[#000000] text-[#D7CDBF]">
+        <div className="h-screen w-full flex flex-col justify-center items-center">
           <h3 className="text-xl mb-2">you`re not following anyone yet</h3>
-          <p className="text-gray-400 mb-6">
-            search for and follow users to curate your home feed
+          <p className="text-gray-400 mb-6 text-sm sm:text-base">
+            search for & follow users to curate your home feed
           </p>
         </div>
       ) : (
-        posts.map((post) => (
-          <PostItemHomePage
-            key={post.id}
-            title={post.title}
-            href={`/post/${post.id}`}
-            image={post.image}
-            username={post.user?.username}
-            userId={post.userId}
-            alt={post.title}
-          />
-        ))
+        <div className="min-h-screen grid grid-cols-2 md:grid-cols-3 md:content-center gap-2 gap-y-6">
+          {posts.map((post) => (
+            <PostItemHomePage
+              key={post.id}
+              title={post.title}
+              href={`/post/${post.id}`}
+              image={post.image}
+              username={post.user?.username}
+              userId={post.userId}
+              alt={post.title}
+            />
+          ))}
+        </div>
       )}
     </div>
   );

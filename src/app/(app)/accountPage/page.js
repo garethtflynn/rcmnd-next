@@ -32,13 +32,14 @@ function AccountPage(props) {
   }
   return (
     <div className="w-full flex flex-col justify-center items-center bg-[#000000]">
-        <AccountPageForm
-          firstName={user.firstName}
-          lastName={user.lastName}
-          email={user.email}
-          username={user.username}
-          password={user.password}
-        />
+      <AccountPageForm
+        userId={user.id}
+        firstName={user.firstName}
+        lastName={user.lastName}
+        email={user.email}
+        username={user.username}
+        password={user.password}
+      />
     </div>
   );
 }
