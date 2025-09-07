@@ -15,8 +15,8 @@ export async function GET(req, { params }) {
         id: userId,
       },
       include: {
-        posts: true, // Fetch all posts, we'll filter them later
-        lists: true, // Fetch all lists, we'll filter them later
+        posts: true, 
+        lists: true,
       },
     });
 

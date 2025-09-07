@@ -14,7 +14,7 @@ export async function GET(req) {
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
 
-    const userId = session.user.id; // Extract user ID from session
+    const userId = session.user.id; 
     console.log("Fetching following for user ID:", userId);
 
     // Fetch the user and the users they are following
